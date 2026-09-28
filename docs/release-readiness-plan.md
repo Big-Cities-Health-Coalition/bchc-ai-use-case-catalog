@@ -3,7 +3,7 @@
 - Status: in execution; automated baseline implemented 2026-08-22
 - Created: 2026-08-21
 - Target: a release candidate suitable for the wider BCHC demo audience next week
-- Candidate: `v1.10.0-rc.2` (last stable release: `v1.9.0`)
+- Release: `v1.10.0` (stable, promoted from `v1.10.0-rc.2`)
 - Parent repository: [`crypticpy/phct`](https://github.com/crypticpy/phct)
 - Downstream demo: [`Big-Cities-Health-Coalition/use-case-catalog`](https://github.com/Big-Cities-Health-Coalition/use-case-catalog)
 

@@ -1,4 +1,4 @@
-# Public Health Digital Use Case Catalog maintainers
+# Catalog maintainers
 
 This catalog is a BCHC-owned deployment of the PHCT open-source template. BCHC
 owns the catalog's content, policy, branding, publication decisions, and operational access; shared

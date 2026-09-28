@@ -53,14 +53,21 @@ rule client-side; they stay in the count because they stay in the catalog. {%- e
 
       <section aria-labelledby="results-heading">
         <ul role="list" class="entry-grid" data-entry-grid data-view="grid">
-          {%- comment -%} Only card 1 can be the LCP element, and at 390px it is the only
-          card above the fold at all: eager-loading the rest of the first row just puts
-          them on the wire ahead of the image the paint is waiting for. {%- endcomment -%}
+          {%- comment -%} One card image is the LCP candidate, and at 390px only one card
+          is above the fold at all: eager-loading a whole row just puts the rest on the
+          wire ahead of the image the paint is waiting for. The candidate is the first
+          card that HAS a picture — when the newest entries have none, eager-loading
+          card 1 loaded nothing and the first picture on screen waited on lazy loading.
+          The probe renders entry-thumb.html, the resolution the card itself uses, and
+          stops at the first hit. It looks no further than the first row (3 cards at
+          xl): a picture below that is below the fold at every width. {%- endcomment -%}
+          {%- assign cat_lcp_url = '' -%}
+          {%- for entry in entries limit: 3 -%}{%- capture cat_probe -%}{% include entry-thumb.html entry=entry %}{%- endcapture -%}{%- assign cat_probe = cat_probe | strip -%}{%- if cat_probe != '' -%}{%- assign cat_lcp_url = entry.url -%}{%- break -%}{%- endif -%}{%- endfor -%}
           {%- comment -%} `transition=true`: this grid renders each entry exactly once, so
           its cards can safely claim the `view-transition-name`s that _layouts/entry.html
           matches — see the note in entry-card.html for why that is the caller's call.
           {%- endcomment -%}
-          {% for entry in entries %}{% assign cat_lcp = false %}{% if forloop.first %}{% assign cat_lcp = true %}{% endif %}{% include entry-card.html entry=entry eager=cat_lcp fetchpriority=cat_lcp transition=true %}{% endfor %}
+          {% for entry in entries %}{% assign cat_lcp = false %}{% if entry.url == cat_lcp_url %}{% assign cat_lcp = true %}{% endif %}{% include entry-card.html entry=entry eager=cat_lcp fetchpriority=cat_lcp transition=true %}{% endfor %}
         </ul>
 
         {%- comment -%} Zero results has three different causes and three different

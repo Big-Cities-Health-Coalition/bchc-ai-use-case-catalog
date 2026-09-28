@@ -10,12 +10,15 @@
 #
 # Invoked by: `npm run validate` (scripts/validate.mjs) and directly as a step
 # in .github/workflows/smoke.yml and .github/workflows/validate.yml. No env
-# vars; inputs are `_data/schema.yml` plus every `<entry path>/*/index.md` and
-# `cohorts/*/events/*/index.md` under the repo root. Output: warnings/failures
+# vars; inputs are `_data/schema.yml`, the optional `link_access` block of
+# `_data/site.yml` (with `_data/resources.yml`'s `access:` values, checked
+# against it by scripts/lib/link_access_check.rb), plus every
+# `<entry path>/*/index.md` and `cohorts/*/events/*/index.md` under the repo root. Output: warnings/failures
 # to stderr, "Front matter validation passed." to stdout, exit 1 on failure.
 
 require "yaml"
 require "date"
+require_relative "lib/link_access_check"
 
 # Schema-driven front matter validation for catalog entries and cohort events.
 module FrontMatterCheck
@@ -37,9 +40,10 @@ module FrontMatterCheck
   # Parse YAML with the same restrictions Jekyll's safe loader applies.
   # @param text [String]
   # @param source [String] path used in the error message
+  # @param aliases [Boolean] allow YAML anchors/aliases, as Jekyll does for _data files
   # @return [Hash]
-  def load_yaml(text, source)
-    YAML.safe_load(text, permitted_classes: [Date, Time], permitted_symbols: [], aliases: false) || {}
+  def load_yaml(text, source, aliases: false)
+    YAML.safe_load(text, permitted_classes: [Date, Time], permitted_symbols: [], aliases: aliases) || {}
   rescue Psych::SyntaxError => e
     raise "#{source} has invalid YAML: #{e.message}"
   end
@@ -245,10 +249,11 @@ module FrontMatterCheck
   # Validate a single entry file.
   # @param file [String] absolute path to <entry path>/<slug>/index.md
   # @param fields [Array<Hash>] schema fields
-  # @param entry [Hash] the schema's `entry` block (`require_link` is read here)
+  # @param entry [Hash] the schema's `entry` block (`require_link` and `require_public_link` are read here)
   # @param slugs [Array<String>] every entry folder name, for `links_entries` fields
+  # @param link_access [Hash, nil] site.yml's `link_access` block, for `access:` values and the public-link check
   # @return [Array(Array<String>, Array<String>)] failures and warnings
-  def validate_entry(file, fields, entry = {}, slugs = [])
+  def validate_entry(file, fields, entry = {}, slugs = [], link_access = nil)
     failures = []
     warnings = []
     rel = file.delete_prefix("#{root}/")
@@ -353,6 +358,7 @@ module FrontMatterCheck
         check_images(value, { rel: rel, entry_dir: entry_dir, key: key, where: spot }, failures, warnings) unless value.nil?
       when "links"
         check_links(value, { key: key, where: spot }, failures) unless value.nil?
+        failures.concat(LinkAccessCheck.links_access_failures(value, link_access, "#{spot}: `#{key}")) unless value.nil?
       when "url"
         unless blank?(value) || http_url?(value)
           failures << "#{spot}: `#{key}` must start with http:// or https:// (got #{value.inspect})"
@@ -379,6 +385,20 @@ module FrontMatterCheck
       message = "#{rel}: no link anywhere — every `url` field is empty and no `links` field has an item; " \
                 "a reader has nowhere to go to evaluate or adopt this"
       if entry["require_link"] == true
+        failures << message
+      else
+        warnings << message
+      end
+    end
+
+    # The same bar for a reader outside the organization: when site.yml
+    # `link_access` labels every link this entry has (a members-only host, an
+    # item's own `access:`), nobody without a sign-in can open any of it. A
+    # warning by default; `entry.require_public_link: true` makes it a failure.
+    if LinkAccessCheck.no_public_link?(link_access, LinkAccessCheck.entry_links(data, fields))
+      message = "#{rel}: no public link — every link on this entry needs access a reader outside the organization " \
+                "may not have (site.yml `link_access`); add one that opens for anyone, such as a public share link"
+      if entry["require_public_link"] == true
         failures << message
       else
         warnings << message
@@ -455,13 +475,21 @@ module FrontMatterCheck
     failures = validate_schema(fields)
     warnings = []
 
+    # The optional `link_access` block: its own shape, then the `access:` values
+    # in _data/resources.yml that point into it. Entries are checked below.
+    site_path = File.join(root, "_data", "site.yml")
+    site = File.exist?(site_path) ? load_yaml(File.read(site_path), "_data/site.yml", aliases: true) : {}
+    link_access = site.is_a?(Hash) ? site["link_access"] : nil
+    failures.concat(LinkAccessCheck.config_failures(link_access, LinkAccessCheck.icon_names(root)))
+    failures.concat(LinkAccessCheck.resources_failures(root, link_access))
+
     entry_files = Dir.glob(File.join(root, entry_path, "*", "index.md")).sort
     # Every entry folder name, so a `links_entries` field can be checked against
     # the entries that exist rather than against a second list someone maintains.
     slugs = entry_files.map { |file| File.basename(File.dirname(file)) }
 
     entry_files.each do |file|
-      entry_failures, entry_warnings = validate_entry(file, fields, entry, slugs)
+      entry_failures, entry_warnings = validate_entry(file, fields, entry, slugs, link_access)
       failures.concat(entry_failures)
       warnings.concat(entry_warnings)
     end

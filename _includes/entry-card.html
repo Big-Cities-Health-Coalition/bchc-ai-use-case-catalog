@@ -184,7 +184,7 @@ custom-ident even for an entry whose slug starts with a digit. {%- endcomment -%
           {%- endfor -%}
           {%- if ec_chips.size > ec_chip_cap -%}
             {%- assign ec_chip_more = ec_chips.size | minus: ec_chip_cap -%}
-            <li><span class="chip-neutral"><span aria-hidden="true">+{{ ec_chip_more }}</span><span class="sr-only">{{ ec_chip_more }} more {{ ec_chip_field.label | downcase }}</span></span></li>
+            <li><span class="chip-neutral"><span aria-hidden="true">+{{ ec_chip_more }}</span><span class="sr-only">{{ ec_chip_more }} more {{ ec_chip_field.label | downcase_first }}</span></span></li>
           {%- endif -%}
         </ul>
       {%- endif -%}

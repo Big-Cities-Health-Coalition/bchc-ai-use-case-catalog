@@ -22,6 +22,25 @@ module CatalogTemplate
       article = vowel_sound && !consonant_sound ? "an" : "a"
       "#{article} #{text}"
     end
+
+    # Lower-case a label for use mid-sentence ("Download slide deck or one-pager
+    # (PDF)") without flattening the acronyms inside it, which `downcase` does
+    # ("… (pdf)"). Only the first letter changes, and not even that when the
+    # label opens with an acronym (two or more capitals, or a capital joined to
+    # another by `.`, `/` or `&`): "AI tools", "GIS/mapping layers", "U.S. states"
+    # and "A/B tests" stay as they are.
+    # @param label [String] e.g. "Slide deck or one-pager (PDF)"
+    # @return [String] "slide deck or one-pager (PDF)"; "" when blank
+    # @example
+    #   Download {{ field.label | downcase_first }}
+    def downcase_first(label)
+      text = label.to_s.strip
+      lead = text[/\A\p{L}+/].to_s
+      return text if lead.length > 1 && lead == lead.upcase
+      return text if text.match?(%r{\A\p{Lu}[./&]\p{Lu}})
+
+      text.sub(/\A\p{Lu}/) { |letter| letter.downcase }
+    end
   end
 end
 

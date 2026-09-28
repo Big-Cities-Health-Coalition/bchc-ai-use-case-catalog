@@ -66,6 +66,8 @@ end
 if failures.any?
   warn "File size check failed:"
   failures.each { |failure| warn "  - #{failure}" }
+  warn "Files this big do not belong in the repository: upload them to the repository's file release " \
+       "and link them instead — see \"Large files\" in docs/admin-guide.md (#large-files)."
   exit 1
 end
 

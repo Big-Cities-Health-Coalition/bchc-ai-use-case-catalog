@@ -70,7 +70,7 @@ leads with; remaining facets fill in only if fewer than four qualify.
   {%- endfor -%}
 {%- endif -%}
 {%- assign meta_count = meta_values | uniq | size -%}
-{%- assign meta_label = meta_field.label | downcase -%}
+{%- assign meta_label = meta_field.label | downcase_first -%}
 {%- assign meta_last = meta_label | slice: -1 -%}
 {%- unless meta_last == 's' -%}{%- assign meta_label = meta_label | append: 's' -%}{%- endunless -%}
 {%- assign url_field = schema.fields | where: 'type', 'url' | first -%}
@@ -122,7 +122,7 @@ leads with; remaining facets fill in only if fewer than four qualify.
       <p class="mt-10 text-sm text-brand-on-dark/80">
         <span class="font-semibold text-white tabular">{{ total }}</span> {{ plural | downcase }}
         {% if meta_field and meta_count > 0 %}<span class="hero-stat"><span class="font-semibold text-white tabular">{{ meta_count }}</span> {{ meta_label }}</span>{% endif %}
-        {% if url_field and url_count > 0 %}<span class="hero-stat"><span class="font-semibold text-white tabular">{{ url_count }}</span> with {{ url_field.label | downcase }}</span>{% endif %}
+        {% if url_field and url_count > 0 %}<span class="hero-stat"><span class="font-semibold text-white tabular">{{ url_count }}</span> with {{ url_field.label | downcase_first }}</span>{% endif %}
       </p>
       {% endif %}
     </div>
@@ -217,7 +217,12 @@ the eye reads "here is how the collection is organised" before the first entry. 
     </div>
     {% assign recent_count = cfg.home.recent_count | default: 6 %}
     <ul role="list" class="entry-grid">
-      {% for e in live limit: recent_count %}{% assign home_r_lcp = false %}{% if forloop.first and home_has_carousel == false %}{% assign home_r_lcp = true %}{% endif %}{% include entry-card.html entry=e eager=home_r_lcp fetchpriority=home_r_lcp %}{% endfor %}
+      {%- comment -%} With no carousel above it, the first card in this grid's first row
+      that has a picture is the LCP candidate — see the note in _layouts/catalog.html.
+      {%- endcomment -%}
+      {%- assign home_r_lcp_url = '' -%}
+      {%- assign home_r_probe_n = recent_count | at_most: 3 -%}{%- unless home_has_carousel -%}{%- for e in live limit: home_r_probe_n -%}{%- capture home_r_probe -%}{% include entry-thumb.html entry=e %}{%- endcapture -%}{%- assign home_r_probe = home_r_probe | strip -%}{%- if home_r_probe != '' -%}{%- assign home_r_lcp_url = e.url -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endunless %}
+      {% for e in live limit: recent_count %}{% assign home_r_lcp = false %}{% if e.url == home_r_lcp_url %}{% assign home_r_lcp = true %}{% endif %}{% include entry-card.html entry=e eager=home_r_lcp fetchpriority=home_r_lcp %}{% endfor %}
     </ul>
     {%- comment -%} No CTA when submissions are off: _plugins/modules.rb drops /submit/
     from the build, and an empty catalog makes "browse the catalog" a second dead end.

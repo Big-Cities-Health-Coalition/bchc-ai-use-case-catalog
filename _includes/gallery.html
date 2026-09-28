@@ -7,6 +7,9 @@ Media for one schema field on the entry page. The field type decides the shape:
                    arrow keys, Esc, focus returns to the trigger).
   type: file    -> a download card, showing the generated preview when one exists
                    (entry.<key>_thumbnail, else thumb.jpg in the entry folder).
+                   An http(s) value (a file too big for GitHub, or kept in a
+                   shared workspace) is a card that links out instead, with the
+                   host and access line from link-meta.html.
 
 Usage:
   {% include gallery.html field=f entry=page %}
@@ -84,8 +87,30 @@ Local assigns are prefixed `gal_` so nothing leaks into the caller's scope.
 
 {%- elsif gal_f.type == 'file' -%}
   {%- assign gal_v = gal_entry[gal_f.key] -%}
+  {%- assign gal_is_link = gal_v | http_url -%}
   {%- assign gal_found = gal_v | static_file -%}
-  {%- if gal_found -%}
+  {%- if gal_is_link -%}
+    {%- if site.data.site.demo and gal_entry.sample -%}
+<div class="flex items-center gap-4 rounded-xl border border-brand-line bg-surface-card p-3">
+  <span class="inline-flex h-20 w-16 shrink-0 items-center justify-center rounded-md border border-brand-line text-brand-muted">{% include icon.html name='info' size='lg' %}</span>
+  <span class="min-w-0 flex-1">
+    <span class="block text-sm font-semibold text-brand-ink">{{ gal_f.label | escape }}</span>
+    <span class="block text-xs text-brand-muted">Sample resource — not live</span>
+  </span>
+</div>
+    {%- else -%}
+<a class="group flex items-center gap-4 rounded-xl border border-brand-line bg-surface-card p-3 transition-colors duration-120 ease-brand hover:border-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card" href="{{ gal_v | escape }}" target="_blank" rel="noopener noreferrer">
+  <span class="inline-flex h-20 w-16 shrink-0 items-center justify-center rounded-md border border-brand-line text-brand-muted">{% include icon.html name='document' size='lg' %}</span>
+  <span class="flex min-w-0 flex-1 flex-col">
+    <span class="block text-sm font-semibold text-brand-ink">{{ gal_f.label | escape }}</span>
+    {% include link-meta.html url=gal_v class='link-host block truncate text-xs text-brand-muted' %}
+  </span>
+  <span class="sr-only">(opens in a new tab)</span>
+  {% include icon.html name='external-link' size='sm' class='shrink-0 text-brand-primary' %}
+</a>
+{%- include link-meta.html url=gal_v part='after' class='mt-1 px-3 text-xs text-brand-muted' -%}
+    {%- endif -%}
+  {%- elsif gal_found -%}
     {%- assign gal_thumb_key = gal_f.key | append: '_thumbnail' -%}
     {%- assign gal_thumb = gal_entry[gal_thumb_key] -%}
     {%- if gal_thumb == nil or gal_thumb == '' -%}
@@ -93,15 +118,15 @@ Local assigns are prefixed `gal_` so nothing leaks into the caller's scope.
       {%- assign gal_auto_found = gal_auto | static_file -%}
       {%- if gal_auto_found -%}{%- assign gal_thumb = gal_auto -%}{%- endif -%}
     {%- endif -%}
-<a class="group flex items-center gap-4 rounded-xl border border-brand-line bg-surface-card p-3 transition-colors duration-120 ease-brand hover:border-brand-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-primary/30" href="{{ gal_v | relative_url | escape }}" download>
+<a class="group flex items-center gap-4 rounded-xl border border-brand-line bg-surface-card p-3 transition-colors duration-120 ease-brand hover:border-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card" href="{{ gal_v | relative_url | escape }}" download>
   {%- if gal_thumb and gal_thumb != '' -%}
-  {%- capture gal_thumb_alt -%}First page of {{ gal_f.label | downcase }}{%- endcapture -%}
+  {%- capture gal_thumb_alt -%}First page of {{ gal_f.label | downcase_first }}{%- endcapture -%}
   {% include picture.html src=gal_thumb alt=gal_thumb_alt sizes="64px" class="h-20 w-16 shrink-0 rounded-md border border-brand-line object-cover object-top" %}
   {%- else -%}
   <span class="inline-flex h-20 w-16 shrink-0 items-center justify-center rounded-md border border-brand-line text-brand-muted">{% include icon.html name='document' size='lg' %}</span>
   {%- endif -%}
   <span class="min-w-0 flex-1">
-    <span class="block text-sm font-semibold text-brand-ink">Download {{ gal_f.label | downcase | escape }}</span>
+    <span class="block text-sm font-semibold text-brand-ink">Download {{ gal_f.label | downcase_first | escape }}</span>
     <span class="block text-xs text-brand-muted">{{ gal_v | split: "." | last | upcase | escape }}</span>
   </span>
   {% include icon.html name='download' size='sm' class='shrink-0 text-brand-primary' %}

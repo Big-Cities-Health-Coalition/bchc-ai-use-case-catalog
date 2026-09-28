@@ -28,9 +28,11 @@ import path from 'node:path';
 import process from 'node:process';
 import { performance } from 'node:perf_hooks';
 
+import * as yaml from 'js-yaml';
+
 import { seedFixtureEntries } from './seed_fixture_entries.mjs';
 import { copyTree, readYaml, removeEntries, run, writeYaml } from './lib/build-tree.mjs';
-import { entryPathFrom, listSampleEntries, readSchema } from './lib/setup-io.mjs';
+import { entryPathFrom, frontMatter, listSampleEntries, readSchema } from './lib/setup-io.mjs';
 
 export const ROOT = process.env.BUILD_VARIANTS_ROOT
   ? path.resolve(process.env.BUILD_VARIANTS_ROOT)
@@ -45,8 +47,14 @@ export const ROOT = process.env.BUILD_VARIANTS_ROOT
  * replaces them with ones generated from the variant's own schema, and `none`
  * empties the catalog so the empty state renders.
  *
+ * `demoMessage` writes `demo_message` into the copy's site.yml. `newestEntry`
+ * edits the entry that sorts first (newest `published`): `stripMedia` drops its
+ * pictures, so the catalog's first card has none, and `attachDeck` commits a
+ * one-page PDF to its thumbnail `file` field with no thumb.jpg beside it.
+ *
  * @type {{id: string, preset: string|null, modules: object|null, demo?: boolean, themeFonts?: object,
- *         githubBranch?: string,
+ *         githubBranch?: string, demoMessage?: string,
+ *         newestEntry?: {stripMedia?: boolean, attachDeck?: boolean},
  *         legacyIssueChooser?: boolean,
  *         entries: 'keep'|'fixtures'|'none', build: boolean,
  *         expectFrontMatter: 'pass'|'fail', why: string}[]}
@@ -96,10 +104,15 @@ export const VARIANTS = [
     id: 'all-modules',
     preset: null,
     modules: { events: true, cohorts: true, resources: true },
+    demoMessage:
+      'Entries here are provisional until the [review panel](https://example.org/review-panel) signs them off.',
+    newestEntry: { stripMedia: true, attachDeck: true },
     entries: 'keep',
     build: true,
     expectFrontMatter: 'pass',
-    why: 'events, cohorts and resources are off in the shipped config, so their layouts never render in CI',
+    why:
+      'events, cohorts and resources are off in the shipped config, so their layouts never render in CI; ' +
+      'it also carries a custom demo banner, a newest entry with no picture and an attached deck',
   },
   ...['ai-use-cases', 'cohort-portal', 'resource-library', 'blank'].map((preset) => ({
     id: preset,
@@ -152,12 +165,66 @@ function timedRun(command, args, options) {
 }
 
 /** Turn on/off modules in a scratch `_data/site.yml`. Comments are not preserved. */
-function patchSite(file, { modules, demo, githubBranch }) {
+function patchSite(file, { modules, demo, githubBranch, demoMessage }) {
   const site = readYaml(file);
   if (modules) site.modules = { ...(site.modules ?? {}), ...modules };
   if (typeof demo === 'boolean') site.demo = demo;
   if (githubBranch) site.github = { ...(site.github ?? {}), branch: githubBranch };
+  if (demoMessage) site.demo_message = demoMessage;
   writeYaml(file, site);
+}
+
+/** The smallest file that starts with the `%PDF` signature and parses as one page. */
+const ONE_PAGE_PDF =
+  '%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n' +
+  '2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj\n' +
+  '3 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 612 792]>>endobj\n' +
+  'trailer<</Root 1 0 R>>\n%%EOF\n';
+
+/**
+ * Edit the scratch copy's newest entry — see {@link VARIANTS} (`newestEntry`).
+ * Front matter is re-serialized, so its comments and key order are not kept.
+ * @param {string} dir scratch copy root.
+ * @param {{stripMedia?: boolean, attachDeck?: boolean}} options
+ */
+function patchNewestEntry(dir, { stripMedia, attachDeck }) {
+  const schema = readSchema(dir);
+  const entryPath = entryPathFrom(schema);
+  const fields = Array.isArray(schema?.fields) ? schema.fields : [];
+  const day = (value) => (value instanceof Date ? value.toISOString().slice(0, 10) : String(value ?? ''));
+  const newest = fs
+    .readdirSync(path.join(dir, entryPath), { withFileTypes: true })
+    .filter((item) => item.isDirectory() && fs.existsSync(path.join(dir, entryPath, item.name, 'index.md')))
+    .map((item) => {
+      const file = path.join(dir, entryPath, item.name, 'index.md');
+      return { slug: item.name, file, published: day(frontMatter(fs.readFileSync(file, 'utf8'))?.published) };
+    })
+    .sort((a, b) => b.published.localeCompare(a.published))[0];
+  if (!newest) throw new Error(`newestEntry: ${entryPath}/ has no entries to patch`);
+
+  const text = fs.readFileSync(newest.file, 'utf8');
+  const end = text.indexOf('\n---', 4);
+  // CORE_SCHEMA leaves `published: 2026-08-05` a string both ways, so it is
+  // written back exactly as it was read rather than as a timestamp.
+  const front = yaml.load(text.slice(4, end), { schema: yaml.CORE_SCHEMA });
+  const body = text.slice(end + 4);
+  if (stripMedia) {
+    delete front.thumbnail;
+    for (const field of fields)
+      if (field.type === 'images' || field.type === 'image') delete front[field.key];
+    fs.rmSync(path.join(path.dirname(newest.file), 'thumb.jpg'), { force: true });
+  }
+  if (attachDeck) {
+    const deck = fields.find((field) => field.type === 'file' && field.thumbnail && field.filename);
+    if (!deck)
+      throw new Error('newestEntry.attachDeck: the schema has no `file` field with `thumbnail: true`');
+    fs.writeFileSync(path.join(path.dirname(newest.file), deck.filename), ONE_PAGE_PDF);
+    front[deck.key] = `/${entryPath}/${newest.slug}/${deck.filename}`;
+  }
+  fs.writeFileSync(
+    newest.file,
+    `---\n${yaml.dump(front, { schema: yaml.CORE_SCHEMA, lineWidth: -1 })}---${body}`
+  );
 }
 
 /** Replace only the font-family values in a scratch `_data/theme.yml`. */
@@ -207,9 +274,10 @@ export function buildVariant(variant, { scratchRoot, log = () => {} }) {
     if (!ok) return { variant, dir, siteDir: null, steps, ok: false };
   }
 
-  if (variant.modules || typeof variant.demo === 'boolean' || variant.githubBranch) {
+  if (variant.modules || typeof variant.demo === 'boolean' || variant.githubBranch || variant.demoMessage) {
     patchSite(path.join(dir, '_data', 'site.yml'), variant);
   }
+  if (variant.newestEntry) patchNewestEntry(dir, variant.newestEntry);
   if (variant.themeFonts) {
     patchThemeFonts(path.join(dir, '_data', 'theme.yml'), variant.themeFonts);
   }

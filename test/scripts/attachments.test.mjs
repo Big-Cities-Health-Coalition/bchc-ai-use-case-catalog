@@ -5,8 +5,11 @@ import test from 'node:test';
 import {
   MAX_ATTACHMENT_BYTES,
   acceptedExtensions,
+  attachmentValue,
   downloadAttachment,
+  isGitHubAttachmentUrl,
   matchesExtension,
+  shouldDownload,
 } from '../../scripts/lib/attachments.mjs';
 
 const PDF = new Uint8Array([0x25, 0x50, 0x44, 0x46, 0x2d, 0x31, 0x2e, 0x37]);
@@ -188,4 +191,64 @@ test('the GitHub token is sent to github.com and dropped on a redirect off it', 
     },
   });
   assert.deepEqual(authorizations, ['Bearer secret', null]);
+});
+
+test('isGitHubAttachmentUrl knows the URLs GitHub’s upload control writes', () => {
+  for (const url of [
+    'https://github.com/user-attachments/files/12345678/deck.pdf',
+    'https://github.com/user-attachments/assets/0b1c2d3e-aaaa-bbbb-cccc-1234567890ab',
+    'https://github.com/example-org/catalog/files/12345678/deck.pdf',
+    'https://user-images.githubusercontent.com/1/2-3.png',
+    'https://private-user-images.githubusercontent.com/1/2-3.png?jwt=x',
+  ]) {
+    assert.equal(isGitHubAttachmentUrl(url), true, url);
+  }
+  for (const url of [
+    'https://files.example.org/projects/1/deck.pdf',
+    'https://github.com/example-org/catalog/releases/download/files/deck.pdf',
+    'https://github.com/example-org/catalog/blob/main/deck.pdf',
+    'https://github.com.evil.test/user-attachments/files/1/deck.pdf',
+    'http://github.com/user-attachments/files/1/deck.pdf',
+    'not a url',
+    '',
+  ]) {
+    assert.equal(isGitHubAttachmentUrl(url), false, url);
+  }
+});
+
+test('a file answer on some other host is kept as a link, not downloaded', () => {
+  assert.equal(shouldDownload('file', 'https://github.com/user-attachments/files/1/deck.pdf'), true);
+  assert.equal(shouldDownload('file', 'https://files.example.org/projects/1/deck.pdf'), false);
+  // An image field has no link form: the page renders a local picture or none.
+  assert.equal(shouldDownload('image', 'https://example.org/shot.png'), true);
+});
+
+test('attachmentValue keeps the link when a file could not be fetched', () => {
+  const publicPath = '/catalog/brief/deck.pdf';
+  const url = 'https://github.com/user-attachments/files/1/deck.pdf';
+  assert.equal(attachmentValue('file', { saved: true, publicPath, url }), publicPath);
+  assert.equal(
+    attachmentValue('file', { saved: false, publicPath, url }),
+    url,
+    'not a path to a file that was never written'
+  );
+  // A link the page would not render is not kept; the path is, with a warning upstream.
+  assert.equal(
+    attachmentValue('file', {
+      saved: false,
+      publicPath,
+      url: 'HTTPS://github.com/user-attachments/files/1/deck.pdf',
+    }),
+    url
+  );
+  assert.equal(
+    attachmentValue('file', {
+      saved: false,
+      publicPath,
+      url: "https://github.com/user-attachments/files/1/it's.pdf",
+    }),
+    publicPath
+  );
+  assert.equal(attachmentValue('image', { saved: true, publicPath, url }), publicPath);
+  assert.equal(attachmentValue('image', { saved: false, publicPath, url }), '');
 });

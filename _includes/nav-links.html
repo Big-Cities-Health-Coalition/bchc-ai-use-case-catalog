@@ -35,6 +35,6 @@ Local assigns are prefixed `nl_`.
   {%- elsif nl_variant == 'mobile' -%}
     <a href="{{ nl_href | relative_url }}" class="flex min-h-[44px] items-center rounded-lg px-3 py-2.5 text-sm font-medium transition-colors duration-120 ease-brand {% if nl_active %}bg-brand-primary/10 text-brand-primary-dark{% else %}text-brand-ink hover:bg-brand-primary/5{% endif %}"{% if nl_active %} aria-current="page"{% endif %}>{{ nl_item.label }}</a>
   {%- else -%}
-    <a href="{{ nl_href | relative_url }}" class="rounded-full px-3 py-2 text-sm font-medium transition-colors duration-120 ease-brand focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-primary/30 {% if nl_active %}bg-brand-primary/10 text-brand-primary-dark{% else %}text-brand-ink hover:bg-brand-primary/5 hover:text-brand-primary-dark{% endif %}"{% if nl_active %} aria-current="page"{% endif %}>{{ nl_item.label }}</a>
+    <a href="{{ nl_href | relative_url }}" class="rounded-full px-3 py-2 text-sm font-medium transition-colors duration-120 ease-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card {% if nl_active %}bg-brand-primary/10 text-brand-primary-dark{% else %}text-brand-ink hover:bg-brand-primary/5 hover:text-brand-primary-dark{% endif %}"{% if nl_active %} aria-current="page"{% endif %}>{{ nl_item.label }}</a>
   {%- endif -%}
 {%- endfor -%}

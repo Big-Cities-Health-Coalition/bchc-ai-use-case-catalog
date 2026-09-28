@@ -1,0 +1,56 @@
+{%- comment -%}
+The host line under a link that leaves the site, plus who can open it.
+
+Usage:
+  {% include link-meta.html url=u class='link-host …' %}                   host line, inside the <a>
+  {% include link-meta.html url=u access=item.access class='…' %}          an item's own `access:` wins over its host rule
+  {% include link-meta.html url=u class='…' matched_only=true %}           nothing at all unless a host rule or level applies
+  {% include link-meta.html url=u access=item.access part='after' class='…' %}
+                                                                           the level's note and "Request access" link,
+                                                                           OUTSIDE the <a> (an <a> inside an <a> is invalid)
+
+What applies comes from the optional `link_access` block of _data/site.yml,
+through the `link_access` filter (_plugins/link_access.rb). With no block, or
+no rule and no level for this URL, the host line is exactly the
+`<span class="…">host</span>` every caller rendered before this include
+existed, so a site that never configures access renders byte for byte as it
+did. When something applies:
+
+  - the rule's `name` replaces the bare host ("Shared drive", not "files.example.org");
+  - a level adds a chip (its icon and label) and, when it has a `note`, the
+    note as screen-reader text, so "sign-in required" is part of the link's name;
+  - `download: true` adds a "Download" chip: the link is a file, not a page.
+
+`class` is the host span's class, which differs per caller (a truncating row,
+a button, the rail). Every value this prints is escaped. Local assigns are
+prefixed `lm_` so nothing leaks into the caller's scope.
+{%- endcomment -%}
+{%- assign lm_meta = include.url | link_access: include.access -%}
+{%- if include.part == 'after' -%}
+  {%- if lm_meta and lm_meta.access != '' -%}
+    {%- if lm_meta.note != '' or lm_meta.request_url != '' -%}
+    <p class="{{ include.class }}">
+      {%- if lm_meta.note != '' -%}{{ lm_meta.note | escape }}{%- endif -%}
+      {%- if lm_meta.request_url != '' -%}
+        {%- if lm_meta.note != '' -%}{{ ' ' }}{%- endif -%}{%- comment -%} an output tag: Liquid renders a whitespace-only block as nothing {%- endcomment -%}
+        {%- if lm_meta.request_url contains '://' -%}
+        <a class="font-medium text-brand-primary hover:underline" href="{{ lm_meta.request_url | escape }}" target="_blank" rel="noopener noreferrer">Request access<span class="sr-only"> to {{ lm_meta.label | escape }} links (opens in a new tab)</span></a>
+        {%- else -%}
+        <a class="font-medium text-brand-primary hover:underline" href="{{ lm_meta.request_url | escape }}">Request access<span class="sr-only"> to {{ lm_meta.label | escape }} links</span></a>
+        {%- endif -%}
+      {%- endif -%}
+    </p>
+    {%- endif -%}
+  {%- endif -%}
+{%- elsif lm_meta -%}
+  {%- if lm_meta.name != '' -%}{%- assign lm_name = lm_meta.name -%}{%- else -%}{%- assign lm_name = include.url | link_host -%}{%- endif -%}
+  <span class="link-meta"><span class="{{ include.class }}">{{ lm_name | escape }}</span>
+    {%- if lm_meta.access != '' -%}
+    <span class="link-access">{%- if lm_meta.icon != '' -%}{% include icon.html name=lm_meta.icon size='xs' %}{%- endif -%}{{ lm_meta.label | escape }}</span>
+    {%- if lm_meta.note != '' -%}<span class="sr-only"> ({{ lm_meta.note | escape }})</span>{%- endif -%}
+    {%- endif -%}
+    {%- if lm_meta.download -%}<span class="link-access">{% include icon.html name='download' size='xs' %}Download</span>{%- endif -%}
+  </span>
+{%- elsif include.matched_only != true -%}
+  <span class="{{ include.class }}">{{ include.url | link_host | escape }}</span>
+{%- endif -%}

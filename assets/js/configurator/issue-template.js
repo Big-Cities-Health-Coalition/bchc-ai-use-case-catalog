@@ -92,8 +92,35 @@ function acceptFor(field) {
   return match ? match[0].toLowerCase() : '.pdf';
 }
 
-/** The one control this field becomes in the issue form, or null to skip it. */
-function controlFor(field) {
+/**
+ * The sentence a `file` question adds for a file the upload control cannot
+ * take — over GitHub's 25 MB cap, or kept in a shared workspace — naming the
+ * first `links` question the form asks. No such question, no sentence: there
+ * would be nowhere to paste the link. submit/index.md says the same thing.
+ *
+ * @param {object} schema
+ * @returns {string}
+ */
+function fileLinkHint(schema) {
+  const fields = Array.isArray(schema?.fields) ? schema.fields : [];
+  const links = fields.find(
+    (field) =>
+      isPlainObject(field) &&
+      field.type === 'links' &&
+      field.form !== false &&
+      String(field.label ?? '').trim()
+  );
+  return links
+    ? `Over 25 MB, or kept in a shared workspace? Paste a link in “${String(links.label).trim()}” instead.`
+    : '';
+}
+
+/**
+ * The one control this field becomes in the issue form, or null to skip it.
+ * @param {object} field
+ * @param {{fileHint?: string}} [context] schema-wide copy a control may append
+ */
+function controlFor(field, context = {}) {
   const key = String(field.key ?? '').trim();
   const label = String(field.label ?? '').trim();
   const type = String(field.type ?? '').trim();
@@ -103,7 +130,12 @@ function controlFor(field) {
   const placeholder = String(field.placeholder ?? '');
   const attributes = { label };
 
-  const description = joinSentences([field.prompt, field.description, TYPE_GUIDANCE[type]]);
+  const description = joinSentences([
+    field.prompt,
+    field.description,
+    TYPE_GUIDANCE[type],
+    type === 'file' ? context.fileHint : '',
+  ]);
   if (description) attributes.description = description;
 
   // GitHub issue forms accept attachments through an `upload` element, so a
@@ -188,6 +220,7 @@ export function issueTemplateFromSchema(schema, site = {}) {
     });
   }
 
+  const context = { fileHint: fileLinkHint(schema) };
   const multipleSections = sections.length > 1;
   for (const section of sections) {
     if (multipleSections) {
@@ -201,7 +234,7 @@ export function issueTemplateFromSchema(schema, site = {}) {
       }
     }
     for (const field of section.fields) {
-      const control = controlFor(field);
+      const control = controlFor(field, context);
       if (control) body.push(control);
     }
   }

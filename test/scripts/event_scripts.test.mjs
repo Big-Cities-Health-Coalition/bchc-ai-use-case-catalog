@@ -284,6 +284,31 @@ test('update_event_attachments: an attachment title with control characters roun
   assert.deepEqual(data.attachments, [{ title, url: 'https://example.org/a.pdf' }]);
 });
 
+test('update_event_attachments: a link that is not http(s) is refused with the line that caused it', () => {
+  const root = fixtureTree();
+  const page = path.join(root, 'cohorts', '2026', 'events', 'kickoff', 'index.md');
+  const before = fs.readFileSync(page, 'utf8');
+  for (const bad of [
+    'javascript:alert(1)',
+    '/assets/files/agenda.pdf',
+    'https://example.org/a" onmouseover="x',
+  ]) {
+    const body =
+      section('Cohort Year', '2026') +
+      section('Event ID', 'kickoff') +
+      section('Attachments', `Agenda | https://example.org/a.pdf\nSlides | ${bad}`);
+
+    const result = run('update_event_attachments_from_issue.mjs', { body, root });
+
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(result.outputs.get('changed'), 'false', bad);
+    const reason = result.outputs.get('reason') ?? '';
+    assert.match(reason, /http:\/\/ or https:\/\//, bad);
+    assert.ok(reason.includes('Slides'), `the reason names the offending line: ${reason}`);
+    assert.equal(fs.readFileSync(page, 'utf8'), before, 'nothing is half-applied');
+  }
+});
+
 // --- extract_event_fields.mjs ----------------------------------------------
 
 test('extract_event_fields: a multi-line answer cannot forge a second output', () => {

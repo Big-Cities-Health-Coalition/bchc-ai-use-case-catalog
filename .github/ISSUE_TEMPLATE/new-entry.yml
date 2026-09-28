@@ -260,7 +260,7 @@ body:
     id: deck_pdf
     attributes:
       label: Slide deck or one-pager (PDF)
-      description: Slide deck or one-pager. Attach the slide deck here. A thumbnail is generated from its first page. Attach the file here and the automation commits it with the entry.
+      description: "Slide deck or one-pager. Attach the slide deck here. A thumbnail is generated from its first page. Attach the file here and the automation commits it with the entry. Over 25 MB, or kept in a shared workspace? Paste a link in “Other resources” instead."
     validations:
       required: false
       accept: .pdf

@@ -67,6 +67,7 @@ Used to build the `/submit/` form's GitHub issue URL, the "Suggest an edit on Gi
 ```yaml
 demo: true
 demo_starter_url: ""
+demo_message: ""
 ```
 
 While `demo` is `true`, every page carries a **Demo content** banner
@@ -78,6 +79,19 @@ fictional health departments with nothing to say so.
 [launch.md](launch.md) — configured, samples removed, one entry — and the banner adds "See what a
 fresh copy looks like on day one" with that link. It ships blank, which drops the sentence. It is
 only read while `demo` is `true`, so there is nothing to clean up once the banner is off.
+
+`demo_message` is optional too. Set it when a deployment keeps the banner on while its own
+content is still provisional, and the template's "Configure it or follow the launch guide"
+sentence would send readers to a wizard they have no use for. It replaces that whole sentence,
+the setup, launch-guide and starter-site links with it, and is written as inline markdown, so a
+plain string works and so does a link:
+
+```yaml
+demo_message: "Entries are drafts until the [review panel](https://example.org/review-panel) signs them off."
+```
+
+The **Demo content** label stays. Blank or absent, the banner shows the default sentence. Like
+`demo_starter_url`, it is only read while `demo` is `true`.
 
 It is turned off by whatever removes the content: `npm run eject:samples`, the **Remove the demo
 content** checkbox on the Apply setup issue, or `npm run setup`'s last question. Delete the key
@@ -199,6 +213,79 @@ backlog does not arrive as one wall of notifications. Existing reminders are alw
 refreshed and never counted against it; deferred entries are named in the run
 summary and picked up next month, oldest first. See
 [admin-guide.md](admin-guide.md#the-monthly-verification-sweep) for the whole loop.
+
+### Link access
+
+Optional. Some links on a catalog point at places not every reader can open, such as
+a members-only project workspace (Basecamp, a shared drive, an intranet). Other links
+are big files kept outside the repository. `link_access` labels those links from
+their host, so a reader knows before clicking that a link asks them to sign in. The
+site never contacts the host: a rule matches the URL's text, nothing more.
+
+```yaml
+link_access:
+  levels:                          # who can open a link; a name an item's `access:` can repeat
+    members:
+      label: "Members only"        # required: the chip beside the link
+      icon: lock                   # optional: any name on the Names: line of _includes/icon.html
+      note: "Sign-in required."    # optional: screen-reader text on the link, and a line under the row
+      request_url: "https://example.org/join"   # optional: a "Request access" link under the row (http(s) or mailto:)
+  hosts:                           # first match wins, so put the narrow rules first
+    - { match: "3.basecamp.com/p/", name: "Basecamp" }               # public share links: named, no level
+    - { match: "3.basecamp.com", name: "Basecamp", access: members }  # everything else there needs a sign-in
+    - { match: "github.com/your-org/your-catalog/releases/download/", name: "File library", download: true }
+```
+
+- **`match`** is a host plus an optional path prefix, written without `https://`.
+  The host covers itself and its subdomains (`example.org` covers `files.example.org`
+  but not `notexample.org`). When there is a path, the URL's path must start with it.
+  Only `http(s)` URLs are matched. The URL is read the way a browser reads it: the
+  host ignores case, a trailing dot and any `user@` part, and dot segments are
+  resolved before the path test, so `/p/../private` is tested as `/private` and does
+  not slip under a `/p/` carve-out.
+- **`name`** replaces the bare host on the link's host line ("Basecamp", not
+  "3.basecamp.com"). If it is left out, the host is shown.
+- **`access`** names a level. A rule without one still names the host but adds no
+  chip. Use that for a public carve-out, such as share links on the same host, and
+  put it before the members-only rule.
+- **`download: true`** adds a *Download* chip: the link is a file, not a page. Use
+  it for the release that holds your large files (see
+  [admin-guide.md](admin-guide.md#large-files)).
+- An item in a `links` field (or in `_data/resources.yml`) can set its own
+  `access: <level>`, which overrides its host rule. Use it for a link whose host
+  says nothing about who can open it. See
+  [content-model.md](content-model.md#links).
+
+A labelled link shows three things: the rule's name in place of the host, the
+level's chip, and the level's note as screen-reader text inside the link, so
+"sign-in required" is part of what a screen reader announces.
+
+Where the link is a row (a `links` item, the reuse card, a `file` field that holds a
+URL, an event attachment, a cohort material, a resources item), the note and the
+*Request access* link go on a line under the row, outside the link. A `url` field
+renders inline or as a button, so it carries the chip and the screen-reader note only.
+
+Event attachments, cohort materials and resources rows show no host line today, so
+they only gain one when a rule (or, for resources, an item's `access:`) applies.
+
+`npm run validate` checks the block's shape:
+- level names are lowercase;
+- every level has a label;
+- every icon exists;
+- `request_url` is http(s), mailto: or blank;
+- every rule has a `match` that starts with a host name and has no scheme;
+- a rule's `access` names a level;
+- `download` is true or false;
+- every item `access:` names a configured level. Without a `link_access` block, item
+  `access:` keys are not checked at all.
+
+It also warns about an entry whose every link resolves to a level: nobody outside
+the organization could open any of them. Setting `entry.require_public_link: true`
+in `_data/schema.yml` turns that warning into a failure (see
+[content-model.md](content-model.md#review-status-and-deprecation)).
+
+Leave the key out and nothing changes: every page renders exactly as it did before
+the feature existed.
 
 ### Footer
 

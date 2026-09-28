@@ -27,10 +27,15 @@ const ISSUE_BODY = fs.readFileSync(path.join(ROOT, 'test', 'fixtures', 'issue-ba
  * @param {string} cwd checkout to run in
  * @returns {string} the dry run's stdout
  */
-function dryRunOutput(cwd) {
+function dryRunOutput(cwd, body = ISSUE_BODY) {
   const result = spawnSync(process.execPath, [SCRIPT, '--dry-run'], {
     cwd,
-    env: { ...process.env, ISSUE_BODY, ISSUE_TITLE: '[Use case] Service request routing', ISSUE_NUMBER: '7' },
+    env: {
+      ...process.env,
+      ISSUE_BODY: body,
+      ISSUE_TITLE: '[Use case] Service request routing',
+      ISSUE_NUMBER: '7',
+    },
     encoding: 'utf8',
   });
   assert.equal(result.status, 0, result.stderr);
@@ -41,8 +46,8 @@ function dryRunOutput(cwd) {
  * @param {string} cwd checkout to run in
  * @returns {object} the parsed front matter of the dry run
  */
-function dryRun(cwd) {
-  const stdout = dryRunOutput(cwd);
+function dryRun(cwd, body = ISSUE_BODY) {
+  const stdout = dryRunOutput(cwd, body);
   const match = stdout.match(/^---\n([\s\S]*?)\n---\n/m);
   assert.ok(match, `no front matter in:\n${stdout}`);
   return yaml.load(match[1]);
@@ -116,4 +121,46 @@ test('a schema without escalate_on or a governance file gets a quiet checklist w
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
   }
+});
+
+test('a file answer that links elsewhere is stored as that link, and a GitHub upload as the entry path', () => {
+  const schema = yaml.load(fs.readFileSync(path.join(ROOT, '_data', 'schema.yml'), 'utf8'));
+  const field = schema.fields.find((f) => f.type === 'file');
+  const upload = '[deck.pdf](https://github.com/user-attachments/files/12345678/deck.pdf)';
+  assert.ok(ISSUE_BODY.includes(upload), 'the fixture attaches the deck through the upload control');
+
+  // The upload control's own answer still names the file the pull request commits.
+  assert.equal(
+    dryRun(ROOT)[field.key],
+    `/${schema.entry.path}/service-request-routing-assistant/${field.filename}`
+  );
+
+  // A file too big for GitHub, pasted as a link to where it actually lives.
+  for (const answer of [
+    'https://files.example.org/projects/1/deck.pdf',
+    '[deck](https://files.example.org/projects/1/deck.pdf)',
+  ]) {
+    const fm = dryRun(ROOT, ISSUE_BODY.replace(upload, answer));
+    assert.equal(fm[field.key], 'https://files.example.org/projects/1/deck.pdf', answer);
+  }
+});
+
+test('a file link the page could not render is stored with a lower-case scheme, or not at all', () => {
+  const schema = yaml.load(fs.readFileSync(path.join(ROOT, '_data', 'schema.yml'), 'utf8'));
+  const field = schema.fields.find((f) => f.type === 'file');
+  const upload = '[deck.pdf](https://github.com/user-attachments/files/12345678/deck.pdf)';
+  const publicPath = `/${schema.entry.path}/service-request-routing-assistant/${field.filename}`;
+
+  // The page's `http_url` filter and the validator want a lower-case scheme.
+  const upper = dryRun(ROOT, ISSUE_BODY.replace(upload, 'HTTPS://drive.example.com/deck.pdf'));
+  assert.equal(upper[field.key], 'https://drive.example.com/deck.pdf');
+
+  // An apostrophe would break the page's href, so the link is not stored at all:
+  // the field keeps naming the path, and the pull request says why.
+  const quoted = "https://drive.example.com/it's-the-deck.pdf";
+  const body = ISSUE_BODY.replace(upload, quoted);
+  assert.equal(dryRun(ROOT, body)[field.key], publicPath);
+  const warnings = dryRunOutput(ROOT, body).split('# warnings')[1] ?? '';
+  assert.match(warnings, new RegExp(`\\\`${field.key}\\\`.*could not be used`));
+  assert.ok(warnings.includes("it's-the-deck.pdf"), warnings);
 });

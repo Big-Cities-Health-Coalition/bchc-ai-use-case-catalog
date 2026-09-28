@@ -958,6 +958,9 @@
   /* -------------------------------------------------------------- events */
 
   let timer = null;
+  // The runSeq of the last query Escape dismissed. A query at or below it may
+  // still publish to the grid when its answer lands, but never reopens the list.
+  let dismissedSeq = 0;
   /**
    * Query for the current input value and publish the matches to filters.js.
    * @param {boolean} [showList=true] also open the suggestion listbox — false
@@ -998,10 +1001,14 @@
       // retry path in load() adds a microtask hop, so a query chained on the
       // failed attempt can resolve after one chained on the successful retry.
       if (seq !== runSeq) return;
+      // Focus may have left the box while the fetch/debounce was pending
+      // (type, then Tab straight away), or Escape may have dismissed the list;
+      // don't reopen the popup under either.
+      const listWanted = showList && seq > dismissedSeq && document.activeElement === input;
       if (!ok) {
         announce(null, []);
         // The filter suggestions still stand — they never needed the index.
-        if (showList && document.activeElement === input) renderList([], vocab);
+        if (listWanted) renderList([], vocab);
         else close();
         return;
       }
@@ -1010,9 +1017,7 @@
         results.filter((h) => h.doc.kind === 'entry'),
         q
       );
-      // Focus may have left the box while the fetch/debounce was pending
-      // (type, then Tab straight away); don't reopen the popup under it.
-      if (showList && document.activeElement === input) renderList(results, vocab);
+      if (listWanted) renderList(results, vocab);
     });
   }
 
@@ -1020,7 +1025,10 @@
     lifted = null;
     queueCardAnnotations([]);
     clearTimeout(timer);
-    timer = setTimeout(run, 50);
+    timer = setTimeout(() => {
+      timer = null;
+      run();
+    }, 50);
   });
   input.addEventListener('focus', () => {
     if (!gated) load();
@@ -1080,6 +1088,18 @@
       if (open) {
         e.preventDefault();
         close();
+        // A search whose debounce already fired is still waiting on the index;
+        // its answer must not reopen what was just dismissed.
+        dismissedSeq = runSeq;
+        // A keystroke still inside the debounce would reopen the popup 50ms
+        // after it was dismissed. Answer that query now, without the list, so
+        // the grid still matches the box; run() bumps runSeq, which also drops
+        // any older answer still in flight.
+        if (timer !== null) {
+          clearTimeout(timer);
+          timer = null;
+          run(false);
+        }
       }
       // Clearing has to go through the same path a keystroke takes, otherwise
       // filters.js never hears about it and ?q= survives in the URL (and a

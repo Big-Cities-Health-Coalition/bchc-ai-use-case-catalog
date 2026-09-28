@@ -8,6 +8,117 @@ major version, and each entry says so when it happens.
 
 ## [Unreleased]
 
+## [1.10.0-rc.2] — 2026-09-28
+
+Second candidate. rc.1's live BCHC update stopped before opening a pull request
+because one build test assumed the deployment's content, not the template's.
+
+### Fixed
+
+- The build test for the catalog's eager-loaded card image assumed a picture in
+  the first row. The updater runs the suite on a deployment's own entries, and
+  a catalog whose three newest entries have no picture failed the update even
+  though the page did exactly what the layout intends (nothing above the fold to
+  eager-load). The test now expects no eager image in that case, and checks that
+  the eager image is the first row's first picture otherwise.
+
+## [1.10.0-rc.1] — 2026-09-28
+
+**Upgrading a deployment.** Everything new is opt-in and renders identically
+when unset: no `link_access` block in `_data/site.yml` means no labels and no
+new validation, and a blank `demo_message` keeps the default demo banner. One
+page needs a hand edit to show the labels: `resources/**` is deployment-owned
+(`merge=ours`), so the update leaves your `resources/index.md` alone, and its
+old per-item `<li>` markup never shows them. Replace that markup with
+`{% include resource-item.html item=item %}` inside the `group.items` loop, as
+the template's own `resources/index.md` now does; with no `link_access` block
+the include renders the same row as before. The `ai-use-cases` heading rename
+and the commented `require_public_link`, `demo_message` and `link_access`
+examples live in `_data/schema.yml` and `_data/site.yml`, which are yours: copy
+them by hand if you want them.
+
+### Added
+
+- Link access labels. An optional `link_access` block in `_data/site.yml`
+  names access levels (label, icon, screen-reader note, request-access link)
+  and host rules (a host plus an optional path prefix, first match wins). A
+  link on a matching host shows the rule's name, the level's chip, and the
+  note as screen-reader text. A links item can override its host rule with
+  `access: <level>`. The labels appear on entry links, `url` fields, the reuse
+  card, event attachments, cohort materials and resources. `npm run validate`
+  checks the block, fails an `access:` that names no configured level (a site
+  without the block is not checked), and warns when
+  every link on an entry needs a sign-in; `entry.require_public_link: true`
+  makes that a failure. A site without the block renders byte for byte as
+  before.
+- A `file` field may hold an `http(s)` URL: the entry page renders an outbound
+  row instead of a download. The scaffolder stores a pasted non-GitHub link
+  without downloading it, and keeps the URL when a download is refused. The
+  upload control tells submitters to paste big or workspace-hosted files as a
+  link.
+- `docs/admin-guide.md` "Large files": keep big public files in one long-lived
+  GitHub Release and link them, and why Git LFS does not work on Pages. The
+  50 MB file-size failure now points there.
+- An optional `demo_message` in `_data/site.yml` replaces the demo banner's
+  sentence (and its setup and launch-guide links) with your own inline
+  markdown, for a deployment that keeps `demo: true` while its content is
+  provisional. Unset, the banner renders exactly as before.
+
+### Changed
+
+- The `ai-use-cases` body placeholder's cost heading is now "Time and
+  resources", so an entry written from it no longer has two "What it took"
+  headings (its own and the field group's). The generated issue form and setup
+  defaults are regenerated; existing entries are untouched.
+
+### Fixed
+
+- The event-attachments form rejects a URL that is not `http(s)` (such as a
+  `javascript:` link or a relative path) instead of writing it to the schedule.
+- Search: pressing Escape while a query was still debouncing closed the list,
+  then the pending search reopened it. Escape now cancels the pending run and
+  answers the query with the list kept closed.
+- A long list value on the entry page wraps inside its chip instead of pushing
+  a 320px page sideways.
+- Focus rings clear 3:1 everywhere. The header brand, the mobile menu button,
+  the desktop nav and the gallery file cards drew a translucent `primary/30`
+  ring (about 1.7:1); they now use the site-wide solid ring. On the footer and
+  the hero's links the ring turns `on_dark` over a `primary_dark` gap: a
+  `primary` ring there was 1.6:1 in the default theme and 2.7:1 in a red on
+  near-black one.
+- The site name wraps to two lines in the header on a phone instead of being
+  cut off with an ellipsis.
+- The catalog, facet pages and the home page's recent grid eager-load the first
+  card in the first row that has a picture, not just the first card, so the
+  largest image is no longer lazy-loaded when the newest entry has none.
+- Each row of the entry fact strip now spans the strip, so its dividers run
+  edge to edge instead of stopping where each fact's text did.
+- On a short entry the rail's extra height no longer opens empty bands below
+  the header and above the body (about 110px each, where 32px was intended).
+- File labels keep a leading acronym: "Download slide deck or one-pager (PDF)",
+  not "(pdf)". A new `downcase_first` filter lower-cases only the first letter,
+  and leaves a label that starts with an acronym alone.
+- The thumbnail workflow re-renders `thumb.jpg` when its PDF is replaced.
+  Freshness is now read from git history (the PDF's last commit must be the
+  thumbnail's or an ancestor of it), because a checkout's modification times
+  kept the old thumbnail. Fork pull requests are still skipped.
+
+### Docs
+
+- The BCHC reference deployment's transfer and rename are recorded: it now
+  lives at `Big-Cities-Health-Coalition/use-case-catalog`, and present-tense
+  references (`docs/ecosystem.md`, the README, the maintainer and release
+  docs) point there. Historical records keep their old links, which GitHub
+  redirects.
+
+### Security
+
+- `sharp` 0.35.3 → 0.35.4 clears advisory GHSA-rgj7-g3m4-5g8c, which failed
+  `npm run security:audit`. It arrived with the rest of the npm dev-dependency
+  group (eslint, jsdom, postcss-cli 12, prettier and others), alongside the
+  GitHub Actions group (CodeQL, `ruby/setup-ruby`, `actions/deploy-pages`) and
+  `sass-embedded` 1.105.0. No template behaviour change.
+
 ## [1.9.0] — 2026-08-29
 
 Stable release. Records-only promotion of the accepted `v1.9.0-rc.7`
@@ -1188,7 +1299,9 @@ fixed in this release, and the remaining P3s are listed in `docs/roadmap.md`.
   in-browser and CLI configurators, GitHub-issue submission flow, events /
   cohorts / resources modules, Lunr search, thumbnails workflow.
 
-[Unreleased]: https://github.com/crypticpy/phct/compare/v1.9.0...HEAD
+[Unreleased]: https://github.com/crypticpy/phct/compare/v1.10.0-rc.2...HEAD
+[1.10.0-rc.2]: https://github.com/crypticpy/phct/compare/v1.10.0-rc.1...v1.10.0-rc.2
+[1.10.0-rc.1]: https://github.com/crypticpy/phct/compare/v1.9.0...v1.10.0-rc.1
 [1.9.0]: https://github.com/crypticpy/phct/compare/v1.9.0-rc.7...v1.9.0
 [1.9.0-rc.7]: https://github.com/crypticpy/phct/compare/v1.9.0-rc.6...v1.9.0-rc.7
 [1.9.0-rc.6]: https://github.com/crypticpy/phct/compare/v1.9.0-rc.5...v1.9.0-rc.6

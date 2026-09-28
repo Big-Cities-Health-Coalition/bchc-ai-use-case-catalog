@@ -125,7 +125,9 @@ I found your entry "{{ rc_entry.title }}" in the {{ rc_site_name }} and wanted t
         carry (see `type: links` in _data/schema.yml). Both render under the row,
         never inside the anchor: an <a> inside an <a> is invalid, and the note is
         not part of the link's name. A string item (the bare-URL shorthand)
-        answers nil to both, so an ordinary resource list is untouched. {%- endcomment -%}
+        answers nil to both, so an ordinary resource list is untouched. An item's
+        optional `access` (a site.yml `link_access` level) goes to link-meta.html
+        with its URL. {%- endcomment -%}
         {%- for rc_l in rc_links -%}
           {%- assign rc_url = rc_l.url | default: rc_l -%}
           {%- assign rc_label = rc_l.label | default: rc_url -%}
@@ -141,9 +143,10 @@ I found your entry "{{ rc_entry.title }}" in the {{ rc_site_name }} and wanted t
             {%- else -%}
             <a class="rail-link" href="{{ rc_url | escape }}" target="_blank" rel="noopener noreferrer">
               {% include icon.html name='link' size='sm' class='mt-0.5 shrink-0 text-brand-primary' %}
-              <span class="min-w-0"><span class="block leading-snug">{{ rc_label | escape }}</span><span class="link-host block truncate text-xs text-brand-muted">{{ rc_url | link_host | escape }}</span></span>
+              <span class="min-w-0"><span class="block leading-snug">{{ rc_label | escape }}</span>{% include link-meta.html url=rc_url access=rc_l.access class='link-host block truncate text-xs text-brand-muted' %}</span>
               <span class="sr-only"> (opens in a new tab)</span>
             </a>
+            {%- include link-meta.html url=rc_url access=rc_l.access part='after' class='ml-6 mt-0.5 text-xs text-brand-muted' -%}
             {%- endif -%}
             {%- if rc_note != '' -%}<p class="ml-6 mt-0.5 text-xs text-brand-muted">{{ rc_note | escape }}</p>{%- endif -%}
             {%- if rc_link_email != '' -%}

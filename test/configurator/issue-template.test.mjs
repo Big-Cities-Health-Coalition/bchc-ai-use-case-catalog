@@ -179,6 +179,40 @@ test('a file field is a real upload control that accepts its own extension', () 
   );
 });
 
+test('a file field points past-the-cap files at the first links field the form asks', () => {
+  const doc = generate();
+  const deck = doc.body.find((item) => item.id === 'deck_pdf');
+  const linksField = shipped.schema.fields.find((field) => field.type === 'links' && field.form !== false);
+  assert.ok(linksField, 'the shipped schema has a links field on the form');
+  assert.ok(
+    deck.attributes.description.endsWith(
+      `Over 25 MB, or kept in a shared workspace? Paste a link in “${linksField.label}” instead.`
+    ),
+    deck.attributes.description
+  );
+
+  // A links field the form never shows is no place to send anyone, and a
+  // schema without one gets no sentence at all.
+  const schemaFor = (extra) => ({
+    entry: { singular: 'Entry' },
+    fields: [
+      { key: 'title', label: 'Title', type: 'text', required: true },
+      { key: 'deck', label: 'Deck', type: 'file', filename: 'deck.pdf' },
+      ...extra,
+    ],
+  });
+  for (const extra of [[], [{ key: 'adopters', label: 'Adopters', type: 'links', form: false }]]) {
+    const upload = jsYaml
+      .load(issueTemplateFromSchema(schemaFor(extra)))
+      .body.find((item) => item.id === 'deck');
+    assert.doesNotMatch(upload.attributes.description, /25 MB/);
+  }
+  const custom = jsYaml
+    .load(issueTemplateFromSchema(schemaFor([{ key: 'more', label: 'More links', type: 'links' }])))
+    .body.find((item) => item.id === 'deck');
+  assert.match(custom.attributes.description, /Paste a link in “More links” instead\.$/);
+});
+
 test('an image field uploads, an images gallery stays a textarea', () => {
   const doc = jsYaml.load(
     issueTemplateFromSchema({

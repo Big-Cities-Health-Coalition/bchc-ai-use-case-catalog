@@ -81,10 +81,15 @@ jobs:
         run: |
           echo "path=$(node -e "console.log((require('js-yaml').load(require('fs').readFileSync('_data/schema.yml', 'utf8')).entry || {}).path || 'catalog')")" >> "$GITHUB_OUTPUT"
 
+      # `--stale` lists only the decks whose thumb.jpg is missing or older than
+      # the PDF by git history -- the last commit to change the PDF is not the
+      # thumbnail's last commit or an ancestor of it. Not by mtime: a checkout
+      # stamps every file with the time it was written, so a replaced deck kept
+      # its old thumbnail. fetch-depth: 0 above gives git that history.
       - name: Generate thumbnails
         run: |
           set -euo pipefail
-          node scripts/thumbnail_sources.mjs | while IFS=$'\t' read -r source thumb; do
+          node scripts/thumbnail_sources.mjs --stale | while IFS=$'\t' read -r source thumb; do
             [ -n "$source" ] || continue
             if [ ! -s "$source" ]; then
               echo "Skipping empty placeholder at $source"
@@ -93,9 +98,6 @@ jobs:
             signature="$(head -c4 "$source" 2>/dev/null || true)"
             if [ "$signature" != "%PDF" ]; then
               echo "Skipping non-PDF file at $source (signature: $signature)"
-              continue
-            fi
-            if [ -f "$thumb" ] && [ ! "$source" -nt "$thumb" ]; then
               continue
             fi
             echo "Generating thumbnail for $source"

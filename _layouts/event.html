@@ -6,6 +6,9 @@ Cohort event detail page. The front matter is complete by the time this renders:
 _plugins/events.rb generates a page per event in `_data/cohorts/<year>.yml`, and
 fills the gaps in a hand-written override file from the same data — so there is
 no lookup back into `site.data.cohorts` here. Local assigns are prefixed `evt_`.
+An attachment on a host that site.yml `link_access` has a rule for shows that
+rule's name and access chip beside its title (link-meta.html, `matched_only`);
+with no rule it renders exactly as it did before the block existed.
 {%- endcomment -%}
 {%- capture evt_crumbs -%}Cohorts|/cohorts/;;Cohort {{ page.cohort }}|/cohorts/{{ page.cohort }}/;;{{ page.title }}{%- endcapture -%}
 
@@ -28,9 +31,9 @@ no lookup back into `site.data.cohorts` here. Local assigns are prefixed `evt_`.
         <ul class="space-y-3 px-6 py-6">
           {% for evt_item in page.attachments %}
             <li><a class="link-row" href="{% if evt_item.url contains '://' %}{{ evt_item.url }}{% else %}{{ evt_item.url | relative_url }}{% endif %}" target="_blank" rel="noopener noreferrer">
-              <span class="flex min-w-0 items-center gap-3"><span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-primary/10 text-brand-primary">{% include icon.html name='document' size='sm' %}</span><span class="truncate">{{ evt_item.title }}</span></span>
+              <span class="flex min-w-0 items-center gap-3"><span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-primary/10 text-brand-primary">{% include icon.html name='document' size='sm' %}</span><span class="truncate">{{ evt_item.title }}</span>{% include link-meta.html url=evt_item.url class='link-host shrink-0 text-xs font-normal text-brand-muted' matched_only=true %}</span>
               {% include icon.html name='arrow-right' size='sm' class='shrink-0 text-brand-primary' %}
-            </a></li>
+            </a>{% include link-meta.html url=evt_item.url part='after' class='mt-1 px-4 text-xs text-brand-muted' %}</li>
           {% endfor %}
         </ul>
       {% else %}

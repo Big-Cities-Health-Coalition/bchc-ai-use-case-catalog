@@ -10,7 +10,7 @@ paste a secret into an issue, pull request, document, Actions input, or terminal
   docs, and releases.
 - The deployment repository owns the adopting organization's identity, policy, configuration,
   content, media, and its `.phct-version.json` lock. The reference deployment is
-  `crypticpy/bchc-ai-use-case-catalog`; see [ecosystem.md](ecosystem.md) for the whole family.
+  `Big-Cities-Health-Coalition/use-case-catalog`; see [ecosystem.md](ecosystem.md) for the whole family.
 - Generic defects discovered in a deployment are fixed and released in PHCT first. The deployment
   then consumes the immutable tag through **Actions → Update from PHCT**.
 

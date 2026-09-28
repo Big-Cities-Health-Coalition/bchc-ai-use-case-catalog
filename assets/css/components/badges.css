@@ -91,6 +91,14 @@
   .chip-plain { @apply chip; }
   .chip-plain::before { content: none; }
   .chip-warn { @apply chip-plain border-brand-warn/40 text-brand-warn; }
+  /* A list VALUE on the entry page (_includes/field-value.html) is free text and can
+     be a whole phrase: it wraps inside its column instead of truncating or pushing a
+     320px page sideways. `anywhere` rather than `break-word` because only `anywhere`
+     lowers the min-content width a flex item is sized from, so an unbroken token
+     (a URL, a product code) breaks too. rounded-xl clamps to the same pill as
+     rounded-pill on one line and stays a soft rectangle on two. Facet pills and the
+     cards' one-line chips keep `.chip`'s truncation. */
+  .chip-wrap { @apply whitespace-normal rounded-xl text-left [overflow-wrap:anywhere]; }
   /* Hairline like .chip (minus the taxonomy dot) so overflow counters read as the
      same family as the chips they follow, not as a second filled chip style. */
   .chip-neutral { @apply inline-flex items-center rounded-pill border border-brand-line bg-transparent px-2.5 py-0.5 text-xs font-medium leading-5 text-brand-muted; }

@@ -32,6 +32,11 @@ Local assigns are prefixed `fv_` so nothing leaks into the caller's scope.
     {%- assign fv_values = fv_v | as_list -%}
     {%- if fv_values.size > 0 -%}
     {%- comment -%}
+    The values are free text (a `list` item can be a whole phrase), so each chip is
+    `chip-wrap` and its <li> is `min-w-0 max-w-full`: a long value wraps inside the
+    column instead of pushing a 320px page sideways. The filter rail's facet pills
+    and the cards' single-line chips keep `.chip`'s truncation.
+
     `links_entries: true` (a `list` field) says the values are slugs of other entries
     in this catalog. Each is resolved against the entry pages and rendered as a chip
     linking to it, showing that entry's title rather than its slug. A slug that
@@ -43,12 +48,12 @@ Local assigns are prefixed `fv_` so nothing leaks into the caller's scope.
         {%- assign fv_target = nil -%}
         {%- if fv_f.links_entries -%}{%- assign fv_target = fv_entry_pages | where: 'slug', fv_x | first -%}{%- endif -%}
         {%- if fv_target -%}
-        <li><a class="chip-plain hover:border-brand-primary hover:text-brand-primary" href="{{ fv_target.url | relative_url | escape }}">{% include icon.html name='link' size='xs' %}{{ fv_target.title | escape }}</a></li>
+        <li class="min-w-0 max-w-full"><a class="chip-plain chip-wrap hover:border-brand-primary hover:text-brand-primary" href="{{ fv_target.url | relative_url | escape }}">{% include icon.html name='link' size='xs' %}{{ fv_target.title | escape }}</a></li>
         {%- else -%}
         {%- assign fv_xm = fv_f | option_meta: fv_x -%}
         {%- comment -%} Only an option's OWN icon earns a glyph; the field icon would repeat on every chip. {%- endcomment -%}
         {%- assign fv_xraw = fv_f.option_meta[fv_x] -%}
-        <li><span class="{% if fv_xm.tone == 'warn' %}chip-warn{% else %}chip-plain{% endif %}">{%- if fv_xraw.icon -%}{% include icon.html name=fv_xraw.icon size='xs' %}{%- endif -%}{{ fv_x | escape }}</span></li>
+        <li class="min-w-0 max-w-full"><span class="{% if fv_xm.tone == 'warn' %}chip-warn{% else %}chip-plain{% endif %} chip-wrap">{%- if fv_xraw.icon -%}{% include icon.html name=fv_xraw.icon size='xs' %}{%- endif -%}{{ fv_x | escape }}</span></li>
         {%- endif -%}
       {%- endfor -%}
     </ul>
@@ -58,7 +63,7 @@ Local assigns are prefixed `fv_` so nothing leaks into the caller's scope.
     {%- if fv_demo_sample -%}
     <span class="inline-flex items-center gap-1.5 font-medium text-brand-muted">{% include icon.html name='info' size='sm' %}<span>{{ fv_f.label | escape }}</span><span class="text-xs font-normal">Demo placeholder — not live</span></span>
     {%- else -%}
-    <a class="inline-flex items-baseline gap-1.5 font-medium text-brand-primary hover:underline" href="{{ fv_v | escape }}" target="_blank" rel="noopener noreferrer">{{ fv_f.label | escape }}<span class="link-host text-xs font-normal text-brand-muted">{{ fv_v | link_host | escape }}</span><span class="sr-only"> (opens in a new tab)</span>{% include icon.html name='external-link' size='xs' class='self-center' %}</a>
+    <a class="inline-flex items-baseline gap-1.5 font-medium text-brand-primary hover:underline" href="{{ fv_v | escape }}" target="_blank" rel="noopener noreferrer">{{ fv_f.label | escape }}{% include link-meta.html url=fv_v class='link-host text-xs font-normal text-brand-muted' %}<span class="sr-only"> (opens in a new tab)</span>{% include icon.html name='external-link' size='xs' class='self-center' %}</a>
     {%- endif -%}
 
   {%- when 'links' -%}
@@ -69,6 +74,11 @@ Local assigns are prefixed `fv_` so nothing leaks into the caller's scope.
     neither renders exactly as it always did. They sit OUTSIDE the anchor: an
     <a> inside an <a> is invalid, and the note is not part of the link's name.
     A string item (the bare-URL shorthand) answers nil to both.
+
+    An item may also carry `access` (a level from site.yml `link_access`), which
+    overrides its host rule; link-meta.html renders the host line and, outside
+    the anchor, the level's note and "Request access" link. With no
+    `link_access` block both render exactly what this row always showed.
     {%- endcomment -%}
     {%- assign fv_links = fv_v -%}
     {%- if fv_links.first -%}
@@ -91,11 +101,12 @@ Local assigns are prefixed `fv_` so nothing leaks into the caller's scope.
           <a class="link-row group" href="{{ fv_url | escape }}" target="_blank" rel="noopener noreferrer">
             <span class="flex min-w-0 items-center gap-3">
               {% include icon.html name='link' size='sm' class='shrink-0 text-brand-primary' %}
-              <span class="flex min-w-0 flex-col"><span class="truncate">{{ fv_label | escape }}</span><span class="link-host truncate text-xs font-normal text-brand-muted">{{ fv_url | link_host | escape }}</span></span>
+              <span class="flex min-w-0 flex-col"><span class="truncate">{{ fv_label | escape }}</span>{% include link-meta.html url=fv_url access=fv_l.access class='link-host truncate text-xs font-normal text-brand-muted' %}</span>
             </span>
             <span class="sr-only">(opens in a new tab)</span>
             {% include icon.html name='external-link' size='sm' class='shrink-0 text-brand-primary' %}
           </a>
+          {%- include link-meta.html url=fv_url access=fv_l.access part='after' class='mt-1 px-4 text-xs text-brand-muted' -%}
           {%- endif -%}
           {%- if fv_note != '' -%}<p class="mt-1 px-4 text-xs text-brand-muted">{{ fv_note | escape }}</p>{%- endif -%}
           {%- if fv_email != '' -%}
@@ -130,12 +141,37 @@ Local assigns are prefixed `fv_` so nothing leaks into the caller's scope.
     {%- endif -%}
 
   {%- when 'file' -%}
+    {%- comment -%}
+    A `file` value is a path in the repository, or an http(s) URL for a file too
+    big for GitHub or kept in a shared workspace (check_front_matter.rb accepts
+    both). The URL gets the same external row as a `links` item.
+    {%- endcomment -%}
+    {%- assign fv_is_link = fv_v | http_url -%}
     {%- assign fv_found = site.static_files | where: 'path', fv_v | size -%}
-    {%- if fv_found > 0 -%}
+    {%- if fv_is_link -%}
+      {%- if fv_demo_sample -%}
+    <span class="link-row">
+      <span class="flex min-w-0 items-center gap-3">
+        {% include icon.html name='info' size='sm' class='shrink-0 text-brand-muted' %}
+        <span class="flex min-w-0 flex-col"><span class="truncate">{{ fv_f.label | escape }}</span><span class="text-xs font-normal text-brand-muted">Sample resource — not live</span></span>
+      </span>
+    </span>
+      {%- else -%}
+    <a class="link-row group" href="{{ fv_v | escape }}" target="_blank" rel="noopener noreferrer">
+      <span class="flex min-w-0 items-center gap-3">
+        {% include icon.html name='document' size='sm' class='shrink-0 text-brand-primary' %}
+        <span class="flex min-w-0 flex-col"><span class="truncate">{{ fv_f.label | escape }}</span>{% include link-meta.html url=fv_v class='link-host truncate text-xs font-normal text-brand-muted' %}</span>
+      </span>
+      <span class="sr-only">(opens in a new tab)</span>
+      {% include icon.html name='external-link' size='sm' class='shrink-0 text-brand-primary' %}
+    </a>
+    {%- include link-meta.html url=fv_v part='after' class='mt-1 px-4 text-xs text-brand-muted' -%}
+      {%- endif -%}
+    {%- elsif fv_found > 0 -%}
     <a class="link-row" href="{{ fv_v | relative_url | escape }}" download>
       <span class="flex min-w-0 items-center gap-3">
         {% include icon.html name='document' size='sm' class='shrink-0 text-brand-primary' %}
-        <span class="flex min-w-0 flex-col"><span class="truncate">Download {{ fv_f.label | downcase | escape }}</span><span class="text-xs font-normal text-brand-muted">{{ fv_v | split: '.' | last | upcase | escape }}</span></span>
+        <span class="flex min-w-0 flex-col"><span class="truncate">Download {{ fv_f.label | downcase_first | escape }}</span><span class="text-xs font-normal text-brand-muted">{{ fv_v | split: '.' | last | upcase | escape }}</span></span>
       </span>
       {% include icon.html name='download' size='sm' class='shrink-0 text-brand-primary' %}
     </a>

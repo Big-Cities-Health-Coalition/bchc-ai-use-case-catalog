@@ -102,7 +102,7 @@ async function boot(options = {}) {
     virtualConsole,
   });
   const { window } = dom;
-  window.fetch = () => Promise.resolve({ ok: true, json: () => Promise.resolve(INDEX) });
+  window.fetch = options.fetch || (() => Promise.resolve({ ok: true, json: () => Promise.resolve(INDEX) }));
 
   const applied = [];
   if (options.withFilters !== false) {
@@ -139,6 +139,7 @@ async function boot(options = {}) {
       input.dispatchEvent(new window.Event('input', { bubbles: true }));
       await settle(window);
     },
+    key: (key) => input.dispatchEvent(new window.KeyboardEvent('keydown', { key, bubbles: true })),
   };
 }
 
@@ -265,6 +266,40 @@ test('picking a filter drops the text matches, so the tag is not ANDed with a fa
   await settle(page.window);
 
   assert.equal(page.window.__searchMatches, null);
+});
+
+test('Escape while the index is still loading keeps the listbox closed when it arrives', async () => {
+  // While the index is down, a query still opens the listbox with the filter
+  // rows: they need no index. Once it comes back, the next query's fetch is
+  // held open, so its debounce has already fired and its answer is in flight
+  // when Escape lands.
+  let down = true;
+  let release = null;
+  const page = await boot({
+    fetch: () => {
+      if (down) return Promise.resolve({ ok: false, status: 503 });
+      return new Promise((resolve) => {
+        release = () => resolve({ ok: true, json: () => Promise.resolve(INDEX) });
+      });
+    },
+  });
+  const listbox = page.document.querySelector('[data-search-results]');
+  await page.type('translation');
+  assert.equal(listbox.hidden, false, 'the filter rows opened after the failed load');
+
+  down = false;
+  await page.type('chatbot');
+  assert.equal(typeof release, 'function', 'the retried fetch is in flight');
+  page.key('Escape');
+  assert.equal(listbox.hidden, true);
+
+  release();
+  await settle(page.window);
+
+  assert.equal(listbox.hidden, true, 'the late answer reopened the dismissed listbox');
+  assert.equal(page.input.getAttribute('aria-expanded'), 'false');
+  assert.equal(page.input.value, 'chatbot', 'the first Escape closes, it does not clear');
+  assert.ok(page.window.__searchMatches instanceof page.window.Set, 'the grid still gets the answer');
 });
 
 /* ------------------------------------------------- zero-result recovery */

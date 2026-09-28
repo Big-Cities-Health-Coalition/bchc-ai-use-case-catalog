@@ -63,6 +63,16 @@ scripts:
 {%- assign singular = schema.entry.singular | default: 'Entry' -%}
 {%- assign ff = schema.fields | form_fields -%}
 {%- assign form_groups = schema.groups | groups_for: ff -%}
+{%- comment -%} The first `links` question the form asks, in schema order: a `file`
+question sends a file the upload cannot take (over 25 MB, or kept in a shared
+workspace) there as a link. No such question, no sentence. The GitHub issue
+form says the same (assets/js/configurator/issue-template.js). {%- endcomment -%}
+{%- assign file_link_label = '' -%}
+{%- assign file_link_fields = schema.fields | where: 'type', 'links' -%}
+{%- for file_link_field in file_link_fields -%}
+  {%- assign file_link_candidate = file_link_field.label | strip -%}
+  {%- if file_link_field.form != false and file_link_candidate != '' -%}{%- assign file_link_label = file_link_candidate -%}{%- break -%}{%- endif -%}
+{%- endfor -%}
 {%- assign badge_fields = ff | card_fields: 'badge' -%}
 {%- assign badge_field = badge_fields | first -%}
 {%- assign chip_fields = ff | card_fields: 'chip' -%}
@@ -414,7 +424,7 @@ scripts:
           {%- when 'file' -%}
             <p class="field-label">{{ question }}</p>
             <p class="field-help" id="{{ fid }}-help">{{ f.description }}</p>
-            <p class="field-note">Files can't be attached from this page. Drag <code>{{ f.filename | default: 'the file' }}</code> into the GitHub issue on the next screen and a maintainer will add it to your entry.</p>
+            <p class="field-note">Files can't be attached from this page. Drag <code>{{ f.filename | default: 'the file' }}</code> into the GitHub issue on the next screen and a maintainer will add it to your entry.{% if file_link_label != '' %} Over 25 MB, or kept in a shared workspace? Paste a link in “{{ file_link_label | escape }}” instead.{% endif %}</p>
 
           {%- when 'boolean' -%}
             <label class="field-option">

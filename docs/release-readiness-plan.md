@@ -3,9 +3,9 @@
 - Status: in execution; automated baseline implemented 2026-08-22
 - Created: 2026-08-21
 - Target: a release candidate suitable for the wider BCHC demo audience next week
-- Release: `v1.9.0` (stable, promoted from `v1.9.0-rc.7`)
+- Candidate: `v1.10.0-rc.2` (last stable release: `v1.9.0`)
 - Parent repository: [`crypticpy/phct`](https://github.com/crypticpy/phct)
-- Downstream demo: [`crypticpy/bchc-ai-use-case-catalog`](https://github.com/crypticpy/bchc-ai-use-case-catalog)
+- Downstream demo: [`Big-Cities-Health-Coalition/use-case-catalog`](https://github.com/Big-Cities-Health-Coalition/use-case-catalog)
 
 The audit baseline and release contract below remain authoritative. The current executable
 sequence for interface polish, open-source publication, and the final BCHC update is maintained in

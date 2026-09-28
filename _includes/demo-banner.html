@@ -13,6 +13,14 @@ that has already been through the launch guide; when it is set, the banner adds
 "see what a fresh copy looks like on day one". Tested with `!= ''`, not for
 truthiness — an empty string is truthy in Liquid.
 
+`demo_message` in `_data/site.yml` (optional) replaces the whole sentence — the
+setup and launch-guide links and the starter-site line with it — for a
+deployment that keeps `demo: true` while its own content is still provisional
+and has no reason to send readers to the template's wizard. It is inline
+markdown (a plain string works too): `markdownify` wraps it in one <p>, which is
+removed because the banner is already a <p>. Blank or absent, the banner renders
+exactly the default copy below.
+
 On a showcase example (`site.showcase.role == 'example'`, written into _config
 by scripts/build_showcase.mjs — see docs/showcase-plan.md) the same strip
 carries the example switcher instead: which of the template's configurations
@@ -27,6 +35,7 @@ Local assigns are prefixed `db_`.
   {%- assign db_repo = site.data.site.github.repository | default: '' -%}
   {%- assign db_branch = site.data.site.github.branch | default: 'main' -%}
   {%- assign db_starter = site.data.site.demo_starter_url | default: '' | strip -%}
+  {%- assign db_message = site.data.site.demo_message | default: '' | strip -%}
   {%- if site.showcase.role == 'example' -%}
     {%- assign db_show = site.showcase -%}
     {%- assign db_this = '' -%}
@@ -75,6 +84,9 @@ Local assigns are prefixed `db_`.
         <span class="text-brand-warn">{%- include icon.html name='sparkles' size='sm' -%}</span>
         <span>Demo content</span>
       </span>
+      {%- if db_message != '' %}
+      <span class="text-brand-ink [&_a]:font-semibold [&_a]:text-brand-primary [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:text-brand-primary-dark">{{ db_message | markdownify | remove: '<p>' | remove: '</p>' | strip }}</span>
+      {%- else %}
       <span class="text-brand-ink">
         Everything on this site is sample data shipped with the template.
         <a class="font-semibold text-brand-primary underline underline-offset-2 hover:text-brand-primary-dark" href="{{ '/setup/' | relative_url }}">Configure
@@ -85,6 +97,7 @@ Local assigns are prefixed `db_`.
         <a class="font-semibold text-brand-primary underline underline-offset-2 hover:text-brand-primary-dark" href="{{ db_starter }}" target="_blank" rel="noopener noreferrer">the
           starter site<span class="sr-only"> (opens in a new tab)</span></a>.{% endif %}
       </span>
+      {%- endif %}
     </p>
   </div>
   {%- endif -%}

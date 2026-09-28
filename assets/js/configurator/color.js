@@ -97,7 +97,13 @@ export const THEME_CONTRAST_PAIRS = [
   { fg: 'primary', bg: 'surface', min: 4.5, level: 'error', what: 'links on the page background' },
   { fg: 'secondary', bg: 'card', min: 4.5, level: 'error', what: 'the supporting colour on cards' },
   { fg: 'warn', bg: 'card', min: 4.5, level: 'error', what: 'caution text on cards' },
-  { fg: 'on_dark', bg: 'primary_dark', min: 4.5, level: 'error', what: 'text on the hero and footer' },
+  {
+    fg: 'on_dark',
+    bg: 'primary_dark',
+    min: 4.5,
+    level: 'error',
+    what: 'text and focus rings on the hero and footer',
+  },
   { fg: 'on_dark', bg: 'primary', min: 4.5, level: 'error', what: 'text on a primary-filled surface' },
   { fg: '#FFFFFF', bg: 'primary', min: 4.5, level: 'error', what: 'the label on a primary button' },
   // Non-text contrast (WCAG 1.4.11): control borders only have to reach 3:1.

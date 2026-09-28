@@ -37,6 +37,29 @@ class TextFiltersTest < Minitest::Test
     assert_equal "", @filters.with_article("  ")
   end
 
+  def test_downcase_first_lowers_only_the_first_letter
+    assert_equal "slide deck or one-pager (PDF)", @filters.downcase_first("Slide deck or one-pager (PDF)")
+    assert_equal "area of work", @filters.downcase_first("Area of work")
+    assert_equal "screenshots", @filters.downcase_first("  Screenshots ")
+    assert_equal "équipe", @filters.downcase_first("Équipe")
+  end
+
+  def test_downcase_first_leaves_a_leading_acronym_alone
+    assert_equal "AI tools", @filters.downcase_first("AI tools")
+    assert_equal "PDF deck", @filters.downcase_first("PDF deck")
+    assert_equal "GIS/mapping layers", @filters.downcase_first("GIS/mapping layers")
+    assert_equal "U.S. states served", @filters.downcase_first("U.S. states served")
+    assert_equal "A/B tests", @filters.downcase_first("A/B tests")
+    assert_equal "R&D projects", @filters.downcase_first("R&D projects")
+    # One capital letter is a word, not an acronym.
+    assert_equal "a note", @filters.downcase_first("A note")
+  end
+
+  def test_downcase_first_returns_empty_for_blank_input
+    assert_equal "", @filters.downcase_first(nil)
+    assert_equal "", @filters.downcase_first("   ")
+  end
+
   # The templates call it exactly like this (index.md, _layouts/catalog.html), so
   # the registration and the filter chain are worth one end-to-end assertion.
   def test_registered_filter_renders_in_a_liquid_template

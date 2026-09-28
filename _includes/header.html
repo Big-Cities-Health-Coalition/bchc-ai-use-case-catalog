@@ -7,11 +7,11 @@ Local assigns are prefixed `hd_`.
 {%- assign hd_cfg = site.data.site -%}
 <header class="sticky top-0 z-40 border-b border-brand-line bg-surface-card/95 backdrop-blur" data-component="site-header">
   <div class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-    <a class="site-brand flex min-w-0 items-center gap-3 rounded-lg text-brand-primary-dark transition-opacity duration-120 ease-brand hover:opacity-80 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-primary/30" href="{{ '/' | relative_url }}">
+    <a class="site-brand flex min-w-0 items-center gap-3 rounded-lg text-brand-primary-dark transition-opacity duration-120 ease-brand hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card" href="{{ '/' | relative_url }}">
       {% include logo.html size="h-9 w-9" %}
       <span class="flex min-w-0 flex-col leading-tight">
         <span class="truncate text-[11px] font-semibold uppercase leading-4 tracking-[0.12em] text-brand-muted">{{ hd_cfg.organization.name }}</span>
-        <span class="truncate font-heading text-base font-semibold">{{ hd_cfg.name }}</span>
+        <span class="line-clamp-2 font-heading text-base font-semibold sm:line-clamp-none sm:truncate">{{ hd_cfg.name }}</span>
       </span>
     </a>
 
@@ -19,7 +19,7 @@ Local assigns are prefixed `hd_`.
       {% include nav-links.html variant="desktop" %}
     </nav>
 
-    <button type="button" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-brand-line-strong text-brand-primary-dark transition-colors duration-120 ease-brand hover:border-brand-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-primary/30 lg:hidden" data-nav-toggle aria-expanded="false" aria-controls="mobile-nav">
+    <button type="button" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-brand-line-strong text-brand-primary-dark transition-colors duration-120 ease-brand hover:border-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card lg:hidden" data-nav-toggle aria-expanded="false" aria-controls="mobile-nav">
       <span data-nav-icon="open">{% include icon.html name='menu' size='md' %}</span>
       <span data-nav-icon="close" class="hidden">{% include icon.html name='close' size='md' %}</span>
       <span class="sr-only">Menu</span>

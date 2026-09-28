@@ -179,6 +179,26 @@ test('site keys the wizard never asks about survive the round trip', () => {
   assert.equal(jsYaml.load(renderFiles(applyAnswers(off, {}))['_data/site.yml']).demo, false);
 });
 
+test('a site.yml link_access block survives the wizard round trip', () => {
+  // No question asks about link access, so a merge that only knows the
+  // questions must carry the block (levels mapping, hosts list of mappings)
+  // through untouched — the /setup/ wizard starts from the current site.yml.
+  const base = defaultConfig();
+  base.site.link_access = {
+    levels: { members: { label: 'Members only', icon: 'lock', note: 'Sign-in required.', request_url: '' } },
+    hosts: [
+      { match: 'workspace.example.org/p/', name: 'Workspace' },
+      { match: 'workspace.example.org', name: 'Workspace', access: 'members' },
+      { match: 'github.com/o/r/releases/download/', name: 'File library', download: true },
+    ],
+  };
+
+  const config = applyAnswers(base, { ...answersFromConfig(base), siteName: 'Renamed' });
+  const written = jsYaml.load(renderFiles(config)['_data/site.yml']);
+  assert.equal(written.name, 'Renamed');
+  assert.deepEqual(written.link_access, base.site.link_access);
+});
+
 test('the submission page copy is answerable in the wizard', () => {
   const answers = answersFromConfig(defaultConfig());
   assert.equal(typeof answers.submitTurnaround, 'string');

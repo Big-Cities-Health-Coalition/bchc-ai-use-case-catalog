@@ -27,6 +27,7 @@ entry:
   status_scaffold_value: "Under review"  # optional — what the scaffolder stamps on a new entry
   status_approved_value: "Reviewed & approved"  # optional — what approval means; the PR checklist asks for it
   require_link: true       # optional — an entry with no link anywhere fails validation instead of warning
+  require_public_link: true  # optional — an entry whose every link needs a sign-in (site.yml `link_access`) fails instead of warning
   contributor_key: organization  # optional — the field the monthly metrics count distinct "contributing organizations" from
   submitter_key: submitter_github  # optional — the text field holding the submitter's GitHub username, for refresh reminders
   deployments_key: also_deployed_by  # optional — the `links` field the "Also deployed by" form appends organizations to
@@ -109,6 +110,7 @@ Three pointers make it schema-driven rather than a special case:
 | `entry.status_scaffold_value` | What `scripts/new_entry_from_issue.mjs` stamps on a freshly scaffolded entry, so a submission opens as **Under review** without anyone typing it. A maintainer sets the final value in the PR. |
 | `entry.status_approved_value` | The option that means the review passed. The scaffolded pull request's checklist ends with "`review_status` set to **Reviewed & approved** (the scaffold wrote *Under review*) — or the pull request left open with `review:revisions-requested`", so the flip is on the list the reviewer ticks rather than in their memory. Absent → the checklist has no status line. |
 | `entry.require_link` | The minimum documentation bar. `check_front_matter.rb` already notices an entry with no link anywhere — every `url`-typed field empty and no `links` item — because a reader would have nowhere to go to evaluate or adopt it. By default that is a warning; `require_link: true` makes it a failure, so such an entry cannot merge. Silent for a schema with no `url` or `links` fields at all. |
+| `entry.require_public_link` | The same bar for a reader outside the organization. It needs a [`link_access`](configuration.md#link-access) block in `_data/site.yml` and has no effect without one. With the block in place, `check_front_matter.rb` warns about any entry where every link (each `url` field and each `links` item) resolves to an access level, either through its host rule or through the item's own `access:`. `require_public_link: true` makes that a failure. A rule without `access`, such as a public share path or a `download: true` release rule, counts as public. |
 | `entry.contributor_key` | The field whose distinct values `scripts/metrics.mjs` counts as **contributing organizations** in `_data/metrics.json` — the figure card and per-quarter column on the governance page's "How the catalog is doing" block. Live entries only, `sample: true` content excluded, values trimmed and blanks skipped. Absent → the figure, its card and its column are not published; everything else in the block still is. |
 
 The Liquid filters behind this are `deprecated_entry`, `live_entries` and `deprecated_entries` in `_plugins/schema_filters.rb`; every template goes through them rather than comparing strings. Deprecation supersedes staleness: a deprecated entry never also shows the "last confirmed" note, because "may no longer be current" already covers it. See [admin-guide.md](admin-guide.md#editing-or-removing-an-existing-entry) for when to deprecate versus delete.
@@ -198,6 +200,7 @@ A `file` or `image` field is a GitHub **`upload`** control on the issue form, so
 - `validations.accept` comes from the schema — the extension of `filename` for a `file` (shipped: `deck.pdf` → `.pdf`), and `.png,.jpg,.jpeg,.gif,.webp` for an `image`.
 - The scaffolder downloads the attachment into the entry folder under exactly that `filename`, through the same guards as screenshots: public hosts only (every redirect re-checked), a 25 MB streaming cap, and a magic-byte check — a `.pdf` that does not start with `%PDF` is refused and reported on the pull request instead of being committed.
 - Nothing attached is not an error. A `file` field still records the path the schema expects, so a maintainer can drop the file into the folder later exactly as before.
+- **A `file` field may hold an `http(s)` URL instead of a path**, for a file over GitHub's 25 MB attachment limit or one kept in a shared workspace. A pasted link that is not a GitHub attachment is stored as the URL and not downloaded. When a GitHub attachment's download is refused, the URL is kept and the pull request says so. The page renders a URL value as an outbound row rather than a download, with the [`link_access`](configuration.md#link-access) host line when a rule applies. When a `links` field is on the form, the upload control's description points submitters at it for such links. For files too big for the repository, see [admin-guide.md](admin-guide.md#large-files).
 - **`validations.required` on an upload is enforced on public repositories only.** On a private fork a required attachment is a prompt, not a gate.
 - A gallery stays a `textarea`: `upload` holds one file and has nowhere to put per-image alt text, so `images` keeps the drag-into-the-box control that preserves `URL | alt text`.
 
@@ -232,7 +235,7 @@ resources:
 
 Use it for anything that does not deserve its own `url` field — shared drives, model cards, container images, vendor pages, recorded demos. The forms accept one per line as `Label | URL`; the scaffolder also tolerates `Label — URL`, `Label: URL`, and a bare URL (which gets the host as its label). Rendered on the entry page as a labelled row with a host chip (in the rail when its group has `placement: rail`). `mailto:` is allowed; everything else must be `http(s)`.
 
-An item may also carry two optional keys:
+An item may also carry these optional keys:
 
 ```yaml
 also_deployed_by:
@@ -246,6 +249,7 @@ also_deployed_by:
 |---|---|
 | `email` | A contact address for *that link*, published under it as a mailto link. Validated the way an `email` field is (it must contain `@`). Only ever written when somebody offered one on purpose — an address on a public page is an address that gets scraped. |
 | `note` | One or two sentences shown as a muted line under the row. Prose, not markup. |
+| `access` | Who can open the link: the name of a level under `link_access.levels` in `_data/site.yml` (`access: members`). It overrides the link's host rule, which is useful when the host tells a reader nothing. The row gets that level's chip, screen-reader note and *Request access* line (see [configuration.md](configuration.md#link-access)). When the site has a `link_access` block, the validator fails a value that names no configured level. Without the block the key is passed through unread, like any other key the validator does not know, and nothing renders differently. |
 
 Both are additions to the row, never changes to it: an item written before they existed renders exactly as it always did, and a field whose items never carry them is untouched. The submission forms do not collect either — a `Label | URL` line still parses to `{label, url}` only — so they arrive from the dedicated flows that maintain a particular field, such as [Also deployed by](#also-deployed-by).
 
@@ -456,7 +460,7 @@ Roughly 9,000 permit applications a year arrive through the online portal, and c
 The cost of that delay was not evenly spread. An applicant with a permit expediter on retainer got their corrections back the same afternoon. A homeowner filing their own deck permit waited a week to find out they had forgotten one form.
 ```
 
-Rules the validator enforces: `slug` equals the folder name, `published` (and `updated` when present) is a real `YYYY-MM-DD` date, every required field is non-blank, `select`/`multiselect` values appear verbatim in `options`, `url` fields are `http(s)`, `email` fields contain `@`, `images` point at files that exist, `links` have a label and a URL, and — a warning by default, a failure under `entry.require_link` — the entry has at least one link somewhere.
+Rules the validator enforces: `slug` equals the folder name, `published` (and `updated` when present) is a real `YYYY-MM-DD` date, every required field is non-blank, `select`/`multiselect` values appear verbatim in `options`, `url` fields are `http(s)`, `email` fields contain `@`, `images` point at files that exist, `links` have a label and a URL, a link item's `access` names a configured level (only checked when `link_access` is configured), and the entry has at least one link somewhere (a warning by default, a failure under `entry.require_link`). With `link_access` configured, the validator also wants at least one link a reader outside the organization can open (a warning by default, a failure under `entry.require_public_link`).
 
 The ten sample entries under `catalog/` are working examples of every field type in this schema.
 

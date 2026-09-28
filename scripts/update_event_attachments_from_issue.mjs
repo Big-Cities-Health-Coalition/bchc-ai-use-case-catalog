@@ -25,7 +25,7 @@ import * as yaml from 'js-yaml';
 
 import { fail, setOutput } from './lib/actions_output.mjs';
 import { FIELD, FINAL_LABEL, readEventForm, resolveEventDir } from './lib/event_issue.mjs';
-import { slugify } from './lib/issue_body.mjs';
+import { SITE_HTTP_URL, codeSpan, slugify } from './lib/issue_body.mjs';
 import { pair } from './lib/yaml.mjs';
 
 const ROOT = process.cwd();
@@ -56,6 +56,12 @@ const year = value(...FIELD.year);
 const requestedId = value(...FIELD.eventId);
 const mode = (value(...FIELD.mode) || 'REPLACE').toUpperCase().includes('APPEND') ? 'APPEND' : 'REPLACE';
 
+// An attachment link must be one the event page can print into an `href` as
+// is (SITE_HTTP_URL): http(s) only — the page renders anything without `://`
+// as a path on this site, and a `javascript:` link is a script — and nothing
+// that would break out of the attribute. Submitter text quoted back in the
+// comment goes through codeSpan, so an `@name` in it pings nobody.
+
 const newItems = value(...FIELD.attachments)
   .split('\n')
   .map((line) => line.trim())
@@ -78,6 +84,16 @@ if (!year || !requestedId) {
 if (newItems.length === 0) {
   noChange(
     'Nothing could be read from the **Attachments** box. Write one item per line, as `Title | https://link-to-the-file`.'
+  );
+}
+// All or nothing: a list with one bad link is refused whole, so the page never
+// ends up with half of what the submitter asked for.
+const badLinks = newItems.filter((item) => !SITE_HTTP_URL.test(item.url));
+if (badLinks.length > 0) {
+  noChange(
+    `Every attachment needs a link that starts with http:// or https:// and has no spaces, quotes or angle brackets, so nothing was changed. Fix ${
+      badLinks.length === 1 ? 'this line' : 'these lines'
+    } and edit the issue: ${badLinks.map((item) => `${codeSpan(item.title)} → ${codeSpan(item.url)}`).join(', ')}.`
   );
 }
 

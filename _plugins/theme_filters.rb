@@ -56,6 +56,39 @@ module CatalogTemplate
       ""
     end
 
+    # True for an http(s) URL — the same test scripts/check_front_matter.rb's
+    # `http_url?` applies, so a value the validator accepts as a link is the
+    # value a template renders as one. A `file` field holds either a path in
+    # the repository or such a URL (a file too big for GitHub, or kept in a
+    # shared workspace), and this is how a template tells the two apart.
+    # @param value [String]
+    # @return [Boolean]
+    # @example
+    #   {% assign is_link = entry.deck_pdf | http_url %}{% if is_link %}…{% endif %}
+    def http_url(value)
+      value.to_s.match?(%r{\Ahttps?://[^\s"'<>]+\z})
+    end
+
+    # Who can open a link, from the optional `link_access` block of
+    # _data/site.yml: the first host rule the URL matches, merged with the
+    # access level it names (see _plugins/link_access.rb). nil when the site has
+    # no `link_access` block, or when no rule and no level applies — which is
+    # how a site without the block renders exactly as it did before it existed.
+    # @param url [String] an http(s) URL
+    # @param access [String, nil] the link item's own `access:`, overriding its host rule
+    # @return [Hash, nil] name, access, label, icon, note, request_url, download
+    # @example
+    #   {% assign meta = link.url | link_access: link.access %}
+    def link_access(url, access = nil)
+      site = @context.registers[:site]
+      return nil unless site
+
+      site_data = site.data["site"]
+      return nil unless site_data.is_a?(Hash)
+
+      CatalogTemplate::LinkAccess.resolve(site_data["link_access"], url, access)
+    end
+
     # Encode a string for use in a URL query component (Liquid's url_encode
     # turns spaces into +, which GitHub does not decode inside issue form fields).
     # @param value [String]
@@ -113,4 +146,5 @@ end
 
 require "erb"
 require "set"
+require_relative "link_access"
 Liquid::Template.register_filter(CatalogTemplate::ThemeFilters)

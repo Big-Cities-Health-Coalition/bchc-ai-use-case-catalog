@@ -1,0 +1,20 @@
+{%- comment -%}
+One row of the resources page (_data/resources.yml): `{title, url, type?,
+description?, access?}`.
+
+Usage:
+  {% include resource-item.html item=item %}
+
+An off-site link on a host that site.yml `link_access` has a rule for shows the
+rule's name and access chip under its title, and the level's note and "Request
+access" link under the row; `access:` on the item overrides its host rule
+(link-meta.html). With no rule and no `access:` the row is exactly the markup
+resources/index.md carried before this include existed.
+
+Local assigns are prefixed `ri_` so nothing leaks into the caller's scope.
+{%- endcomment -%}
+{%- assign ri_item = include.item -%}
+<li><a class="link-row" href="{{ ri_item.url }}" {% if ri_item.url contains '://' %}target="_blank" rel="noopener noreferrer"{% endif %}>
+            <span class="flex min-w-0 items-center gap-3"><span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-primary/10 text-brand-primary">{% include icon.html name='document' size='sm' %}</span><span class="flex min-w-0 flex-col"><span class="truncate">{{ ri_item.title }}</span>{% if ri_item.description %}<span class="truncate text-xs font-normal text-brand-muted">{{ ri_item.description }}</span>{% endif %}{% include link-meta.html url=ri_item.url access=ri_item.access class='link-host truncate text-xs font-normal text-brand-muted' matched_only=true %}</span></span>
+            {% if ri_item.type %}<span class="chip-neutral shrink-0">{{ ri_item.type }}</span>{% endif %}
+          </a>{% include link-meta.html url=ri_item.url access=ri_item.access part='after' class='mt-1 px-4 text-xs text-brand-muted' %}</li>

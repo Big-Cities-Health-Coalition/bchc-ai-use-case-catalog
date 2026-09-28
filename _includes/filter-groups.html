@@ -92,7 +92,7 @@ Local assigns are prefixed `fg_`.
                 {%- if fg_landing and fg_ctx == 'rail' -%}
                   {%- assign fg_entry_path = fg_schema.entry.path | default: 'catalog' -%}
                   {%- assign fg_az = '/' | append: fg_entry_path | append: '/a-z/#' | append: fg_landing.slug -%}
-                  <a class="filter-showall ml-3" href="{{ fg_az | relative_url }}">Browse all {{ fg_f.label | downcase | escape }} →</a>
+                  <a class="filter-showall ml-3" href="{{ fg_az | relative_url }}">Browse all {{ fg_f.label | downcase_first | escape }} →</a>
                 {%- endif -%}
               {%- endif -%}
               {%- comment -%} The taxonomy explains itself once per facet, to everyone:

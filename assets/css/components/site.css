@@ -37,6 +37,12 @@
   .section-head .section-lead { @apply mt-2 text-base leading-6; }
   .section-head .eyebrow + .section-title { @apply mt-2; }
   .link-row { @apply flex items-center justify-between gap-3 rounded-xl border border-brand-line bg-surface-card px-4 py-3 text-sm font-semibold text-brand-ink transition-colors duration-fast hover:border-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2; }
+  /* Who can open an off-site link (_includes/link-meta.html): the host name and a
+     hairline chip per fact ("Members only", "Download"). The chip takes the colour
+     of the text around it, so it reads on a link row, in the rail and inside a
+     filled button alike, and forced-colors mode keeps its outline. */
+  .link-meta { @apply inline-flex min-w-0 max-w-full flex-wrap items-center gap-x-1.5 gap-y-0.5; }
+  .link-access { @apply inline-flex shrink-0 items-center gap-1 rounded-pill border border-current px-1.5 text-[11px] font-medium leading-4; }
   /* Home hero. The ground is `primary-dark` (the solid colour is the fallback and what
      forced-colors keeps) with a diagonal drift toward `primary` and a soft glow behind
      the right column, so the block has depth without a photograph. The ::before layer

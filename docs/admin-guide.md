@@ -370,14 +370,70 @@ A failure never fails the scaffold. If an image cannot be downloaded it is left 
 
 ## Other attachments and thumbnails
 
-- File-type schema fields (e.g. `deck_pdf`) store a path (`/catalog/<slug>/<filename>`) in front matter. The submission form asks for the file directly (GitHub's `upload` control), and the scaffolder commits it into the entry folder with the rest of the pull request. If the submitter skipped it, or the download was refused (the file has to actually be a PDF — the scaffolder checks the bytes, and says so on the pull request when it does not match), the path is still recorded and the file can be added to that folder in the same PR by hand.
+- File-type schema fields (e.g. `deck_pdf`) store a path (`/catalog/<slug>/<filename>`) in front matter. The submission form asks for the file directly (GitHub's `upload` control), and the scaffolder commits it into the entry folder with the rest of the pull request. If the submitter skipped it, the path is still recorded and the file can be added to that folder in the same PR by hand. If the download was refused (the file has to actually be a PDF: the scaffolder checks the bytes, and says so on the pull request when they do not match), the front matter keeps the attachment's URL, and the pull request note names the path to commit the file under instead. A file field may also hold any other `http(s)` URL. A pasted link that is not a GitHub attachment is stored as it is and not downloaded. That is the way to point at a file too big for the repository; see [Large files](#large-files).
 - `links`-type fields (shipped: `resources`) hold `{label, url}` pairs and need no files at all. They are the right home for a shared drive folder, a recorded demo, a model card or a vendor page — anything that does not deserve its own `url` field. Check that each one opens for someone outside the organization before merging.
 - Any `file` field flagged `thumbnail: true` in `_data/schema.yml` (shipped: `deck_pdf` → `deck.pdf`) gets a first-page thumbnail rendered automatically:
   - `thumbnails.yml` (**Generate entry media**) triggers on a PR touching any `*.pdf` file — or any `*.png`, `*.jpg`, `*.jpeg` or `*.webp`, since the same job also writes the responsive derivatives described above (it can't read the schema to narrow the trigger, since GitHub evaluates `paths:` before checkout — the schema-driven filtering happens in the next step instead).
-  - It runs `scripts/thumbnail_sources.mjs` to find PDF → `thumb.jpg` pairs under the schema's `entry.path` (default `catalog/`), skips empty placeholders and anything that isn't actually a PDF (checks the `%PDF` file signature), and renders each with `pdftoppm` (poppler-utils: `pdftoppm -jpeg -jpegopt quality=85 -scale-to-x 800 …`).
+  - It runs `scripts/thumbnail_sources.mjs` to find PDF → `thumb.jpg` pairs under the schema's `entry.path` (default `catalog/`), skips empty placeholders and anything that isn't actually a PDF (checks the `%PDF` file signature), and renders each one whose `thumb.jpg` is missing or out of date with `pdftoppm` (poppler-utils: `pdftoppm -jpeg -jpegopt quality=85 -scale-to-x 800 …`).
+  - "Out of date" is judged from git history, not file times: a thumbnail is re-rendered when the last commit that changed the PDF is neither the thumbnail's last commit nor an ancestor of it (`thumbnail_sources.mjs --stale`). A checkout gives every file the same fresh timestamp, so replacing a deck in a pull request used to leave its old thumbnail in place.
   - It commits `thumb.jpg`, the image derivatives and `_data/derivatives.json` back onto the PR branch itself with a plain `git add`/`commit`/`push`, then re-dispatches **Validate Content** and **Quality** so the new head commit carries both statuses.
   - **This does not run on PRs from forks** (the job is gated on `github.event.pull_request.head.repo.full_name == github.repository`, since fork PRs get a read-only token). For a fork-originated PR, run the workflow manually afterward via `workflow_dispatch`, or generate `thumb.jpg` locally and commit it.
   - `_includes/entry-thumb.html`'s fallback order for the card image: explicit `thumbnail` front-matter value → the first image of the entry's `images` field → an existing `<entry>/thumb.jpg` → nothing. There is no generated placeholder: an entry with no picture gets a text-first card, which is honest and reads better than a fake graphic.
+
+## Large files
+
+Size limits, from smallest to largest:
+- A GitHub issue attachment tops out at 25 MB, and the scaffolder's download cap is
+  the same 25 MB.
+- `npm run validate` warns at 10 MB and fails at 50 MB (`scripts/check_file_sizes.rb`).
+- GitHub refuses a push containing a file over 100 MB.
+- A Pages site should stay under 1 GB in total.
+
+A recorded webinar, a dataset or a long report belongs outside the repository. Link
+to it instead.
+
+**Why not Git LFS.** GitHub Pages does not serve LFS content. The published site gets
+the few-hundred-byte pointer file that LFS leaves in the repository, not the file, so
+every link to it downloads a text stub. LFS also bills storage and bandwidth against
+the account's quota on every clone and CI checkout. Don't track catalog files with LFS.
+
+**Where large public files go: one long-lived release.** A GitHub Release can hold
+assets of up to 2 GiB each, and they are served from GitHub's download hosts, not from
+the Pages site.
+1. On the repository, go to **Releases** → **Draft a new release**.
+2. Type a tag that will never be reused for a version, for example `files`, and
+   choose **Create new tag: files on publish**.
+3. Title it "Files". Untick **Set as the latest release**, so it never stands in for
+   a version.
+4. Drag the files into the assets box: the web UI takes up to 2 GiB per file.
+5. Publish. Assets on a draft release are not downloadable.
+6. Add files later with **Edit** on the same release. Don't create a new release per
+   file.
+
+Each asset's URL is stable:
+`https://github.com/<owner>/<repo>/releases/download/files/<file-name>`. Copy it
+from the asset link on the release page.
+
+**Who can download it.** An asset inherits the repository's visibility. On a public
+repository anyone can download it. On a private or internal repository only people
+with read access can, even when the Pages site itself is public. Check with a
+signed-out browser before you link it from a public entry.
+
+**Link it.** Put the URL in the entry's `file` field (a `file` field may hold an
+`http(s)` URL; the page then renders an outbound row, not a download) or in a
+`links` item. Then give the release a host rule in `_data/site.yml` so the link reads
+"File library · Download" instead of "github.com":
+
+```yaml
+link_access:
+  hosts:
+    - { match: "github.com/<owner>/<repo>/releases/download/", name: "File library", download: true }
+```
+
+See [configuration.md](configuration.md#link-access) for the rest of `link_access`,
+including labelling members-only workspaces (a Basecamp project, a shared drive).
+Replacing an asset with **Edit** → delete, then upload under the same name keeps the
+URL working.
 
 ## Cohorts and events (modules: `cohorts`, `events`)
 

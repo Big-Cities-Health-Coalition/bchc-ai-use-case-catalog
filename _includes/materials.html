@@ -1,4 +1,4 @@
-{%- comment -%} Grouped resource links. Usage: {% include materials.html materials=data.materials title="Learning materials" %} Local assigns are prefixed `mt_`. {%- endcomment -%}
+{%- comment -%} Grouped resource links. Usage: {% include materials.html materials=data.materials title="Learning materials" %} Local assigns are prefixed `mt_`. An item on a host site.yml `link_access` has a rule for also shows the rule's name and access chip (link-meta.html, `matched_only`). {%- endcomment -%}
 <section aria-labelledby="materials-heading" class="card">
   <div class="card-header">
     <h2 id="materials-heading" class="card-title">{{ include.title | default: 'Materials' }}</h2>
@@ -20,10 +20,10 @@
               <a class="link-row" href="{% if item.url contains '://' %}{{ item.url }}{% else %}{{ item.url | relative_url }}{% endif %}" {% if item.url contains '://' %}target="_blank" rel="noopener noreferrer"{% endif %}>
                 <span class="flex min-w-0 items-center gap-3">
                   <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-primary/10 text-brand-primary">{% include icon.html name=mt_icon_name size='sm' %}</span>
-                  <span class="flex min-w-0 flex-col"><span class="truncate">{{ item.title }}</span>{% if item.type %}<span class="text-xs font-medium uppercase tracking-wide text-brand-muted">{{ item.type }}</span>{% endif %}</span>{% if item.url contains '://' %}<span class="sr-only"> (opens in a new tab)</span>{% endif %}
+                  <span class="flex min-w-0 flex-col"><span class="truncate">{{ item.title }}</span>{% if item.type %}<span class="text-xs font-medium uppercase tracking-wide text-brand-muted">{{ item.type }}</span>{% endif %}{% include link-meta.html url=item.url class='link-host truncate text-xs font-normal text-brand-muted' matched_only=true %}</span>{% if item.url contains '://' %}<span class="sr-only"> (opens in a new tab)</span>{% endif %}
                 </span>
                 {% include icon.html name='arrow-right' size='sm' class='shrink-0 text-brand-primary transition group-hover:translate-x-0.5' %}
-              </a>
+              </a>{% include link-meta.html url=item.url part='after' class='mt-1 px-4 text-xs text-brand-muted' %}
             </li>
           {% endfor %}
         </ul>

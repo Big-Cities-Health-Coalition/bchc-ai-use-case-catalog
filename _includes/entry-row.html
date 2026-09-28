@@ -57,7 +57,7 @@ Local assigns are prefixed `er_`.
         {%- endfor -%}
         {%- if er_chips.size > 2 -%}
           {%- assign er_chip_more = er_chips.size | minus: 2 -%}
-          <li><span class="chip-neutral">+{{ er_chip_more }}<span class="sr-only"> more {{ er_chip_field.label | downcase | escape }}</span></span></li>
+          <li><span class="chip-neutral">+{{ er_chip_more }}<span class="sr-only"> more {{ er_chip_field.label | downcase_first | escape }}</span></span></li>
         {%- endif -%}
       </ul>
     {%- endif -%}

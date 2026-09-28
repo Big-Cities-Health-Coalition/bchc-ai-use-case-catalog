@@ -6,17 +6,17 @@
   /* A spec band, not a column grid: facts are of wildly unequal length, so equal
      columns spent about 85px per cell reserving room for the tallest one while the
      fact that needed the width ("Needs a paid license / Needs customization / Human
-     review built in") stacked into three lines. Each fact is now content-sized and
-     the band wraps; the right edge is left ragged on purpose — same idiom as the
-     chips, and inflating the last fact to fill the row would be a lie about its size.
+     review built in") stacked into three lines. Each fact starts content-sized and
+     the band wraps; then `grow` shares a row's leftover width among that row's facts.
+     Without it every fact's top rule stopped where its text did, so on a phone —
+     one fact per row — the dividers were a ragged set of different-length lines
+     rather than rules across the strip.
      The internal rules are each fact's own top and left border, pulled 1px outward so
-     they sit under the strip's outer border and neighbouring borders coincide: a short
-     last row then ends in plain card surface instead of the block of gap colour that a
-     gap-over-line ground would paint. */
+     they sit under the strip's outer border and neighbouring borders coincide. */
   .fact-strip { @apply panel flex flex-wrap items-start overflow-hidden; }
   /* The rules are `line` on `surface-tint` — present, but a step quieter than they
      were on white; the panel's own edge is its colour change, not a border. */
-  .fact { @apply -ml-px -mt-px min-w-0 max-w-full border-l border-t border-brand-line px-5 py-3.5; }
+  .fact { @apply -ml-px -mt-px min-w-0 max-w-full grow border-l border-t border-brand-line px-5 py-3.5; }
   .fact-label { @apply mb-1 text-[11px] font-semibold uppercase leading-4 tracking-[0.12em] text-brand-muted; }
   .fact-value { @apply flex flex-wrap items-center gap-x-3 gap-y-1 text-sm font-semibold leading-5 text-brand-ink; }
   .fact-item { @apply inline-flex min-w-0 items-center gap-1.5; }

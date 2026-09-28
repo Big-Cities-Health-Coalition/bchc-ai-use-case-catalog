@@ -255,6 +255,25 @@ test('the listbox announces how many suggestions are open, and clears on close',
   assert.equal(page.listbox.hidden, true);
 });
 
+test('Escape during the debounce keeps the listbox closed but still answers the query', async () => {
+  const page = await boot();
+  await page.type('notice');
+  assert.equal(page.input.getAttribute('aria-expanded'), 'true');
+
+  // A keystroke lands and Escape follows inside the 50ms debounce: the pending
+  // run must not reopen the popup the reader just dismissed, yet the grid has
+  // to reflect what is now in the box.
+  page.input.value = 'grant';
+  page.input.dispatchEvent(new page.window.Event('input', { bubbles: true }));
+  page.key('Escape');
+  await settle(page.window);
+
+  assert.equal(page.listbox.hidden, true);
+  assert.equal(page.input.getAttribute('aria-expanded'), 'false');
+  assert.equal(page.input.value, 'grant', 'the first Escape closes, it does not clear');
+  assert.deepEqual([...page.window.__searchMatches], ['grant-finder']);
+});
+
 test('a suggestion navigates on click, not only on mousedown', async () => {
   const page = await boot();
   await page.type('notice');

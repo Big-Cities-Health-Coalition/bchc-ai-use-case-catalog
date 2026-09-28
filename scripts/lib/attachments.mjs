@@ -18,6 +18,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import { MAX_REDIRECTS, TIMEOUT_MS, assertPublicHost, sniffImageType } from './images.mjs';
+import { siteHttpUrl } from './issue_body.mjs';
 
 /** GitHub caps an issue-form upload at 25 MB for documents. */
 export const MAX_ATTACHMENT_BYTES = 25 * 1024 * 1024;
@@ -59,6 +60,65 @@ export function matchesExtension(extension, bytes) {
 /** Extensions this module is willing to store, for an error message. */
 export function acceptedExtensions() {
   return ['.pdf', ...IMAGE_EXTENSIONS.keys()];
+}
+
+/**
+ * Is this a URL GitHub's own upload control wrote into the issue body?
+ *
+ * Those are the only answers worth fetching: the file lives on GitHub because
+ * the submitter dragged it into the form. Anything else pasted into a `file`
+ * question is a link to where the file is kept (a shared drive, a release
+ * asset, a document too big for the 25 MB cap) and stays a link.
+ *
+ * @param {string} url
+ * @returns {boolean}
+ */
+export function isGitHubAttachmentUrl(url) {
+  let parsed;
+  try {
+    parsed = new URL(String(url ?? '').trim());
+  } catch {
+    return false;
+  }
+  if (parsed.protocol !== 'https:') return false;
+  const host = parsed.hostname.toLowerCase();
+  if (host === 'user-images.githubusercontent.com' || host === 'private-user-images.githubusercontent.com') {
+    return true;
+  }
+  if (host !== 'github.com') return false;
+  // Current uploads, then the older per-repository form (/<owner>/<repo>/files/<id>/<name>).
+  return (
+    /^\/user-attachments\/(?:files|assets)\//.test(parsed.pathname) ||
+    /^\/[^/]+\/[^/]+\/files\/\d+\//.test(parsed.pathname)
+  );
+}
+
+/**
+ * Should the scaffolder fetch this `file`/`image` answer into the entry folder?
+ * A `file` answer on any host but GitHub's upload store is a link the entry
+ * keeps (the page renders it as an external row); an `image` has no link form.
+ *
+ * @param {string} fieldType the schema field's `type`
+ * @param {string} url
+ * @returns {boolean}
+ */
+export function shouldDownload(fieldType, url) {
+  return fieldType !== 'file' || isGitHubAttachmentUrl(url);
+}
+
+/**
+ * The front matter value after a download attempt. A `file` that could not be
+ * fetched keeps the URL it was attached at, rather than naming a path in the
+ * entry folder that no file was ever written to — provided the page can render
+ * that URL (`siteHttpUrl`); otherwise the path, which a maintainer fills.
+ *
+ * @param {string} fieldType the schema field's `type`
+ * @param {{saved: boolean, publicPath: string, url: string}} outcome
+ * @returns {string}
+ */
+export function attachmentValue(fieldType, { saved, publicPath, url }) {
+  if (saved) return publicPath;
+  return fieldType === 'file' ? siteHttpUrl(url) || publicPath : '';
 }
 
 /**

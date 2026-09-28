@@ -73,6 +73,13 @@
      visible when the control itself is filled with `primary` (the gap separates
      the two blues). A translucent ring (primary/30 = 1.67:1) failed AA non-text. */
   :focus-visible { @apply outline-none ring-2 ring-brand-primary ring-offset-2 ring-offset-surface-card; }
+  /* On the dark grounds (the footer, and the hero's links) a `primary` ring sits on
+     `primary_dark` — about 1.6:1 in the default theme, 2.7:1 in a red-on-near-black
+     one. The ring turns `on_dark` with a gap in the ground colour instead: the gate
+     in assets/js/configurator/color.js already holds on_dark/primary_dark to 4.5:1,
+     so the ring clears 3:1 in every theme that passes validation. Components that
+     set their own on-dark ring (.btn-on-dark, .hero-latest-link) agree with it. */
+  .site-footer :focus-visible, .hero a:focus-visible { @apply ring-brand-on-dark ring-offset-brand-primary-dark; }
   ::selection { @apply bg-brand-primary/15; }
   /* Tailwind 3's @layer is a sort order, not a native cascade layer, so a display utility
      on an element outranks the plain [hidden] attribute. Doubling the attribute makes this

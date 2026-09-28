@@ -456,6 +456,181 @@ describe('assistive-technology flows', { skip: SKIP, concurrency: false }, () =>
     }
   });
 
+  test('focus rings on the header, hero and footer hold 3:1 against their ground', async () => {
+    const page = await openPage(browser, '/');
+    // Several links animate their box-shadow (`transition`), so a ring read
+    // straight after Tab is still transparent and would be skipped as "none".
+    await page.addStyleTag({ content: '*, *::before, *::after { transition: none !important; }' });
+    const checked = [];
+    const failures = [];
+    for (let i = 0; i < 250; i += 1) {
+      const stop = await tab(page);
+      if (stop.onBody) break;
+      const ring = await page.evaluate(() => {
+        const node = document.activeElement;
+        const zone = node.closest('header, .hero, .site-footer');
+        if (!zone) return null;
+        const parse = (value) => {
+          const m = String(value).match(/rgba?\(([^)]+)\)/);
+          if (!m) return null;
+          const [r, g, b, a = 1] = m[1]
+            .split(/[\s,/]+/)
+            .filter(Boolean)
+            .map(Number);
+          return { r, g, b, a };
+        };
+        const over = (top, under) => ({
+          r: top.r * top.a + under.r * (1 - top.a),
+          g: top.g * top.a + under.g * (1 - top.a),
+          b: top.b * top.a + under.b * (1 - top.a),
+          a: 1,
+        });
+        // Tailwind's ring is the widest non-transparent box-shadow; its offset
+        // (if any) is the narrower one painted in the ground colour inside it.
+        const shadows = getComputedStyle(node)
+          .boxShadow.split(/,(?![^(]*\))/)
+          .map((part) => ({ color: parse(part), spread: parseFloat(part.trim().split(/\s+/).pop()) }))
+          .filter((s) => s.color && s.color.a > 0 && s.spread > 0)
+          .sort((x, y) => y.spread - x.spread);
+        if (shadows.length === 0) return { none: true };
+        // What the ring is drawn on: whatever is painted just outside the
+        // control, not only its ancestors — the hero's search button sits on
+        // top of the (sibling) white input. Backgrounds are composited from
+        // the page white up, since the header is translucent.
+        node.scrollIntoView({ block: 'center' });
+        const box = node.getBoundingClientRect();
+        const x = box.left >= 2 ? box.left - 1 : box.right + 1;
+        const layers = [];
+        for (const el of document.elementsFromPoint(x, box.top + box.height / 2)) {
+          if (el === node || node.contains(el)) continue;
+          const bg = parse(getComputedStyle(el).backgroundColor);
+          if (bg && bg.a > 0) layers.push(bg);
+          if (bg && bg.a === 1) break;
+        }
+        if (layers.length === 0) return { unmeasured: true };
+        const ground = layers.reverse().reduce((acc, bg) => over(bg, acc), { r: 255, g: 255, b: 255, a: 1 });
+        const color = over(shadows[0].color, ground);
+        const lum = ({ r, g, b }) => {
+          const ch = (v) => ((v /= 255) <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
+          return 0.2126 * ch(r) + 0.7152 * ch(g) + 0.0722 * ch(b);
+        };
+        const [hi, lo] = [lum(color), lum(ground)].sort((x, y) => y - x);
+        return {
+          zone: zone.matches('header') ? 'header' : zone.matches('.hero') ? 'hero' : 'footer',
+          ratio: Math.round(((hi + 0.05) / (lo + 0.05)) * 100) / 100,
+        };
+      });
+      if (!ring || ring.none) continue;
+      assert.ok(!ring.unmeasured, `${describeStop(stop)}: nothing painted beside it to measure against`);
+      checked.push(ring.zone);
+      if (ring.ratio < 3) failures.push(`${ring.zone} ${describeStop(stop)}: ${ring.ratio}:1`);
+    }
+    for (const zone of ['header', 'footer']) {
+      assert.ok(checked.includes(zone), `no focusable control with a ring was reached in the ${zone}`);
+    }
+    assert.deepEqual(failures, [], `focus ring below 3:1 against its ground:\n  ${failures.join('\n  ')}`);
+    await page.close();
+  });
+
+  test('at 320px a long site name wraps in the header and a long list value wraps on the entry page', async (t) => {
+    const page = await openPage(browser, '/', { width: 320, height: 640 });
+    // The shipped name may already fit; the one a real deployment uses may not.
+    const name = await page.evaluate(() => {
+      const span = document.querySelector('.site-brand .flex-col > :last-child');
+      span.textContent = 'Public Health Digital Use Case Catalog';
+      const style = getComputedStyle(span);
+      return {
+        clipped: span.scrollWidth > span.clientWidth + 1 || span.scrollHeight > span.clientHeight + 1,
+        lines: Math.round(span.getBoundingClientRect().height / parseFloat(style.lineHeight)),
+        overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      };
+    });
+    assert.equal(name.clipped, false, 'the site name is cut off with an ellipsis');
+    assert.equal(name.lines, 2, `the site name should wrap to two lines, took ${name.lines}`);
+    assert.ok(name.overflow <= 0, `the header pushes the page ${name.overflow}px sideways`);
+    await page.close();
+
+    if (emptyCatalog) return t.skip(CATALOG_SKIP);
+    const docs = (await (await fetch(`${BASE}/search.json`)).json()).docs;
+    let entry = null;
+    for (const doc of docs.slice(0, 20)) {
+      const html = await (await fetch(`${BASE}${new URL(doc.url, BASE).pathname}`)).text();
+      if (html.includes('chip-wrap')) {
+        entry = new URL(doc.url, BASE).pathname;
+        break;
+      }
+    }
+    if (!entry) return t.skip('no entry in the first 20 renders a list value');
+    const chipPage = await openPage(browser, entry, { width: 320, height: 640 });
+    const chip = await chipPage.evaluate(() => {
+      const el = document.querySelector('.chip-wrap');
+      el.textContent =
+        'A long free-text list value with an unbroken token https://example.org/a-very-long-path-without-breaks-0123456789';
+      const box = el.getBoundingClientRect();
+      return {
+        right: box.right,
+        width: document.documentElement.clientWidth,
+        overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      };
+    });
+    assert.ok(chip.right <= chip.width, `the list chip ends at ${chip.right}px on a ${chip.width}px page`);
+    assert.ok(chip.overflow <= 0, `the list chip pushes the page ${chip.overflow}px sideways`);
+    await chipPage.close();
+  });
+
+  test('entry layout: every fact row spans the strip, and a short entry opens no gap beside the rail', async (t) => {
+    if (emptyCatalog) return t.skip(CATALOG_SKIP);
+    const docs = (await (await fetch(`${BASE}/search.json`)).json()).docs;
+    let entry = null;
+    for (const doc of docs.slice(0, 20)) {
+      const html = await (await fetch(`${BASE}${new URL(doc.url, BASE).pathname}`)).text();
+      if (html.includes('class="fact-strip')) {
+        entry = new URL(doc.url, BASE).pathname;
+        break;
+      }
+    }
+    if (!entry) return t.skip('no entry in the first 20 renders a fact strip');
+
+    for (const width of [390, 1280]) {
+      const page = await openPage(browser, entry, { width, height: 900 });
+      const short = await page.evaluate(() => {
+        const strip = document.querySelector('.fact-strip').getBoundingClientRect();
+        const rows = new Map();
+        for (const fact of document.querySelectorAll('.fact-strip .fact')) {
+          const box = fact.getBoundingClientRect();
+          const key = Math.round(box.top);
+          rows.set(key, Math.max(rows.get(key) ?? 0, box.right));
+        }
+        return [...rows.values()].map((right) => Math.round(strip.right - right)).filter((gap) => gap > 1);
+      });
+      assert.deepEqual(short, [], `${width}px: fact rows stop short of the strip's edge by these px`);
+      await page.close();
+    }
+
+    // Cut the entry down to one line per row, so the rail is the tallest thing
+    // in the grid; its surplus must not open empty track between the rows.
+    const page = await openPage(browser, entry, { width: 1280, height: 900 });
+    const gaps = await page.evaluate(() => {
+      const article = document.querySelector('article');
+      const [header, facts, body] = [1, 2, 3].map((row) =>
+        [...article.children].find((child) => getComputedStyle(child).gridRowStart === String(row))
+      );
+      const line = (text) => Object.assign(document.createElement('p'), { textContent: text });
+      facts.replaceChildren(line('One short line.'));
+      body.replaceChildren(line('A one-paragraph body.'));
+      const bottom = (el) => Math.max(...[...el.children].map((c) => c.getBoundingClientRect().bottom));
+      const top = (el) => Math.min(...[...el.children].map((c) => c.getBoundingClientRect().top));
+      const px = (el) => parseFloat(getComputedStyle(el).marginTop);
+      return {
+        belowHeader: Math.round(top(facts) - bottom(header) - px(facts)),
+        aboveBody: Math.round(top(body) - bottom(facts) - px(body)),
+      };
+    });
+    assert.ok(gaps.belowHeader <= 1, `${gaps.belowHeader}px of empty track below the header`);
+    assert.ok(gaps.aboveBody <= 1, `${gaps.aboveBody}px of empty track above the body`);
+    await page.close();
+  });
+
   test('the submission form reports its errors where a reader is', async () => {
     const page = await openPage(browser, '/submit/');
 

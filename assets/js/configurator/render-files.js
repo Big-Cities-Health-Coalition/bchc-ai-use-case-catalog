@@ -44,7 +44,8 @@ export const HEADERS = {
     'that call for closer review; the scaffolded pull request says so).\n' +
     'Under `entry`, status_key / deprecated_value / status_scaffold_value /\n' +
     'status_approved_value point at the review-status field, require_link\n' +
-    'makes "no link anywhere" a validation failure, and contributor_key names the\n' +
+    'makes "no link anywhere" a validation failure (require_public_link does the\n' +
+    'same for "no link a visitor can open"), and contributor_key names the\n' +
     'field the monthly metrics count contributing organizations from.\n' +
     'Only one field may be `markdown` — it becomes the page body. `title`, `slug`,\n' +
     '`summary`, `published`, `updated`, `thumbnail` and `featured` always exist on\n' +

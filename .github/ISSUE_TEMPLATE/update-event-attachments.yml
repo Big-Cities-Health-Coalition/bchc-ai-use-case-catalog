@@ -33,7 +33,7 @@ body:
     id: attachments
     attributes:
       label: "Attachments"
-      description: "One per line, formatted as `Title | URL`."
+      description: "One per line, formatted as `Title | URL`. Each URL must start with http:// or https://."
       placeholder: |
         Agenda (PDF) | https://example.org/agenda.pdf
         Slides (PDF) | https://example.org/slides.pdf

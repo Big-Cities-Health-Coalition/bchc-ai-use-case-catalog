@@ -182,6 +182,40 @@ export function parseBoolean(raw) {
   return /^(true|yes|y|on|1|checked|\[x\])$/i.test(String(raw ?? '').trim());
 }
 
+/**
+ * An http(s) URL the site can render: a lower-case scheme and nothing that
+ * would break out of an HTML attribute. The same test as the page's `http_url`
+ * filter (_plugins/theme_filters.rb) and the validator's `http_url?`
+ * (scripts/check_front_matter.rb), so a value a script writes is one the page
+ * renders and `npm run validate` accepts.
+ */
+export const SITE_HTTP_URL = /^https?:\/\/[^\s"'<>]+$/;
+
+/**
+ * The URL as the site wants it, or '' when it cannot be one. The scheme is
+ * lower-cased first (a browser takes `HTTPS://`, the page's test does not);
+ * anything else is left exactly as written.
+ * @param {unknown} value
+ * @returns {string}
+ */
+export function siteHttpUrl(value) {
+  const url = String(value ?? '')
+    .trim()
+    .replace(/^https?:/i, (scheme) => scheme.toLowerCase());
+  return SITE_HTTP_URL.test(url) ? url : '';
+}
+
+/**
+ * `text` as a markdown code span for a pull request or issue comment, so a
+ * submitter's value renders literally and an `@name` in it pings nobody.
+ * Backticks become `'`: a code span cannot contain its own delimiter.
+ * @param {unknown} text
+ * @returns {string}
+ */
+export function codeSpan(text) {
+  return `\`${String(text).replace(/`/g, "'")}\``;
+}
+
 /** @returns {boolean} true when the string is an http(s) URL. */
 export function isHttpUrl(value) {
   return /^https?:\/\/\S+$/i.test(String(value ?? '').trim());

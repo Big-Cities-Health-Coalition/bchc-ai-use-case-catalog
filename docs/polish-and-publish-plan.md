@@ -3,7 +3,7 @@
 - Status: in execution
 - Plan date: 2026-08-22
 - Parent source of truth: [`crypticpy/phct`](https://github.com/crypticpy/phct)
-- BCHC demo deployment: [`crypticpy/bchc-ai-use-case-catalog`](https://github.com/crypticpy/bchc-ai-use-case-catalog)
+- BCHC demo deployment: [`Big-Cities-Health-Coalition/use-case-catalog`](https://github.com/Big-Cities-Health-Coalition/use-case-catalog)
 - Governing audit plan: [release-readiness-plan.md](release-readiness-plan.md)
 - Evidence ledger: [release-readiness-status.md](release-readiness-status.md)
 

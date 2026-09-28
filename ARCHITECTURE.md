@@ -65,7 +65,8 @@ a hint to the schema instead. `docs/content-model.md` documents each hint's exac
 | File | What it does |
 |---|---|
 | `schema_filters.rb` | Liquid filters that answer schema questions so templates stay declarative: `sort_by_weight`, `facet_fields`, `form_fields`, `fields_in_group`, `groups_for`, `groups_placed`, `card_slot`, `card_fields`, `option_meta`, `option_short`, `as_list`, `image_item`, `first_image`. |
-| `theme_filters.rb` | Presentation helpers: `hex_to_rgb`, `facet_values`, `slugify_list`, `link_host`, `query_encode`. |
+| `theme_filters.rb` | Presentation helpers: `hex_to_rgb`, `facet_values`, `slugify_list`, `link_host`, `http_url`, `link_access`, `query_encode`. |
+| `link_access.rb` | Plain-Ruby matcher behind the `link_access` filter: resolves a URL against `_data/site.yml`'s optional `link_access` host rules and levels. `scripts/lib/link_access_check.rb` validates with the same module, so the page and `npm run validate` agree. Registers nothing with Jekyll. |
 | `search_index.rb` | Generates `/search.json` from fields marked `search`/`facet` (plus a slice of the write-up) and the synonym map from `_data/search.yml`, consumed by `assets/js/search.js` (Lunr). |
 | `facet_pages.rb` | Generates the crawlable browse surface from the same facet fields: one page per facet value at `/<entry.path>/<field>/<value>/` plus the A–Z directory, bounded by `_data/search.yml`'s `landing` block. See `docs/search.md`. |
 | `modules.rb` | At `post_read`, drops every page under a disabled module's path (from `_data/modules.yml`, `catalog` derived from the schema's `entry.path`) so it is never built, indexed or listed in the sitemap. |

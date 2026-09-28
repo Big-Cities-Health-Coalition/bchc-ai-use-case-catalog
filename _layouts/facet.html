@@ -54,7 +54,11 @@ Local assigns are prefixed `fct_`.
 <section aria-labelledby="facet-results-heading">
   <h2 class="sr-only" id="facet-results-heading">{{ fct_plural }} tagged {{ page.facet_value }}</h2>
   <ul role="list" class="entry-grid">
-    {% for fct_e in fct_entries %}{% assign fct_lcp = false %}{% if forloop.first %}{% assign fct_lcp = true %}{% endif %}{% include entry-card.html entry=fct_e eager=fct_lcp fetchpriority=fct_lcp %}{% endfor %}
+    {%- comment -%} The first card in the first row that has a picture is the LCP
+    candidate — see the note in _layouts/catalog.html. {%- endcomment -%}
+    {%- assign fct_lcp_url = '' -%}
+    {%- for fct_e in fct_entries limit: 3 -%}{%- capture fct_probe -%}{% include entry-thumb.html entry=fct_e %}{%- endcapture -%}{%- assign fct_probe = fct_probe | strip -%}{%- if fct_probe != '' -%}{%- assign fct_lcp_url = fct_e.url -%}{%- break -%}{%- endif -%}{%- endfor %}
+    {% for fct_e in fct_entries %}{% assign fct_lcp = false %}{% if fct_e.url == fct_lcp_url %}{% assign fct_lcp = true %}{% endif %}{% include entry-card.html entry=fct_e eager=fct_lcp fetchpriority=fct_lcp %}{% endfor %}
   </ul>
   {%- if fct_shown < fct_count %}
   <p class="mt-6 text-sm text-brand-muted">Showing the {{ fct_shown }} most recent of {{ fct_count }}. <a class="font-medium text-brand-primary hover:underline" href="{{ page.facet_filter_url | relative_url }}">See them all in {{ fct_plural | downcase }} →</a></p>

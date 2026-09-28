@@ -98,6 +98,41 @@ describe('preset build matrix', { skip: ready.ok ? false : ready.reason, concurr
       }
     });
 
+    test(`${variant.id}: the catalog eager-loads the first card that has a picture, and only that one`, () => {
+      if (variant.entries === 'none') return;
+      const { dir, siteDir } = built.get(variant.id);
+      const cards = [
+        ...page(siteDir, entryNoun(dir).path).querySelectorAll('[data-entry-grid] [data-entry]'),
+      ];
+      assert.ok(cards.length > 0, 'the catalog grid has no cards');
+      // The first-row window the layout probes (_layouts/catalog.html).
+      const candidate = cards.slice(0, 3).find((card) => card.querySelector('img'));
+      for (const card of cards) {
+        for (const img of card.querySelectorAll('img')) {
+          const id = card.getAttribute('data-entry-id');
+          if (card === candidate) {
+            assert.equal(img.getAttribute('loading'), 'eager', `${id}: the LCP candidate loads lazily`);
+            assert.equal(
+              img.getAttribute('fetchpriority'),
+              'high',
+              `${id}: the LCP candidate has no fetchpriority`
+            );
+          } else {
+            assert.equal(
+              img.getAttribute('loading'),
+              'lazy',
+              `${id}: a card that is not the LCP candidate loads eagerly`
+            );
+            assert.equal(
+              img.hasAttribute('fetchpriority'),
+              false,
+              `${id}: a second image claims fetchpriority`
+            );
+          }
+        }
+      }
+    });
+
     test(`${variant.id}: the Atom feed lists the entries`, () => {
       const { dir, siteDir } = built.get(variant.id);
       const feed = path.join(siteDir, entryNoun(dir).path, 'feed.xml');
@@ -308,6 +343,103 @@ describe('preset build matrix', { skip: ready.ok ? false : ready.reason, concurr
         assert.ok(hrefs.has(url), `${event.name} (${url}) is not linked from /cohorts/2026/`);
         assert.ok(fs.existsSync(path.join(siteDir, url, 'index.html')), `${url} was not built`);
       }
+    }
+  );
+
+  test(
+    'all-modules: a catalog whose newest entry has no picture still eager-loads a card image',
+    { skip: needs('all-modules') },
+    () => {
+      const { dir, siteDir } = built.get('all-modules');
+      const catalog = page(siteDir, entryNoun(dir).path);
+      const cards = [...catalog.querySelectorAll('[data-entry-grid] [data-entry]')];
+      // The variant strips the newest entry's pictures, so this is the case the
+      // per-variant check above has to get right rather than skip past.
+      assert.equal(
+        cards[0].querySelector('img'),
+        null,
+        'precondition: the first card should have no picture'
+      );
+      const eager = [...catalog.querySelectorAll('[data-entry-grid] img[loading="eager"]')];
+      // The layout only looks at the first row (3 cards): a picture below it is
+      // below the fold. The updater runs this suite on a deployment's own
+      // entries, whose first row may have no picture at all.
+      const firstPicture = cards
+        .slice(0, 3)
+        .map((card) => card.querySelector('img'))
+        .find(Boolean);
+      if (!firstPicture) {
+        assert.equal(eager.length, 0, 'no picture in the first row, so nothing should load eagerly');
+        return;
+      }
+      assert.equal(eager.length, 1, `expected one eager card image, found ${eager.length}`);
+      assert.equal(eager[0], firstPicture, 'the eager image should be the first picture in the first row');
+      assert.equal(eager[0].getAttribute('fetchpriority'), 'high');
+    }
+  );
+
+  test(
+    'all-modules: `demo_message` replaces the banner sentence and its setup links',
+    { skip: needs('all-modules') },
+    () => {
+      const { siteDir } = built.get('all-modules');
+      const banner = page(siteDir, '').querySelector('[data-component="demo-banner"]');
+      assert.ok(banner, 'the demo banner is missing');
+      const text = banner.textContent.replace(/\s+/g, ' ').trim();
+      assert.match(
+        text,
+        /^Demo content Entries here are provisional until the review panel signs them off\.$/u
+      );
+      const links = [...banner.querySelectorAll('a')].map((a) => a.getAttribute('href'));
+      assert.deepEqual(
+        links,
+        ['https://example.org/review-panel'],
+        'the markdown link should be the only link'
+      );
+      assert.equal(banner.querySelector('p p'), null, 'markdownify left a <p> inside the banner paragraph');
+    }
+  );
+
+  test(
+    'shipped: with no `demo_message` the banner keeps its default copy and links',
+    { skip: needs('shipped') },
+    () => {
+      const { siteDir } = built.get('shipped');
+      const banner = page(siteDir, '').querySelector('[data-component="demo-banner"]');
+      assert.ok(banner, 'the demo banner is missing');
+      assert.match(
+        banner.textContent.replace(/\s+/g, ' '),
+        /Everything on this site is sample data shipped with the template\. Configure it/u
+      );
+      assert.ok(banner.querySelector('a[href$="/setup/"]'), 'the default banner lost its setup link');
+    }
+  );
+
+  test(
+    'all-modules: an attached deck keeps the acronym in its download label',
+    { skip: needs('all-modules') },
+    () => {
+      const { dir, siteDir } = built.get('all-modules');
+      const schema = yaml.load(fs.readFileSync(path.join(dir, '_data', 'schema.yml'), 'utf8'));
+      const deck = schema.fields.find((field) => field.type === 'file' && field.thumbnail);
+      const withDeck = fs
+        .readdirSync(path.join(dir, entryNoun(dir).path), { withFileTypes: true })
+        .find(
+          (item) =>
+            item.isDirectory() && fs.existsSync(path.join(dir, entryNoun(dir).path, item.name, deck.filename))
+        );
+      assert.ok(withDeck, 'precondition: the variant should have attached a deck');
+      const text = page(siteDir, `${entryNoun(dir).path}/${withDeck.name}`).body.textContent.replace(
+        /\s+/g,
+        ' '
+      );
+      const expected = `Download ${deck.label.charAt(0).toLowerCase()}${deck.label.slice(1)}`;
+      assert.ok(text.includes(expected), `expected "${expected}" on the entry page`);
+      assert.equal(
+        text.includes(`Download ${deck.label.toLowerCase()}`),
+        false,
+        'the label was lower-cased whole'
+      );
     }
   );
 

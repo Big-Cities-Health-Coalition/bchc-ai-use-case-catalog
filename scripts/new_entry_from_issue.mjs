@@ -29,16 +29,18 @@ import * as yaml from 'js-yaml';
 import { fail, setOutput } from './lib/actions_output.mjs';
 import { frontMatter } from './lib/yaml.mjs';
 import { escalations, reviewChecklist } from './lib/review.mjs';
-import { downloadAttachment } from './lib/attachments.mjs';
+import { attachmentValue, downloadAttachment, shouldDownload } from './lib/attachments.mjs';
 import { downloadImages, MAX_FILES } from './lib/images.mjs';
 import {
   NO_RESPONSE,
+  codeSpan,
   coerce,
   parseAttachmentRef,
   parseImageRefs,
   parseIssueForm,
   rawValue,
   slugFallback,
+  siteHttpUrl,
   slugify,
   uniqueSlug,
 } from './lib/issue_body.mjs';
@@ -202,7 +204,10 @@ for (const field of fields.filter((f) => f.type === 'images')) {
 // deck or the photo is already on GitHub by the time this runs: fetch it into
 // the entry folder and the pull request carries the file, not a promise that a
 // maintainer will add it. Nothing attached keeps the previous behaviour — the
-// front matter still names the path the schema expects.
+// front matter still names the path the schema expects. A `file` answer that
+// links somewhere other than GitHub's upload store (a file over the 25 MB cap,
+// or one kept in a shared workspace) is stored as that link and not fetched;
+// the entry page renders it as an external row.
 
 /** @type {Record<string, string>} */
 const attachmentValues = {};
@@ -220,6 +225,18 @@ for (const field of fields.filter((f) => f.type === 'file' || f.type === 'image'
     attachmentValues[field.key] = field.type === 'file' ? publicPath : '';
     continue;
   }
+  if (!shouldDownload(field.type, ref.url)) {
+    // Stored only in the shape the page renders and the validator accepts; a
+    // link that cannot be one is reported rather than committed as a dead row.
+    const link = siteHttpUrl(ref.url);
+    attachmentValues[field.key] = link || publicPath;
+    if (!link) {
+      warnings.push(
+        `\`${field.key}\`: the link ${codeSpan(ref.url)} could not be used — a link must start with http:// or https:// and contain no spaces, quotes or angle brackets. The front matter names \`${publicPath}\` instead; commit the file there, or replace it with a working link, before merging.`
+      );
+    }
+    continue;
+  }
   if (DRY_RUN) {
     attachmentValues[field.key] = publicPath;
     warnings.push(`Dry run: ${ref.url} was parsed but not downloaded.`);
@@ -235,11 +252,22 @@ for (const field of fields.filter((f) => f.type === 'file' || f.type === 'image'
       writeFileSync: (file, data) => fs.writeFileSync(insideEntryDir(file), data),
     },
   });
+  attachmentValues[field.key] = attachmentValue(field.type, {
+    saved: result.saved,
+    publicPath,
+    url: ref.url,
+  });
   if (result.saved) {
-    attachmentValues[field.key] = publicPath;
     savedAttachments.push(publicPath);
+  } else if (field.type === 'file' && attachmentValues[field.key] !== publicPath) {
+    warnings.push(
+      `${result.warning} The front matter keeps the link for now; commit the file as \`${publicPath}\` in this pull request and point \`${field.key}\` at it if it should be included.`
+    );
+  } else if (field.type === 'file') {
+    warnings.push(
+      `${result.warning} Commit the file as \`${publicPath}\` in this pull request if it should be included.`
+    );
   } else {
-    attachmentValues[field.key] = field.type === 'file' ? publicPath : '';
     warnings.push(`${result.warning} Re-upload it in this pull request if it should be included.`);
   }
 }

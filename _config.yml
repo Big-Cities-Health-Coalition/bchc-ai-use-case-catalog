@@ -4,8 +4,8 @@
 # Keep this file to build mechanics. `title`/`description` here are fallbacks for
 # SEO tags; the setup wizard keeps them in sync with _data/site.yml.
 
-title: "AI Use Case Catalog"
-description: "A shared catalog of AI use cases, tools, and lessons learned from Big Cities Health Coalition member health departments."
+title: "Public Health Digital Use Case Catalog"
+description: "A shared catalog of digital tools, data projects and AI work from Big Cities Health Coalition member health departments, so each city can reuse what another has already built."
 url: ""
 baseurl: ""
 theme: null

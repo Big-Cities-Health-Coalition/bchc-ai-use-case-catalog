@@ -10,11 +10,13 @@ sample: true
 impact: "92% of drafted summaries passed the weekly style review without edits"
 organization: "Cedar Valley County Health Department"
 review_status: "Reviewed & approved"
-solution_type: "Source code"
+solution_type:
+  - "Generative AI tool"
+  - "Data pipeline or integration"
 use_case_category: "Communications, media & writing"
 area:
   - "Environmental health"
-  - "Communications & outreach"
+  - "Communications and community engagement"
 stage: "Idea / exploring"
 ai_role: "AI is part of the solution"
 ai_types:
@@ -37,6 +39,7 @@ resources:
 screenshots:
   - src: /catalog/restaurant-inspection-summaries/screenshots/01.png
     alt: "Review table pairing inspector code citations with drafted resident summaries, style rule checks and an approve or reject decision."
+sharing: "Open-source code"
 license: "MIT"
 portability: "Partially — with rework"
 portability_notes: "The summarisation code is plain Python; the prototype calls Vertex AI and would need a different model client elsewhere."

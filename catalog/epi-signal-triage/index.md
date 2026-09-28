@@ -12,11 +12,13 @@ sample: true
 impact: "Cut daily alert review from 90 to 30 minutes for two analysts"
 organization: "Lakeshore City Department of Public Health"
 review_status: "Reviewed & approved"
-solution_type: "Source code"
+solution_type:
+  - "Generative AI tool"
+  - "AI/ML model"
 use_case_category: "Coding & brainstorming"
 area:
-  - "Epidemiology & surveillance"
-  - "Data & informatics"
+  - "Epidemiology and surveillance"
+  - "Data modernization and informatics"
 stage: "Pilot"
 ai_role: "AI is part of the solution"
 ai_types:
@@ -46,6 +48,7 @@ screenshots:
     alt: "Triage queue listing seven ranked syndromic signals with area, what changed, signal strength and status."
   - src: /catalog/epi-signal-triage/screenshots/02.png
     alt: "Draft triage note for a gastrointestinal signal beside a bar chart of daily visit counts, marked as awaiting analyst review."
+sharing: "Open-source code"
 license: "MIT"
 portability: "Partially — with rework"
 portability_notes: "The triage code and prompts are portable Python. The alert export reader is written against our ESSENCE extract format and the deployment scripts assume Azure Functions."

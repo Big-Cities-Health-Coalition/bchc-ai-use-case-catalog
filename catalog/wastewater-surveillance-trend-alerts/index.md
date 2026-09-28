@@ -7,11 +7,13 @@ published: "2026-08-26"
 featured: false
 thumbnail: ""
 organization: Harborview Metro Health District
-solution_type: Dashboard or report
+solution_type:
+  - "AI/ML model"
+  - "Data pipeline or integration"
 use_case_category: Operations & logistics
 area:
-  - Epidemiology & surveillance
-  - Data & informatics
+  - "Epidemiology and surveillance"
+  - "Communicable disease"
 stage: In production
 summary: Watches the weekly wastewater sampling results for the metro's five treatment plants, flags statistically unusual rises for COVID, flu and RSV, and posts a short plain-language alert to the epi team's channel before the Monday briefing.
 impact: Epi team saw the winter flu rise nine days before case reports confirmed it
@@ -32,14 +34,15 @@ readiness:
   - Guided setup
   - Needs customization
   - Human review built in
-repo_url: "https://github.com/example/wastewater-trend-alerts"
+repo_url: ""
 demo_url: ""
 docs_url: ""
 resources: []
 screenshots: []
 deck_pdf: "/catalog/wastewater-surveillance-trend-alerts/deck.pdf"
-license: MIT
-access_terms: ""
+sharing: "Code on request"
+license: "Not open source — available on request"
+access_terms: "The ingest, trend model and alert code are shared with other health departments on request; email the contact below."
 portability: "Partially — with rework"
 portability_notes: "The trend model and alert text generation are platform-agnostic Python; the ingest step assumes our LIMS export format and would need a new adapter for a different lab system."
 reused_from: []
@@ -67,4 +70,4 @@ contact_email: "priya.raman@example.org"
 
 We started posting wastewater trends by hand in 2024 and kept missing rises that were obvious in hindsight. The alerting version fits a seasonal baseline per plant and per target, flags a sustained two-sample rise above the baseline's expected band, and drafts a three-sentence note an epidemiologist approves before it posts. The human approval step matters: about one flag in five is a sampling artifact, and the reviewer catches those in under a minute.
 
-Setup for another jurisdiction means pointing the ingest at your lab export, setting plant service-area names, and two seasons of history for the baseline. The alert prompt is in the repo and is deliberately boring — it summarizes numbers the model computed, it never speculates about causes.
+Setup for another jurisdiction means pointing the ingest at your lab export, setting plant service-area names, and two seasons of history for the baseline. The alert prompt comes with the code and is deliberately boring — it summarizes numbers the model computed, it never speculates about causes.

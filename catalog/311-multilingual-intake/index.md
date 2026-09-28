@@ -12,12 +12,14 @@ sample: true
 impact: "Median time from complaint to routed work order fell from two days to four minutes"
 organization: "Riverbend County Public Health"
 review_status: "Reviewed & approved"
-solution_type: "Cloud deployment"
+solution_type:
+  - "Generative AI tool"
+  - "Workflow automation"
 use_case_category: "Administrative & task automation"
 area:
   - "Environmental health"
-  - "Communications & outreach"
-  - "IT & operations"
+  - "Communications and community engagement"
+  - "Agency operations and administration"
 stage: "In production"
 ai_role: "AI is part of the solution"
 ai_types:
@@ -46,6 +48,7 @@ resources:
 screenshots:
   - src: /catalog/311-multilingual-intake/screenshots/01.png
     alt: "Inspector queue showing translated complaints with the original language, assigned category, urgency tier and routing status."
+sharing: "Code on request"
 license: "Not open source — available on request"
 access_terms: "The CloudFormation templates and the prompt set are shared with other health departments on request; email the contact below and we will add you to the private repository."
 portability: "Partially — with rework"

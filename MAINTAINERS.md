@@ -1,6 +1,6 @@
-# BCHC AI Use Case Catalog maintainers
+# Public Health Digital Use Case Catalog maintainers
 
-The BCHC AI Use Case Catalog is a BCHC-owned deployment of the PHCT open-source template. BCHC
+This catalog is a BCHC-owned deployment of the PHCT open-source template. BCHC
 owns the catalog's content, policy, branding, publication decisions, and operational access; shared
 software fixes are developed and released in PHCT before this repository consumes them. Neither
 project promises paid support, 24-hour response, or uninterrupted service.

@@ -1,14 +1,14 @@
-# BCHC AI Use Case Catalog
+# Public Health Digital Use Case Catalog
 
-A shared catalog of AI use cases, tools and lessons learned from Big Cities Health Coalition member health departments. Member departments publish what they have built — the source repo or vendor product behind it, the data it touches, what staffing it took, what they would do differently — so another city can decide in a couple of minutes whether it is worth reusing.
+A shared catalog of digital tools, data projects and AI work from Big Cities Health Coalition member health departments: data pipelines, analysis code, dashboards, applications, data platforms, workflow automation, governance playbooks and AI tools. Member departments publish what they have built, the data it touches, what staffing and money it took, and what they would do differently, so another city can decide in a couple of minutes whether it is worth reusing. Sharing code is optional; every entry says plainly what another department can take away, from open-source code to a description of the work.
 
 The site is hosted on GitHub Pages and managed entirely through GitHub: no server, no database, no CMS login. Jekyll builds it on GitHub Actions, and every content change flows through a GitHub issue and a pull request.
 
-**Live site:** <https://big-cities-health-coalition.github.io/bchc-ai-use-case-catalog/>
+**Live site:** <https://big-cities-health-coalition.github.io/use-case-catalog/>
 
 ## Add an entry
 
-Fill in the [**Submit** form](https://big-cities-health-coalition.github.io/bchc-ai-use-case-catalog/submit/) on the site — a stepped form that walks you through a few short sections, with a short form that hides every optional question and a live preview of the card your entry will produce — or open the [Submit a use case issue form](https://github.com/Big-Cities-Health-Coalition/bchc-ai-use-case-catalog/issues/new?template=new-entry.yml) directly. Automation turns the issue into a pull request with the entry drafted and any screenshots downloaded into it; a maintainer reviews and merges, and the entry is live a couple of minutes later.
+Fill in the [**Submit** form](https://big-cities-health-coalition.github.io/use-case-catalog/submit/) on the site — a stepped form that walks you through a few short sections, with a short form that hides every optional question and a live preview of the card your entry will produce — or open the [Submit a use case issue form](https://github.com/Big-Cities-Health-Coalition/use-case-catalog/issues/new?template=new-entry.yml) directly. Automation turns the issue into a pull request with the entry drafted and any screenshots downloaded into it; a maintainer reviews and merges, and the entry is live a couple of minutes later.
 
 ## Maintainers
 
@@ -24,14 +24,14 @@ The Big Cities Health Coalition owns this repository and the published site, thr
 
 ## What's next
 
-[`docs/bchc/feature-ledger.md`](docs/bchc/feature-ledger.md) is the public record of where the catalog is going: what is being built now, what has been requested, and the design questions still to settle. Have an idea or feedback? Open a [feature request](https://github.com/Big-Cities-Health-Coalition/bchc-ai-use-case-catalog/issues/new?template=feature.yml) for catalog software capabilities, or email [info@bigcitieshealth.org](mailto:info@bigcitieshealth.org) for BCHC-specific suggestions — maintainers triage both into the ledger.
+[`docs/bchc/feature-ledger.md`](docs/bchc/feature-ledger.md) is the public record of where the catalog is going: what is being built now, what has been requested, and the design questions still to settle. Have an idea or feedback? Open a [feature request](https://github.com/Big-Cities-Health-Coalition/use-case-catalog/issues/new?template=feature.yml) for catalog software capabilities, or email [info@bigcitieshealth.org](mailto:info@bigcitieshealth.org) for BCHC-specific suggestions — maintainers triage both into the ledger.
 
 ## Features
 
 - **GitHub-as-CMS.** Anyone can propose an entry through a web form or a GitHub issue. Automation turns the issue into a pull request with the entry already drafted — screenshots downloaded into the entry folder and all — and a maintainer reviews and merges it.
 - **Schema-driven content model.** One file, [`_data/schema.yml`](_data/schema.yml), defines every field an entry has, *and* how it is presented: which fields reach a catalog card and in which slot, which become filters, which appear in the sidebar, what each option's short label, icon and tone are. The submission form, the issue template, the cards, the filter rail, the search index, the wizard defaults and the validator all derive from it. See [`docs/content-model.md`](docs/content-model.md).
 - **Search that reads the whole write-up.** Every entry is indexed per section, so a suggestion names the section it matched in, shows the sentence around the term and links straight to that heading; related entries are chosen by how distinctive a shared value is. An Atom feed of the newest entries lives at `/catalog/feed.xml`.
-- **Built for evaluation, not browsing.** Cards are laid out to answer "could my team reuse this?" in about two seconds: a result line, a taxonomy chip family, and a signal strip for skills needed, data sensitivity, audience and readiness. Filters sit beside the results, restore from the URL, and announce their counts.
+- **Built for evaluation, not browsing.** Cards are laid out to answer "could my team reuse this?" in about two seconds: a badge for what is shared (open-source code, code on request, templates or a description), a result line, a chip family for the type of solution, and a signal strip for skills needed, data sensitivity, audience and readiness. Filters sit beside the results, restore from the URL, and announce their counts.
 - **Compare and print a decision.** Shortlist up to three entries from the catalog and read them field by field at `/compare/`, with the rows they agree on folded away and the shortlist in the URL so it pastes into an email. One button prints the comparison — or any entry page — as a clean brief with the links spelled out and a source stamp. See [`docs/compare.md`](docs/compare.md).
 - **Screenshots and links as first-class fields.** An `images` field gives an entry a gallery with a keyboard-navigable lightbox and honest alt text; a `links` field carries labelled resources — a shared drive folder, a recorded demo, a vendor page — without needing a field per link.
 - **Two configurators.** A no-terminal setup wizard at `/setup/` on the deployed site, and an equivalent CLI wizard (`npm run setup`). Both offer starting presets (AI use case catalog, cohort/program portal, resource library, blank) and write the same configuration files from the same shared logic.
@@ -64,17 +64,17 @@ Each of those steps has a detail you will want on the day: **[`docs/launch.md`](
 
 ### What an entry holds
 
-The shipped AI use case schema has 40 fields in eight groups. In outline:
+The catalog's schema has 45 fields in eight groups. In outline:
 
 | Group | Fields |
 |---|---|
-| About | title, one-sentence summary, result in one line, organization, what is being shared, use case category, area of work, stage, review status (maintainer-only) |
-| How it's built | how AI is involved, types of AI, AI tools & models, where it runs, vendor or partner |
-| Reuse | skills needed to set it up, readiness, source code, live demo, documentation, other resources, screenshots, slide deck |
-| Sharing & licensing | license, access terms, portability, portability notes |
+| About | title, one-sentence summary, result in one line, organization, type of solution, AI use category (AI work only), public health area, stage, review status (maintainer-only) |
+| How it's built | role of AI (including "No AI"), types of AI, tools and technologies, where it runs, vendor or partner |
+| Reuse | skills needed to set it up, readiness, source code (optional), live demo, documentation, other resources, screenshots, slide deck, also deployed by (maintainer-only) |
+| Sharing & licensing | what's shared, license, access terms, portability, portability notes, adapted from |
 | What it took | cost band, running cost, procurement, approvals, equity note |
-| Data & access | no-PII/PHI attestation, data it touches, data sources, who sees the output, data governance notes |
-| Contact | contact name, contact title, contact email |
+| Data & access | no-PII/PHI attestation, data it touches, data sources, who sees the output, data governance notes, security review (maintainer-only) |
+| Contact | contact name, contact title, contact email, GitHub username (optional) |
 | The story | the full write-up, which becomes the page body |
 
 Every one of those is a line in `_data/schema.yml` and none of them is named anywhere else — rename, remove or replace the lot for a different subject and the forms, filters, cards and validator follow. [`docs/content-model.md`](docs/content-model.md) documents each property, the `images` and `links` shapes, and how to design a taxonomy that people actually filter by.

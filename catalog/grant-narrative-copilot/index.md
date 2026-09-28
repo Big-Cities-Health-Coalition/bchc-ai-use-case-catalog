@@ -10,12 +10,11 @@ sample: true
 impact: "Halved first-draft time on routine narrative sections, from about eight hours to four"
 organization: "Metro North Health District"
 review_status: "Reviewed & approved"
-solution_type: "Vendor product"
+solution_type:
+  - "Generative AI tool"
 use_case_category: "Communications, media & writing"
 area:
-  - "Leadership & administration"
-  - "Policy & planning"
-  - "Finance, procurement & contracts"
+  - "Agency operations and administration"
 stage: "In production"
 ai_role: "AI is part of the solution"
 ai_types:
@@ -41,7 +40,8 @@ resources:
     url: "https://docs.example.gov/metronorth/grant-copilot-rollout.pdf"
   - label: "Vendor product page"
     url: "https://www.example.com/products/workplace-copilot"
-license: "Not open source — description only"
+sharing: "Templates or documentation only"
+license: "Not open source — available on request"
 access_terms: "Built on Microsoft Copilot inside our tenant; the prompt library and the reviewer checklist are available to peer health departments on request."
 portability: "Partially — with rework"
 portability_notes: "The prompts and the program description library are text; the retrieval over past applications relies on SharePoint indexing and would need re-wiring on another platform."

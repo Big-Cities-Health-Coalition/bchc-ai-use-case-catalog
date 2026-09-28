@@ -11,11 +11,13 @@ sample: true
 impact: "Median reading level of published notices dropped from grade 14 to grade 7"
 organization: "Prairie Ridge County Health Department"
 review_status: "Reviewed & approved"
-solution_type: "Playbook or write-up"
+solution_type:
+  - "Generative AI tool"
+  - "Standards, governance or playbook"
 use_case_category: "Communications, media & writing"
 area:
-  - "Communications & outreach"
-  - "Emergency preparedness"
+  - "Communications and community engagement"
+  - "Emergency preparedness and response"
 stage: "In production"
 ai_role: "AI is part of the solution"
 ai_types:
@@ -42,6 +44,7 @@ resources:
 screenshots:
   - src: /catalog/plain-language-notices/screenshots/01.png
     alt: "Side-by-side view of an original boil water notice and its plain-language rewrite, with a pre-publication review checklist."
+sharing: "Templates or documentation only"
 license: "Creative Commons (CC BY / CC0)"
 portability: "Yes — platform-agnostic"
 portability_notes: "A prompt kit and a style guide; they work in any generative text tool."

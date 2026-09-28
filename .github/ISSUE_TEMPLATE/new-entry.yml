@@ -3,7 +3,7 @@
 # Regenerate with `npm run generate` after changing _data/schema.yml.
 
 name: Submit a use case (creates PR)
-description: "Share an AI use case, tool or project with the coalition. Submissions open a GitHub issue for the maintainers to review; nothing is published until it is approved."
+description: "Share a digital tool, data project or AI use case with the coalition. Code is optional: a clear description of what you built and what it took is enough. Submissions open a GitHub issue for the maintainers to review, and nothing is published until it is approved."
 title: "[Use case] "
 labels:
   - "content:new-entry"
@@ -22,60 +22,57 @@ body:
     attributes:
       label: Title
       description: What is it called? Specific enough that someone scanning a list of names knows what it is.
-      placeholder: Automated 311 call triage with LLM classification
+      placeholder: Nightly lab-result pipeline into the surveillance system
     validations:
       required: true
   - type: dropdown
     id: solution_type
     attributes:
-      label: What is being shared
-      description: What are you sharing? Pick the closest match.
+      label: Type of solution
+      description: What kind of solution is it? Select all that fit. A dashboard fed by a new pipeline is both.
+      multiple: true
       options:
-        - Source code
-        - Cloud deployment
-        - Vendor product
-        - Internal tool
-        - Playbook or write-up
-        - Dataset
-        - Dashboard or report
-        - Prompt library
-        - Training material
-        - Governance or policy document
-        - Other
+        - AI/ML model
+        - Generative AI tool
+        - Data pipeline or integration
+        - Analysis project or script
+        - Dashboard or visualization
+        - Application or software
+        - Data platform or infrastructure
+        - Workflow automation
+        - "Standards, governance or playbook"
     validations:
       required: true
   - type: dropdown
     id: use_case_category
     attributes:
-      label: Use case category
-      description: Which of the four coalition categories fits best? The HHS-adapted categories the DMWG inventory uses. Area of work (below) is the finer cut.
+      label: AI use category
+      description: "If it involves AI, which of the four coalition categories fits best? For AI work only: the HHS-adapted categories the DMWG AI inventory uses. Leave it blank if no AI is involved."
       options:
         - "Administrative & task automation"
         - "Communications, media & writing"
         - "Coding & brainstorming"
         - "Operations & logistics"
     validations:
-      required: true
+      required: false
   - type: dropdown
     id: area
     attributes:
-      label: Area of work
-      description: Which areas of work does it apply to? Select all that fit — these are business functions as much as health programs.
+      label: Public health area
+      description: Which public health areas does it serve? Select all that fit. The first five follow the program areas of the Foundational Public Health Services; the rest are the capabilities every program relies on.
       multiple: true
       options:
-        - "Epidemiology & surveillance"
-        - "Clinical & community services"
+        - Communicable disease
+        - Chronic disease and injury prevention
         - Environmental health
-        - Emergency preparedness
-        - "Communications & outreach"
-        - "Data & informatics"
-        - "Policy & planning"
-        - "HR & workforce"
-        - "Finance, procurement & contracts"
-        - "IT & operations"
-        - "Legal & compliance"
-        - "Staff & partner coordination"
-        - "Leadership & administration"
+        - "Maternal, child and family health"
+        - Access to and linkage with care
+        - Emergency preparedness and response
+        - Epidemiology and surveillance
+        - Vital records and health statistics
+        - Communications and community engagement
+        - Data modernization and informatics
+        - Agency operations and administration
     validations:
       required: true
   - type: dropdown
@@ -95,7 +92,7 @@ body:
     attributes:
       label: Summary
       description: "In one or two sentences, what does it do? Shown on the catalog card. Plain language, no jargon."
-      placeholder: Classifies incoming public health hotline calls by urgency and topic so nurses see the highest-priority cases first.
+      placeholder: "Pulls lab results from the state feed every night, removes duplicates and loads them into our surveillance system, so epidemiologists start the day with clean data."
     validations:
       required: true
   - type: input
@@ -119,23 +116,24 @@ body:
       value: |-
         ### How it's built
 
-        The AI involved and where it runs.
+        The tools and technologies behind it, any AI involved, and where it runs.
   - type: dropdown
     id: ai_role
     attributes:
-      label: How AI is involved
-      description: "Is the AI in the product, or was AI used to build it?"
+      label: Role of AI
+      description: "What part, if any, does AI play? Most digital work involves no AI, and that is a fine answer."
       options:
+        - No AI
         - AI is part of the solution
-        - AI was used to build it
+        - AI helped build it
         - Both
     validations:
-      required: true
+      required: false
   - type: dropdown
     id: ai_types
     attributes:
       label: Types of AI
-      description: What kinds of AI does it use? Select all that apply.
+      description: "If AI is involved, what kinds? Select all that apply. Skip it when there is no AI."
       multiple: true
       options:
         - Generative text (LLM)
@@ -153,9 +151,9 @@ body:
   - type: textarea
     id: ai_tools
     attributes:
-      label: "AI tools & models"
-      description: "Which AI tools, models or services does it use? Name the models, platforms or libraries that matter. One per line, or separated by commas."
-      placeholder: "Azure OpenAI GPT-4o, LangChain, custom scikit-learn model"
+      label: Tools and technologies
+      description: "Which tools and technologies does it use? Name the languages, platforms, libraries, standards and AI models that matter. One per line, or separated by commas."
+      placeholder: "R, Python, SAS, SQL Server, Power BI, FHIR, Azure OpenAI"
     validations:
       required: false
   - type: dropdown
@@ -180,7 +178,7 @@ body:
     attributes:
       label: Vendor or partner
       description: "If a vendor or partner built or hosts it, who? Leave it blank if your own team built it."
-      placeholder: Acme Health AI
+      placeholder: Acme Health Data
     validations:
       required: false
   - type: markdown
@@ -223,7 +221,7 @@ body:
     id: repo_url
     attributes:
       label: Source code
-      description: "If the code is public, where? GitHub, GitLab, Azure DevOps or any public repository."
+      description: "If the code is public, where? GitHub, GitLab, Azure DevOps or any public repository. Code is optional: leave this blank if you are not sharing it."
       placeholder: "https://github.com/your-org/your-project"
     validations:
       required: false
@@ -271,12 +269,24 @@ body:
       value: |-
         ### Sharing & licensing
 
-        How another jurisdiction may use it, and how portable it is.
+        What another health department can get from you, on what terms, and how portable it is.
+  - type: dropdown
+    id: sharing
+    attributes:
+      label: "What's shared"
+      description: What can another health department get from you? Code is optional. A clear account of what you built and what it took is worth sharing on its own.
+      options:
+        - Open-source code
+        - Code on request
+        - Templates or documentation only
+        - Description only
+    validations:
+      required: true
   - type: dropdown
     id: license
     attributes:
       label: License
-      description: "Under what license is it shared? The coalition default is a permissive open license (MIT, Apache 2.0, CC BY). Submitting does not transfer ownership — your organization keeps authorship."
+      description: "Under what license is it shared? Optional when nothing but a description is shared. For code and documents the coalition default is a permissive open license (MIT, Apache 2.0, CC BY). Submitting does not transfer ownership; your organization keeps authorship."
       options:
         - MIT
         - Apache 2.0
@@ -286,7 +296,7 @@ body:
         - Not open source — available on request
         - Not open source — description only
     validations:
-      required: true
+      required: false
   - type: textarea
     id: access_terms
     attributes:
@@ -311,7 +321,7 @@ body:
     attributes:
       label: Portability notes
       description: "What would porting it involve? Which pieces are vendor-specific, and what a team on a different stack would need to swap."
-      placeholder: The prompt set and the evaluation harness are plain Python; the retrieval layer uses Azure AI Search and would need replacing.
+      placeholder: The R scripts and the data dictionary run anywhere; the nightly schedule uses Azure Data Factory and would need replacing.
     validations:
       required: false
   - type: textarea
@@ -397,7 +407,7 @@ body:
     attributes:
       label: Who it affects
       description: "Who could this help or harm, and how did you check? Optional but strongly encouraged. Which populations the output reaches, what you checked for uneven performance, and what you would watch."
-      placeholder: "Reaches everyone who calls the hotline, including the ~18% who use it in Spanish. We compared triage accuracy across language groups monthly and would stop if the gap grew."
+      placeholder: "Covers every case reported by the labs we onboarded. Smaller labs that still fax results are not included yet, so counts undercount the neighborhoods they serve; we track that gap each quarter."
     validations:
       required: false
   - type: markdown
@@ -436,7 +446,7 @@ body:
     attributes:
       label: Data sources
       description: "Which data sources does it use? Describe the sources — do not paste sensitive data. One per line, or separated by commas."
-      placeholder: "Immunization registry, 311 call transcripts, ESSENCE"
+      placeholder: "Electronic lab reports (ELR), immunization registry, ESSENCE"
     validations:
       required: false
   - type: dropdown
@@ -455,7 +465,7 @@ body:
     attributes:
       label: Data-governance caveats
       description: "Anything a reusing jurisdiction should know about data handling? Data-use agreements, retention rules, de-identification steps — the caveats that travel with the resource."
-      placeholder: "Outputs are retained 90 days under our records schedule; the model was tuned on our own 311 transcripts, so expect to re-tune."
+      placeholder: "Outputs are retained 90 days under our records schedule; the matching rules were tuned to our own registry, so expect to re-tune them."
     validations:
       required: false
   - type: markdown

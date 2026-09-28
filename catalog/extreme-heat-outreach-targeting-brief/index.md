@@ -7,17 +7,18 @@ published: "2026-08-26"
 featured: false
 thumbnail: ""
 organization: Sunrise Plains Regional Health Coalition
-solution_type: Playbook or write-up
+solution_type:
+  - "Standards, governance or playbook"
 use_case_category: Communications, media & writing
 area:
-  - Emergency preparedness
-  - Environmental health
-  - Communications & outreach
+  - "Emergency preparedness and response"
+  - "Environmental health"
+  - "Communications and community engagement"
 stage: Idea / exploring
 summary: "A worked plan for using the county's existing heat-vulnerability index plus forecast data to decide, two days ahead of a heat event, which neighborhoods get door-knocking, which get robocalls, and which cooling centers to extend — written up for other jurisdictions to adapt before we build anything."
 impact: ""
 review_status: Reviewed & approved
-ai_role: AI was used to build it
+ai_role: "AI helped build it"
 ai_types:
   - Generative text (LLM)
   - Prediction & forecasting
@@ -35,6 +36,7 @@ docs_url: "https://example.org/heat-outreach-targeting-brief"
 resources: []
 screenshots: []
 deck_pdf: "/catalog/extreme-heat-outreach-targeting-brief/deck.pdf"
+sharing: "Templates or documentation only"
 license: Creative Commons (CC BY / CC0)
 access_terms: ""
 portability: "Yes — platform-agnostic"

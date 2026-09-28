@@ -3,14 +3,14 @@
 blank_issues_enabled: false
 contact_links:
   - name: Report a security vulnerability privately
-    url: https://github.com/Big-Cities-Health-Coalition/bchc-ai-use-case-catalog/security/advisories/new
+    url: https://github.com/Big-Cities-Health-Coalition/use-case-catalog/security/advisories/new
     about: Never put credentials, personal information, PHI, private URLs, or exploit details in a public issue.
   - name: Security reporting help
-    url: https://github.com/Big-Cities-Health-Coalition/bchc-ai-use-case-catalog/blob/main/SECURITY.md
+    url: https://github.com/Big-Cities-Health-Coalition/use-case-catalog/blob/main/SECURITY.md
     about: Use the documented private email fallback if private vulnerability reporting is not available.
   - name: Maintainer guide
-    url: https://github.com/Big-Cities-Health-Coalition/bchc-ai-use-case-catalog/blob/main/docs/admin-guide.md
+    url: https://github.com/Big-Cities-Health-Coalition/use-case-catalog/blob/main/docs/admin-guide.md
     about: How submissions become pull requests, how to review them, and how to configure the site.
   - name: Launch checklist
-    url: https://github.com/Big-Cities-Health-Coalition/bchc-ai-use-case-catalog/blob/main/docs/launch.md
+    url: https://github.com/Big-Cities-Health-Coalition/use-case-catalog/blob/main/docs/launch.md
     about: Setting this catalog up for the first time — settings, the /setup/ wizard, and clearing the demo content.

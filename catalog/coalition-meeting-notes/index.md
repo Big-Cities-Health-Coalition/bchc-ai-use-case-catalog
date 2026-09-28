@@ -11,12 +11,14 @@ sample: true
 impact: "Action lists reach partners in one day instead of two weeks"
 organization: "Northgate City Health Department"
 review_status: "Reviewed & approved"
-solution_type: "Playbook or write-up"
+solution_type:
+  - "Generative AI tool"
+  - "Standards, governance or playbook"
 use_case_category: "Communications, media & writing"
 area:
-  - "Staff & partner coordination"
-  - "Emergency preparedness"
-  - "Leadership & administration"
+  - "Communications and community engagement"
+  - "Emergency preparedness and response"
+  - "Agency operations and administration"
 stage: "In production"
 ai_role: "AI is part of the solution"
 ai_types:
@@ -42,6 +44,7 @@ resources:
 screenshots:
   - src: /catalog/coalition-meeting-notes/screenshots/01.png
     alt: "Transcript excerpt beside a drafted action item table listing each action, the owning organization, a due date and status."
+sharing: "Templates or documentation only"
 license: "Creative Commons (CC BY / CC0)"
 portability: "Yes — platform-agnostic"
 portability_notes: "A prompt set and a review checklist — they work in any enterprise AI workspace that accepts a system prompt."

@@ -8,7 +8,15 @@ permalink: /about/
 {% assign cfg = site.data.site %}
 {% assign schema = site.data.schema %}
 
+<img src="{{ '/assets/images/bchc-logo.png' | relative_url }}" alt="{{ cfg.organization.name }} logo" width="200" height="201" class="mb-6 sm:float-right sm:ml-8">
+
 This site is maintained by **{{ cfg.organization.name }}**. It is a shared, public catalog of {{ schema.entry.plural | downcase }} contributed by members and reviewed by maintainers before publication.
+
+## What belongs here
+
+The catalog collects the digital work of big-city health departments: data pipelines and integrations, analysis code, dashboards, applications, data platforms, workflow automation, data standards and governance playbooks, and AI tools. It grew out of the coalition's Data Modernization Workgroup and one idea: reuse over reinvention. When one health department has solved a problem, the next one should be able to start from that work instead of from scratch.
+
+Code is optional. Some entries link to an open-source repository, some offer code on request, some share templates or documentation, and some are a plain account of what was built and what it took. Each entry says which, so a reader knows what they can take away before contacting anyone.
 
 ## How content gets here
 

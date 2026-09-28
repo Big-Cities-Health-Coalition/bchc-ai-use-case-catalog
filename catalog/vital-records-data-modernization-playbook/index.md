@@ -4,6 +4,7 @@ render_with_liquid: false
 title: Vital records data modernization playbook
 slug: vital-records-data-modernization-playbook
 published: "2026-09-28"
+updated: 2026-09-28
 featured: false
 thumbnail: ""
 organization: Riverbend County Public Health

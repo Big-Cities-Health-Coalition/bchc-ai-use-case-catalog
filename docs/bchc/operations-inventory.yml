@@ -96,16 +96,17 @@ automation:
   # for this deployment. Unset SUBMISSIONS_OPEN means submissions are open
   # (workflows gate on != 'false'), and unset CATALOG_SHOWCASE correctly keeps
   # showcase-only build paths off outside the template repository.
-  # Re-verified 2026-09-24: PHCT_UPDATE_TOKEN (created 2026-08-22) is a
-  # fine-grained token whose resource owner is crypticpy. It stops reaching this
-  # repository at the ownership transfer and must be reissued with the BCHC
-  # organization as resource owner (docs/bchc/transfer-runbook.md, Phase 3).
+  # Reissued 2026-09-28: PHCT_UPDATE_TOKEN is now a fine-grained token whose
+  # resource owner is the Big-Cities-Health-Coalition organization, scoped to
+  # this repository only (Contents, Pull requests, Workflows: read/write). The
+  # issuing account and exact expiry are recorded outside this public
+  # repository. Long term it should belong to a BCHC-controlled account.
   repository_secrets_present_not_values:
     - PHCT_UPDATE_TOKEN
   optional_secrets_supported:
     - CONTENT_BOT_TOKEN_optional
-  token_owner: crypticpy_reissue_at_owner_transfer
-  token_expiry_reviewed: pending_owner_transfer
+  token_owner: bchc_org_resource_owner_interim_maintainer_account
+  token_expiry_reviewed: 2026-09-28
 
 # Completed since 2026-08-22 and verified live on 2026-08-28:
 # require_pull_requests_on_main, require_current_release_checks (7 contexts,

@@ -10,9 +10,9 @@
 
 /** Parsed _data/site.yml. */
 export const SITE = {
-  "name": "AI Use Case Catalog",
-  "tagline": "Shared AI solutions from big-city health departments",
-  "description": "A shared catalog of AI use cases, tools, and lessons learned from Big Cities Health Coalition member health departments.",
+  "name": "Public Health Digital Use Case Catalog",
+  "tagline": "Digital tools, data and AI work from big-city health departments",
+  "description": "A shared catalog of digital tools, data projects and AI work from Big Cities Health Coalition member health departments, so each city can reuse what another has already built.",
   "organization": {
     "name": "Big Cities Health Coalition",
     "short_name": "BCHC",
@@ -20,11 +20,14 @@ export const SITE = {
     "contact_email": "info@bigcitieshealth.org"
   },
   "logo": {
-    "image": "",
+    "image": "/assets/images/bchc-logo-mark.png",
     "text": "BCHC"
   },
+  "social": {
+    "og_image": "/assets/images/og-image.png"
+  },
   "github": {
-    "repository": "Big-Cities-Health-Coalition/bchc-ai-use-case-catalog",
+    "repository": "Big-Cities-Health-Coalition/use-case-catalog",
     "branch": "main"
   },
   "demo": true,
@@ -40,9 +43,9 @@ export const SITE = {
     "governance": true
   },
   "hero": {
-    "eyebrow": "Big Cities Health Coalition · AI Community of Practice",
-    "title": "What health departments are building with AI",
-    "lead": "Preview realistic sample use cases modeled on common public-health needs, and see how approved member submissions will present code, deployments, vendor details and lessons learned.",
+    "eyebrow": "Big Cities Health Coalition · Data Modernization Workgroup",
+    "title": "Reuse what other health departments have already built",
+    "lead": "Preview sample use cases modeled on common public health needs, from data pipelines and dashboards to analysis code, applications and AI tools. See how member submissions will show what was built, what it took, and what another city can take away.",
     "primary_cta": {
       "label": "Browse the catalog",
       "url": "/catalog/",
@@ -60,12 +63,12 @@ export const SITE = {
     "hero_latest_count": 3,
     "highlights": [
       {
-        "title": "Start from what already works",
-        "body": "Each sample entry shows where code, deployments or vendor details will appear after a real submission is reviewed and approved."
+        "title": "Reuse over reinvention",
+        "body": "Each entry says what another health department can take away: open-source code, code on request, templates, or a plain account of the work."
       },
       {
         "title": "Honest notes on what it took",
-        "body": "The demo shows how entries can capture data sources, tools, staffing and lessons learned — not just a project description."
+        "body": "Entries record data sources, tools, staffing, cost and lessons learned, not just a project description."
       },
       {
         "title": "One form, one review, then it's live",
@@ -74,7 +77,7 @@ export const SITE = {
     ]
   },
   "submit": {
-    "intro": "Share an AI use case, tool or project with the coalition. Submissions open a GitHub issue for the maintainers to review; nothing is published until it is approved.",
+    "intro": "Share a digital tool, data project or AI use case with the coalition. Code is optional: a clear description of what you built and what it took is enough. Submissions open a GitHub issue for the maintainers to review, and nothing is published until it is approved.",
     "turnaround": "Intake checks it within about five business days and the Governance Committee reviews it within about ten more; you keep ownership of anything you share.",
     "review_note": "Please do not include protected health information, credentials or non-public data. Link out to repositories and documents rather than pasting sensitive content.",
     "fallback_email": "info@bigcitieshealth.org"
@@ -86,7 +89,7 @@ export const SITE = {
     "ask_in_open": true
   },
   "footer": {
-    "about": "A demonstration of a collaborative catalog for the coalition's AI community of practice. All current entries are fictional samples; member submissions will be reviewed before publication.",
+    "about": "A demonstration of a shared catalog for the coalition's Data Modernization Workgroup. All current entries are fictional samples; member submissions will be reviewed before publication.",
     "links": [
       {
         "label": "Big Cities Health Coalition",
@@ -104,7 +107,7 @@ export const SITE = {
       },
       {
         "label": "Maintainer guide",
-        "url": "https://github.com/Big-Cities-Health-Coalition/bchc-ai-use-case-catalog/blob/main/docs/admin-guide.md"
+        "url": "https://github.com/Big-Cities-Health-Coalition/use-case-catalog/blob/main/docs/admin-guide.md"
       }
     ],
     "copyright": "Big Cities Health Coalition",
@@ -118,24 +121,24 @@ export const SITE = {
 /** Parsed _data/theme.yml. */
 export const THEME = {
   "colors": {
-    "primary": "#1D4E89",
-    "primary_dark": "#12305A",
-    "secondary": "#0F6357",
-    "accent": "#E07A2F",
-    "ink": "#1B2430",
-    "muted": "#5A6573",
-    "line": "#D9E0E8",
-    "line_strong": "#7C8A9B",
-    "surface": "#F5F7FA",
-    "surface_tint": "#EAF0F7",
+    "primary": "#B90D13",
+    "primary_dark": "#171717",
+    "secondary": "#0571C6",
+    "accent": "#FF8A7A",
+    "ink": "#383838",
+    "muted": "#5C5C5C",
+    "line": "#E6E0D6",
+    "line_strong": "#8A8A8A",
+    "surface": "#FFFCF6",
+    "surface_tint": "#F7F1E6",
     "card": "#FFFFFF",
-    "on_dark": "#F7F9FC",
+    "on_dark": "#FFFCF6",
     "warn": "#B45309"
   },
   "fonts": {
-    "heading": "Source Serif 4",
-    "body": "Inter",
-    "google_fonts_url": ""
+    "heading": "Barlow",
+    "body": "Figtree",
+    "google_fonts_url": "https://fonts.googleapis.com/css2?family=Barlow:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap"
   },
   "type": {
     "measure": "36rem",
@@ -162,7 +165,7 @@ export const SCHEMA = {
     "deprecated_value": "Deprecated",
     "status_scaffold_value": "Under review",
     "status_approved_value": "Reviewed & approved",
-    "require_link": true,
+    "require_link": false,
     "contributor_key": "organization",
     "submitter_key": "submitter_github",
     "deployments_key": "also_deployed_by",
@@ -177,7 +180,7 @@ export const SCHEMA = {
     {
       "key": "build",
       "title": "How it's built",
-      "description": "The AI involved and where it runs."
+      "description": "The tools and technologies behind it, any AI involved, and where it runs."
     },
     {
       "key": "reuse",
@@ -188,7 +191,7 @@ export const SCHEMA = {
     {
       "key": "sharing",
       "title": "Sharing & licensing",
-      "description": "How another jurisdiction may use it, and how portable it is.",
+      "description": "What another health department can get from you, on what terms, and how portable it is.",
       "icon": "share"
     },
     {
@@ -223,7 +226,7 @@ export const SCHEMA = {
       "required": true,
       "group": "about",
       "weight": 1,
-      "placeholder": "Automated 311 call triage with LLM classification",
+      "placeholder": "Nightly lab-result pipeline into the surveillance system",
       "description": "Specific enough that someone scanning a list of names knows what it is."
     },
     {
@@ -243,89 +246,124 @@ export const SCHEMA = {
     },
     {
       "key": "solution_type",
-      "label": "What is being shared",
-      "prompt": "What are you sharing?",
-      "type": "select",
+      "label": "Type of solution",
+      "prompt": "What kind of solution is it?",
+      "type": "multiselect",
       "required": true,
       "group": "about",
       "weight": 3,
       "facet": true,
-      "card": "badge",
+      "card": "chip",
       "icon": "layers",
       "options": [
-        "Source code",
-        "Cloud deployment",
-        "Vendor product",
-        "Internal tool",
-        "Playbook or write-up",
-        "Dataset",
-        "Dashboard or report",
-        "Prompt library",
-        "Training material",
-        "Governance or policy document",
-        "Other"
+        "AI/ML model",
+        "Generative AI tool",
+        "Data pipeline or integration",
+        "Analysis project or script",
+        "Dashboard or visualization",
+        "Application or software",
+        "Data platform or infrastructure",
+        "Workflow automation",
+        "Standards, governance or playbook"
       ],
       "option_meta": {
-        "Source code": {
-          "icon": "code",
-          "description": "A repository (GitHub, GitLab, Azure DevOps…) others can clone."
+        "AI/ML model": {
+          "icon": "cpu",
+          "description": "A trained model that predicts, classifies or detects something, such as a risk score or a forecast."
         },
-        "Cloud deployment": {
-          "icon": "cloud",
-          "description": "A deployable stack or template on AWS, Azure, GCP or similar."
+        "Generative AI tool": {
+          "short": "Generative AI",
+          "icon": "sparkles",
+          "description": "Drafts, summarizes, translates or answers questions with a large language model."
         },
-        "Vendor product": {
-          "icon": "building",
-          "description": "A commercial product or partnership, described so others can evaluate it."
+        "Data pipeline or integration": {
+          "short": "Data pipeline",
+          "icon": "link",
+          "description": "Moves, cleans or links data between systems: ETL jobs, feeds, HL7 or FHIR interfaces."
         },
-        "Internal tool": {
-          "icon": "lock",
-          "description": "Built and used in-house; the write-up is what's shared, not the code."
+        "Analysis project or script": {
+          "short": "Analysis",
+          "icon": "terminal",
+          "description": "R, Python, SAS or SQL code and notebooks that answer a question or produce a report."
         },
-        "Playbook or write-up": {
-          "icon": "book-open",
-          "description": "Guidance, evaluation, an implementation guide or lessons — no software to install."
-        },
-        "Dataset": {
-          "icon": "database",
-          "description": "A shareable data product — an extract, reference table or synthetic set — with its documentation."
-        },
-        "Dashboard or report": {
+        "Dashboard or visualization": {
           "short": "Dashboard",
           "icon": "chart-bar",
-          "description": "A Power BI, Tableau, Looker or custom dashboard others can rebuild or reuse."
+          "description": "A Power BI, Tableau, ArcGIS or custom dashboard, map or chart others can rebuild."
         },
-        "Prompt library": {
-          "icon": "chat",
-          "description": "Prompts, system instructions or agent configurations, with the context they were written for."
+        "Application or software": {
+          "short": "Application",
+          "icon": "code",
+          "description": "A web, mobile or desktop application that staff or residents use."
         },
-        "Training material": {
-          "short": "Training",
-          "icon": "academic-cap",
-          "description": "Slides, curricula, exercises or recordings used to train staff."
+        "Data platform or infrastructure": {
+          "short": "Data platform",
+          "icon": "server",
+          "description": "A warehouse, lakehouse, cloud environment or infrastructure-as-code other teams build on."
         },
-        "Governance or policy document": {
-          "short": "Policy doc",
-          "icon": "document",
-          "description": "Policy, guidance, an evaluation rubric or an approval template."
+        "Workflow automation": {
+          "short": "Automation",
+          "icon": "wand",
+          "description": "Takes a repetitive task off staff: Power Automate flows, scheduled jobs, robotic process automation."
         },
-        "Other": {
-          "icon": "adjustments",
-          "description": "Anything else — say what in the summary."
+        "Standards, governance or playbook": {
+          "short": "Guidance",
+          "icon": "book-open",
+          "description": "A data standard, governance policy, checklist, template or implementation guide."
         }
       },
-      "description": "Pick the closest match."
+      "description": "Select all that fit. A dashboard fed by a new pipeline is both."
+    },
+    {
+      "key": "sharing",
+      "label": "What's shared",
+      "prompt": "What can another health department get from you?",
+      "type": "select",
+      "required": true,
+      "group": "sharing",
+      "weight": 1,
+      "facet": true,
+      "card": "badge",
+      "icon": "share",
+      "options": [
+        "Open-source code",
+        "Code on request",
+        "Templates or documentation only",
+        "Description only"
+      ],
+      "option_meta": {
+        "Open-source code": {
+          "short": "Open source",
+          "icon": "code",
+          "tone": "primary",
+          "description": "The code is in a public repository anyone can copy."
+        },
+        "Code on request": {
+          "short": "On request",
+          "icon": "lock",
+          "description": "The code exists and peer health departments can ask for it."
+        },
+        "Templates or documentation only": {
+          "short": "Templates/docs",
+          "icon": "document",
+          "description": "Templates, configurations, specifications or a playbook, without code."
+        },
+        "Description only": {
+          "short": "Description",
+          "icon": "book-open",
+          "description": "A write-up of what was built and what it took. Ask the contact for more."
+        }
+      },
+      "description": "Code is optional. A clear account of what you built and what it took is worth sharing on its own."
     },
     {
       "key": "use_case_category",
-      "label": "Use case category",
-      "prompt": "Which of the four coalition categories fits best?",
+      "label": "AI use category",
+      "prompt": "If it involves AI, which of the four coalition categories fits best?",
       "type": "select",
-      "required": true,
       "group": "about",
       "weight": 4,
       "facet": true,
-      "card": "fact",
       "icon": "grid",
       "options": [
         "Administrative & task automation",
@@ -351,76 +389,79 @@ export const SCHEMA = {
           "description": "Planning, dispatch, inventory, inspections and field work."
         }
       },
-      "description": "The HHS-adapted categories the DMWG inventory uses. Area of work (below) is the finer cut."
+      "description": "For AI work only: the HHS-adapted categories the DMWG AI inventory uses. Leave it blank if no AI is involved."
     },
     {
       "key": "area",
-      "label": "Area of work",
-      "prompt": "Which areas of work does it apply to?",
+      "label": "Public health area",
+      "prompt": "Which public health areas does it serve?",
       "type": "multiselect",
       "required": true,
       "group": "about",
       "weight": 5,
       "facet": true,
-      "card": "chip",
+      "card": "fact",
       "icon": "tag",
       "options": [
-        "Epidemiology & surveillance",
-        "Clinical & community services",
+        "Communicable disease",
+        "Chronic disease and injury prevention",
         "Environmental health",
-        "Emergency preparedness",
-        "Communications & outreach",
-        "Data & informatics",
-        "Policy & planning",
-        "HR & workforce",
-        "Finance, procurement & contracts",
-        "IT & operations",
-        "Legal & compliance",
-        "Staff & partner coordination",
-        "Leadership & administration"
+        "Maternal, child and family health",
+        "Access to and linkage with care",
+        "Emergency preparedness and response",
+        "Epidemiology and surveillance",
+        "Vital records and health statistics",
+        "Communications and community engagement",
+        "Data modernization and informatics",
+        "Agency operations and administration"
       ],
       "option_meta": {
-        "Epidemiology & surveillance": {
-          "short": "Epidemiology"
+        "Communicable disease": {
+          "short": "Communicable",
+          "description": "Infectious disease control, immunization, STI, HIV, TB and outbreak response."
         },
-        "Clinical & community services": {
-          "short": "Clinical"
+        "Chronic disease and injury prevention": {
+          "short": "Chronic/injury",
+          "description": "Chronic conditions, tobacco, nutrition, violence, overdose and injury prevention."
         },
         "Environmental health": {
-          "short": "Environmental"
+          "short": "Environmental",
+          "description": "Food safety, inspections, lead, housing, air and water quality, vectors, extreme heat."
         },
-        "Emergency preparedness": {
-          "short": "Preparedness"
+        "Maternal, child and family health": {
+          "short": "Maternal/child",
+          "description": "Home visiting, WIC, prenatal and infant health, school-age health."
         },
-        "Communications & outreach": {
-          "short": "Communications"
+        "Access to and linkage with care": {
+          "short": "Access to care",
+          "description": "Clinics, community health workers, referrals and connecting residents to services."
         },
-        "Data & informatics": {
-          "short": "Data"
+        "Emergency preparedness and response": {
+          "short": "Preparedness",
+          "description": "Planning for and responding to emergencies and public health incidents."
         },
-        "Policy & planning": {
-          "short": "Policy"
+        "Epidemiology and surveillance": {
+          "short": "Epidemiology",
+          "description": "Case, syndromic, laboratory and wastewater surveillance, and the analysis behind it."
         },
-        "HR & workforce": {
-          "short": "HR & workforce"
+        "Vital records and health statistics": {
+          "short": "Vital records",
+          "description": "Birth and death records and the population health statistics built from them."
         },
-        "Finance, procurement & contracts": {
-          "short": "Procurement"
+        "Communications and community engagement": {
+          "short": "Communications",
+          "description": "Public information, risk communication, language access and community partnerships."
         },
-        "IT & operations": {
-          "short": "IT & ops"
+        "Data modernization and informatics": {
+          "short": "Informatics",
+          "description": "Shared data systems, interoperability and data governance that serve more than one program."
         },
-        "Legal & compliance": {
-          "short": "Legal"
-        },
-        "Staff & partner coordination": {
-          "short": "Coordination"
-        },
-        "Leadership & administration": {
-          "short": "Leadership"
+        "Agency operations and administration": {
+          "short": "Operations",
+          "description": "HR, finance, grants, procurement, contracts, IT and legal work that keeps the department running."
         }
       },
-      "description": "Select all that fit — these are business functions as much as health programs."
+      "description": "Select all that fit. The first five follow the program areas of the Foundational Public Health Services; the rest are the capabilities every program relies on."
     },
     {
       "key": "stage",
@@ -468,7 +509,7 @@ export const SCHEMA = {
       "group": "about",
       "weight": 7,
       "description": "Shown on the catalog card. Plain language, no jargon.",
-      "placeholder": "Classifies incoming public health hotline calls by urgency and topic so nurses see the highest-priority cases first."
+      "placeholder": "Pulls lab results from the state feed every night, removes duplicates and loads them into our surveillance system, so epidemiologists start the day with clean data."
     },
     {
       "key": "impact",
@@ -528,37 +569,41 @@ export const SCHEMA = {
     },
     {
       "key": "ai_role",
-      "label": "How AI is involved",
-      "prompt": "Is the AI in the product, or was AI used to build it?",
+      "label": "Role of AI",
+      "prompt": "What part, if any, does AI play?",
       "type": "select",
-      "required": true,
       "group": "build",
       "weight": 1,
       "facet": true,
       "icon": "sparkles",
       "options": [
+        "No AI",
         "AI is part of the solution",
-        "AI was used to build it",
+        "AI helped build it",
         "Both"
       ],
       "option_meta": {
+        "No AI": {
+          "description": "Neither the solution nor the way it was built involved AI."
+        },
         "AI is part of the solution": {
           "short": "In solution",
           "description": "The running system uses AI (a model, an assistant, an automation)."
         },
-        "AI was used to build it": {
+        "AI helped build it": {
           "short": "Built with AI",
-          "description": "AI tools helped write the code, docs or analysis, but the product itself doesn't use AI."
+          "description": "AI tools helped write the code, docs or analysis, but the solution itself doesn't use AI."
         },
         "Both": {
-          "description": "AI is in the product and was used to build it."
+          "description": "AI is in the solution and was used to build it."
         }
-      }
+      },
+      "description": "Most digital work involves no AI, and that is a fine answer."
     },
     {
       "key": "ai_types",
       "label": "Types of AI",
-      "prompt": "What kinds of AI does it use?",
+      "prompt": "If AI is involved, what kinds?",
       "type": "multiselect",
       "group": "build",
       "weight": 2,
@@ -614,23 +659,23 @@ export const SCHEMA = {
         },
         "Rules-based (no ML)": {
           "short": "Rules-based",
-          "description": "Deterministic logic — shared here for comparison."
+          "description": "Deterministic logic, shared here for comparison."
         }
       },
-      "description": "Select all that apply."
+      "description": "Select all that apply. Skip it when there is no AI."
     },
     {
       "key": "ai_tools",
-      "label": "AI tools & models",
-      "prompt": "Which AI tools, models or services does it use?",
+      "label": "Tools and technologies",
+      "prompt": "Which tools and technologies does it use?",
       "type": "list",
       "group": "build",
       "weight": 3,
       "facet": true,
       "search": true,
       "icon": "terminal",
-      "placeholder": "Azure OpenAI GPT-4o, LangChain, custom scikit-learn model",
-      "description": "Name the models, platforms or libraries that matter."
+      "placeholder": "R, Python, SAS, SQL Server, Power BI, FHIR, Azure OpenAI",
+      "description": "Name the languages, platforms, libraries, standards and AI models that matter."
     },
     {
       "key": "platform",
@@ -791,7 +836,7 @@ export const SCHEMA = {
         "Human review built in": {
           "short": "Human review",
           "icon": "eye",
-          "description": "A person checks the AI's output before it is used."
+          "description": "A person checks the output before it is used."
         },
         "Reference only": {
           "short": "Reference",
@@ -810,7 +855,7 @@ export const SCHEMA = {
       "weight": 3,
       "icon": "code",
       "placeholder": "https://github.com/your-org/your-project",
-      "description": "GitHub, GitLab, Azure DevOps or any public repository."
+      "description": "GitHub, GitLab, Azure DevOps or any public repository. Code is optional: leave this blank if you are not sharing it."
     },
     {
       "key": "demo_url",
@@ -883,9 +928,8 @@ export const SCHEMA = {
       "label": "License",
       "prompt": "Under what license is it shared?",
       "type": "select",
-      "required": true,
       "group": "sharing",
-      "weight": 1,
+      "weight": 2,
       "facet": true,
       "card": "fact",
       "icon": "document",
@@ -928,7 +972,7 @@ export const SCHEMA = {
           "description": "The write-up is what is shared, not the artifact itself."
         }
       },
-      "description": "The coalition default is a permissive open license (MIT, Apache 2.0, CC BY). Submitting does not transfer ownership — your organization keeps authorship."
+      "description": "Optional when nothing but a description is shared. For code and documents the coalition default is a permissive open license (MIT, Apache 2.0, CC BY). Submitting does not transfer ownership; your organization keeps authorship."
     },
     {
       "key": "access_terms",
@@ -936,7 +980,7 @@ export const SCHEMA = {
       "prompt": "If it is not open source, how can a peer jurisdiction get access?",
       "type": "textarea",
       "group": "sharing",
-      "weight": 2,
+      "weight": 3,
       "placeholder": "Available to other health departments under a data-sharing agreement — email the contact below.",
       "description": "Government-to-government only, agreement required, contact us — whatever applies. Leave blank for open-licensed resources."
     },
@@ -947,7 +991,7 @@ export const SCHEMA = {
       "type": "select",
       "required": true,
       "group": "sharing",
-      "weight": 3,
+      "weight": 4,
       "facet": true,
       "card": "fact",
       "icon": "server",
@@ -979,8 +1023,8 @@ export const SCHEMA = {
       "prompt": "What would porting it involve?",
       "type": "textarea",
       "group": "sharing",
-      "weight": 4,
-      "placeholder": "The prompt set and the evaluation harness are plain Python; the retrieval layer uses Azure AI Search and would need replacing.",
+      "weight": 5,
+      "placeholder": "The R scripts and the data dictionary run anywhere; the nightly schedule uses Azure Data Factory and would need replacing.",
       "description": "Which pieces are vendor-specific, and what a team on a different stack would need to swap."
     },
     {
@@ -989,7 +1033,7 @@ export const SCHEMA = {
       "prompt": "Did you adapt this from another entry in this catalog?",
       "type": "list",
       "group": "sharing",
-      "weight": 5,
+      "weight": 6,
       "links_entries": true,
       "search": false,
       "placeholder": "overdose-spike-brief",
@@ -1306,7 +1350,7 @@ export const SCHEMA = {
       "type": "textarea",
       "group": "data",
       "weight": 5,
-      "placeholder": "Outputs are retained 90 days under our records schedule; the model was tuned on our own 311 transcripts, so expect to re-tune.",
+      "placeholder": "Outputs are retained 90 days under our records schedule; the matching rules were tuned to our own registry, so expect to re-tune them.",
       "description": "Data-use agreements, retention rules, de-identification steps — the caveats that travel with the resource."
     },
     {
@@ -1443,12 +1487,12 @@ export const NAVIGATION = [
 ];
 
 /** Verbatim _config.yml; the wizard patches title/description/url/baseurl into it. */
-export const JEKYLL_CONFIG = "# Jekyll configuration.\n# Most site-specific settings live in _data/site.yml (branding, modules, labels),\n# _data/theme.yml (colors, fonts) and _data/schema.yml (the entry content model).\n# Keep this file to build mechanics. `title`/`description` here are fallbacks for\n# SEO tags; the setup wizard keeps them in sync with _data/site.yml.\n\ntitle: \"AI Use Case Catalog\"\ndescription: \"A shared catalog of AI use cases, tools, and lessons learned from Big Cities Health Coalition member health departments.\"\nurl: \"\"\nbaseurl: \"\"\ntheme: null\ntimezone: \"America/Chicago\"\nmarkdown: kramdown\npermalink: pretty\nfuture: false\n\nexclude:\n  - node_modules\n  - vendor\n  - README.md\n  - ARCHITECTURE.md\n  - CONTRIBUTING.md\n  - CODE_OF_CONDUCT.md\n  - CHANGELOG.md\n  - SECURITY.md\n  - CLAUDE.md\n  - AGENTS.md\n  - LICENSE\n  - package-lock.json\n  - package.json\n  - tailwind.config.js\n  - postcss.config.js\n  - eslint.config.js\n  - quality\n  - assets/css/tailwind.css\n  - scripts\n  - test\n  - docs\n  - Gemfile\n  - Gemfile.lock\n  - .ruby-version\n\n# If you change entry.path in _data/schema.yml, change the first scope's path\n# here to match — this is what gives every entry the `entry` layout.\ndefaults:\n  - scope:\n      path: \"catalog\"\n    values:\n      layout: entry\n  - scope:\n      path: \"cohorts\"\n    values:\n      layout: cohort\n\nplugins:\n  - jekyll-seo-tag\n  - jekyll-sitemap\n  - jekyll-include-cache\n\nsass:\n  style: compressed\n";
+export const JEKYLL_CONFIG = "# Jekyll configuration.\n# Most site-specific settings live in _data/site.yml (branding, modules, labels),\n# _data/theme.yml (colors, fonts) and _data/schema.yml (the entry content model).\n# Keep this file to build mechanics. `title`/`description` here are fallbacks for\n# SEO tags; the setup wizard keeps them in sync with _data/site.yml.\n\ntitle: \"Public Health Digital Use Case Catalog\"\ndescription: \"A shared catalog of digital tools, data projects and AI work from Big Cities Health Coalition member health departments, so each city can reuse what another has already built.\"\nurl: \"\"\nbaseurl: \"\"\ntheme: null\ntimezone: \"America/Chicago\"\nmarkdown: kramdown\npermalink: pretty\nfuture: false\n\nexclude:\n  - node_modules\n  - vendor\n  - README.md\n  - ARCHITECTURE.md\n  - CONTRIBUTING.md\n  - CODE_OF_CONDUCT.md\n  - CHANGELOG.md\n  - SECURITY.md\n  - CLAUDE.md\n  - AGENTS.md\n  - LICENSE\n  - package-lock.json\n  - package.json\n  - tailwind.config.js\n  - postcss.config.js\n  - eslint.config.js\n  - quality\n  - assets/css/tailwind.css\n  - scripts\n  - test\n  - docs\n  - Gemfile\n  - Gemfile.lock\n  - .ruby-version\n\n# If you change entry.path in _data/schema.yml, change the first scope's path\n# here to match — this is what gives every entry the `entry` layout.\ndefaults:\n  - scope:\n      path: \"catalog\"\n    values:\n      layout: entry\n  - scope:\n      path: \"cohorts\"\n    values:\n      layout: cohort\n\nplugins:\n  - jekyll-seo-tag\n  - jekyll-sitemap\n  - jekyll-include-cache\n\nsass:\n  style: compressed\n";
 
 /** The build-mechanics values _config.yml ships with. */
 export const JEKYLL_DEFAULTS = {
-  "title": "AI Use Case Catalog",
-  "description": "A shared catalog of AI use cases, tools, and lessons learned from Big Cities Health Coalition member health departments.",
+  "title": "Public Health Digital Use Case Catalog",
+  "description": "A shared catalog of digital tools, data projects and AI work from Big Cities Health Coalition member health departments, so each city can reuse what another has already built.",
   "url": "",
   "baseurl": "",
   "timezone": "America/Chicago"

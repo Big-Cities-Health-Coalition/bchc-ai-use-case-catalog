@@ -37,6 +37,15 @@ synonyms:
   syndromic: ["surveillance", "essence"]
   translation: ["multilingual", "language access"]
   procurement: ["contract", "purchasing", "rfp"]
+  etl: ["pipeline", "data integration", "extract transform load"]
+  fhir: ["interoperability", "hl7", "api"]
+  elr: ["electronic lab reporting", "lab results"]
+  ecr: ["electronic case reporting", "eicr"]
+  dashboard: ["visualization", "power bi", "tableau"]
+  gis: ["mapping", "geospatial", "arcgis"]
+  warehouse: ["data platform", "lakehouse", "data lake"]
+  modernization: ["dmi", "data modernization initiative"]
+  rpa: ["workflow automation", "power automate"]
 
 # ---------------------------------------------------------------------------
 # aliases    <field key> -> <exact option value> -> the words a reader might
@@ -54,6 +63,24 @@ synonyms:
 #            docs/search.md).
 # ---------------------------------------------------------------------------
 aliases:
+  solution_type:
+    "AI/ML model": ["machine learning", "ml", "risk model", "forecasting model", "predictive model"]
+    "Generative AI tool": ["llm", "gpt", "chatgpt", "copilot", "chatbot", "generative"]
+    "Data pipeline or integration": ["etl", "elt", "pipeline", "feed", "interface", "hl7", "fhir", "api", "interoperability"]
+    "Analysis project or script": ["python", "rstudio", "shiny", "sas", "stata", "sql", "notebook", "statistical analysis"]
+    "Dashboard or visualization": ["dashboard", "power bi", "tableau", "arcgis", "map", "report"]
+    "Application or software": ["app", "web app", "mobile app", "portal", "software"]
+    "Data platform or infrastructure": ["data warehouse", "data lake", "lakehouse", "cloud", "infrastructure as code", "terraform"]
+    "Workflow automation": ["rpa", "power automate", "scheduled job", "automation"]
+    "Standards, governance or playbook": ["data standard", "data governance", "policy", "playbook", "checklist", "template"]
+  sharing:
+    "Open-source code": ["open source", "github", "repository", "repo", "free"]
+    "Code on request": ["private repo", "available on request"]
+    "Templates or documentation only": ["templates", "documentation", "docs", "guide"]
+    "Description only": ["write-up", "case study", "lessons learned"]
+  ai_role:
+    "No AI": ["non-ai", "without ai", "traditional"]
+    "AI helped build it": ["ai-assisted", "coding assistant", "built with ai"]
   ai_types:
     "Chat assistant": ["chatbot", "virtual assistant", "helpdesk bot", "copilot"]
     "Generative text (LLM)": ["llm", "gpt", "generative ai", "drafting"]
@@ -63,27 +90,31 @@ aliases:
     "Computer vision": ["ocr", "image recognition", "scanned documents"]
     "Speech & transcription": ["transcription", "voice", "audio"]
     "Translation": ["multilingual", "language access", "interpretation"]
-    "Agents & automation": ["workflow automation", "agentic", "rpa"]
+    "Agents & automation": ["agentic", "ai agent"]
   data_sensitivity:
     "Health information (PHI)": ["hipaa", "phi", "patient data"]
     "Personal information (PII)": ["pii", "identifiers", "personally identifiable"]
     "De-identified data": ["anonymized", "deidentified"]
     "Criminal justice data (CJIS)": ["cjis", "law enforcement data"]
   area:
-    "Epidemiology & surveillance": ["outbreak", "case investigation", "syndromic"]
-    "Environmental health": ["inspections", "restaurant", "food safety", "vector"]
-    "Emergency preparedness": ["emergency response", "incident", "phep"]
-    "Communications & outreach": ["public information", "risk communication", "media"]
-    "Finance, procurement & contracts": ["grants", "budget", "purchasing", "rfp"]
-    "HR & workforce": ["hiring", "onboarding", "recruitment", "staffing"]
-    "Data & informatics": ["informatics", "analytics", "dashboards"]
+    "Communicable disease": ["infectious disease", "immunization", "vaccine", "sti", "hiv", "tb", "outbreak"]
+    "Chronic disease and injury prevention": ["chronic disease", "overdose", "opioid", "violence prevention", "tobacco", "injury"]
+    "Environmental health": ["inspections", "restaurant", "food safety", "vector", "lead", "heat"]
+    "Maternal, child and family health": ["mch", "wic", "home visiting", "prenatal", "infant"]
+    "Access to and linkage with care": ["clinic", "community health worker", "chw", "referral", "linkage"]
+    "Emergency preparedness and response": ["emergency response", "incident", "phep", "preparedness"]
+    "Epidemiology and surveillance": ["epi", "case investigation", "syndromic", "wastewater", "surveillance"]
+    "Vital records and health statistics": ["birth records", "death records", "mortality", "vital statistics"]
+    "Communications and community engagement": ["public information", "risk communication", "media", "outreach", "language access"]
+    "Data modernization and informatics": ["informatics", "data modernization", "interoperability", "data governance", "dmi"]
+    "Agency operations and administration": ["hr", "hiring", "onboarding", "finance", "grants", "procurement", "contracts", "it", "legal"]
   platform:
     "Microsoft Azure": ["azure openai", "microsoft cloud"]
     "Enterprise AI workspace": ["copilot", "chatgpt enterprise", "gemini for workspace"]
     "Low-code platform": ["power automate", "power apps", "airtable", "n8n"]
   expertise:
     "Anyone on staff": ["no code", "non technical"]
-    "Analyst or data scientist": ["python", "r", "sql"]
+    "Analyst or data scientist": ["python", "r", "sql", "sas"]
   readiness:
     "Human review built in": ["human in the loop", "oversight", "review step"]
     "Needs a data agreement": ["dua", "baa", "data use agreement"]
@@ -113,9 +144,9 @@ aliases:
 # ---------------------------------------------------------------------------
 landing:
   enabled: true
-  # AI tool and model names are free text, so this facet has one value per
-  # product version — "Azure OpenAI GPT-4o" is not a page anyone links to, and
-  # the count grows with the catalog rather than with the taxonomy.
+  # Tool and technology names are free text, so this facet has one value per
+  # product version ("SQL Server 2019", "Azure OpenAI GPT-4o") that nobody links
+  # to, and the count grows with the catalog rather than with the taxonomy.
   exclude: ["ai_tools"]
   max_values: 200
   min_entries: 1

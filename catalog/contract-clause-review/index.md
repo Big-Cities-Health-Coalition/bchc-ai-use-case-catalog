@@ -11,11 +11,11 @@ sample: true
 impact: "Cut first-pass contract review from five business days to one"
 organization: "Summit Ridge County Health Department"
 review_status: "Reviewed & approved"
-solution_type: "Vendor product"
+solution_type:
+  - "Generative AI tool"
 use_case_category: "Administrative & task automation"
 area:
-  - "Finance, procurement & contracts"
-  - "Legal & compliance"
+  - "Agency operations and administration"
 stage: "Pilot"
 ai_role: "AI is part of the solution"
 ai_types:
@@ -44,6 +44,7 @@ resources:
 screenshots:
   - src: /catalog/contract-clause-review/screenshots/01.png
     alt: "Clause summary table listing indemnification, data ownership and other clauses with plain-language summaries and comparison flags."
+sharing: "Description only"
 license: "Not open source — description only"
 access_terms: "A commercial product; the write-up describes the pilot, the vendor evaluation and the contract terms we negotiated. Contact us for the evaluation rubric."
 portability: "No — tied to its platform"

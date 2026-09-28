@@ -10,11 +10,13 @@ sample: true
 impact: "Cut brief turnaround from three days to under one hour"
 organization: "Harbor City Health Department"
 review_status: "Reviewed & approved"
-solution_type: "Source code"
+solution_type:
+  - "Generative AI tool"
+  - "Analysis project or script"
 use_case_category: "Communications, media & writing"
 area:
-  - "Epidemiology & surveillance"
-  - "Clinical & community services"
+  - "Epidemiology and surveillance"
+  - "Chronic disease and injury prevention"
 stage: "Pilot"
 ai_role: "Both"
 ai_types:
@@ -44,6 +46,7 @@ screenshots:
     alt: "Draft situational brief showing four summary tiles, a bar chart of naloxone runs by neighbourhood, and the drafted narrative."
   - src: /catalog/overdose-spike-brief/screenshots/02.png
     alt: "Brief generator form with an alert window, a neighbourhood checklist and a generate button."
+sharing: "Open-source code"
 license: "Apache 2.0"
 portability: "Yes — platform-agnostic"
 portability_notes: "A local Python tool: it reads a CSV, calls a locally hosted model, and writes a document. Nothing vendor-specific."

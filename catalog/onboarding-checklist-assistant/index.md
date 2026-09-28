@@ -12,11 +12,12 @@ sample: true
 impact: "Cut first-week help desk tickets from 11 to 3 per new hire"
 organization: "Two Rivers Regional Health District"
 review_status: "Reviewed & approved"
-solution_type: "Internal tool"
+solution_type:
+  - "Generative AI tool"
+  - "Workflow automation"
 use_case_category: "Administrative & task automation"
 area:
-  - "HR & workforce"
-  - "IT & operations"
+  - "Agency operations and administration"
 stage: "In production"
 ai_role: "AI is part of the solution"
 ai_types:
@@ -47,6 +48,7 @@ screenshots:
     alt: "Onboarding checklist for a new inspector, grouped by before day one, day one, week one and week two, with progress tiles."
   - src: /catalog/onboarding-checklist-assistant/screenshots/02.png
     alt: "Chat transcript where the assistant answers badge and access questions with handbook citations and declines a pay question."
+sharing: "Code on request"
 license: "Not open source — available on request"
 access_terms: "The Power Platform solution file is available to other agencies on request; it needs an Azure OpenAI deployment of your own."
 portability: "No — tied to its platform"

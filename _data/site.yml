@@ -4,9 +4,9 @@
 # to configure branding, contact details, and which modules are turned on.
 # ---------------------------------------------------------------------------
 
-name: "AI Use Case Catalog"
-tagline: "Shared AI solutions from big-city health departments"
-description: "A shared catalog of AI use cases, tools, and lessons learned from Big Cities Health Coalition member health departments."
+name: "Public Health Digital Use Case Catalog"
+tagline: "Digital tools, data and AI work from big-city health departments"
+description: "A shared catalog of digital tools, data projects and AI work from Big Cities Health Coalition member health departments, so each city can reuse what another has already built."
 
 organization:
   name: "Big Cities Health Coalition"
@@ -17,13 +17,17 @@ organization:
 # Logo shown in the header/footer. Provide an image path (SVG/PNG under assets/images)
 # or leave `image` blank to show a text mark built from `text`.
 logo:
-  image: ""
+  image: "/assets/images/bchc-logo-mark.png"
   text: "BCHC"
+
+# Link-preview card for chat apps and social sites (1200x630).
+social:
+  og_image: "/assets/images/og-image.png"
 
 # GitHub repository that hosts this site, as "owner/repo".
 # Used to build the "Submit" form links, "Edit this page" links, and issue URLs.
 github:
-  repository: "Big-Cities-Health-Coalition/bchc-ai-use-case-catalog"
+  repository: "Big-Cities-Health-Coalition/use-case-catalog"
   branch: "main"
 
 # Demo mode. `true` puts a banner on every page saying the content is the
@@ -49,9 +53,9 @@ modules:
 
 # Home page copy
 hero:
-  eyebrow: "Big Cities Health Coalition · AI Community of Practice"
-  title: "What health departments are building with AI"
-  lead: "Preview realistic sample use cases modeled on common public-health needs, and see how approved member submissions will present code, deployments, vendor details and lessons learned."
+  eyebrow: "Big Cities Health Coalition · Data Modernization Workgroup"
+  title: "Reuse what other health departments have already built"
+  lead: "Preview sample use cases modeled on common public health needs, from data pipelines and dashboards to analysis code, applications and AI tools. See how member submissions will show what was built, what it took, and what another city can take away."
   primary_cta:
     label: "Browse the catalog"
     url: "/catalog/"
@@ -66,16 +70,16 @@ home:
   recent_count: 6           # entries in the "Recently added" grid
   hero_latest_count: 3      # newest entries listed beside the hero on wide screens (0 hides the panel)
   highlights:               # optional 3-up value propositions — a title and one sentence each (leave empty to hide)
-    - title: "Start from what already works"
-      body: "Each sample entry shows where code, deployments or vendor details will appear after a real submission is reviewed and approved."
+    - title: "Reuse over reinvention"
+      body: "Each entry says what another health department can take away: open-source code, code on request, templates, or a plain account of the work."
     - title: "Honest notes on what it took"
-      body: "The demo shows how entries can capture data sources, tools, staffing and lessons learned — not just a project description."
+      body: "Entries record data sources, tools, staffing, cost and lessons learned, not just a project description."
     - title: "One form, one review, then it's live"
       body: "A short form opens a GitHub issue. A maintainer reviews it in a pull request and the entry publishes when it merges."
 
 # Submission form settings (module: submit)
 submit:
-  intro: "Share an AI use case, tool or project with the coalition. Submissions open a GitHub issue for the maintainers to review; nothing is published until it is approved."
+  intro: "Share a digital tool, data project or AI use case with the coalition. Code is optional: a clear description of what you built and what it took is enough. Submissions open a GitHub issue for the maintainers to review, and nothing is published until it is approved."
   turnaround: "Intake checks it within about five business days and the Governance Committee reviews it within about ten more; you keep ownership of anything you share."   # the last step of "what happens next" — make it a promise you can keep
   review_note: "Please do not include protected health information, credentials or non-public data. Link out to repositories and documents rather than pasting sensitive content."
   fallback_email: "info@bigcitieshealth.org"   # "Email it instead" button; leave blank (and clear organization.contact_email) to drop the button
@@ -100,7 +104,7 @@ contact:
 
 # Footer
 footer:
-  about: "A demonstration of a collaborative catalog for the coalition's AI community of practice. All current entries are fictional samples; member submissions will be reviewed before publication."
+  about: "A demonstration of a shared catalog for the coalition's Data Modernization Workgroup. All current entries are fictional samples; member submissions will be reviewed before publication."
   links:
     - label: "Big Cities Health Coalition"
       url: "https://www.bigcitieshealth.org"
@@ -111,7 +115,7 @@ footer:
       url: "/about/search/"
       module: catalog
     - label: "Maintainer guide"
-      url: "https://github.com/Big-Cities-Health-Coalition/bchc-ai-use-case-catalog/blob/main/docs/admin-guide.md"
+      url: "https://github.com/Big-Cities-Health-Coalition/use-case-catalog/blob/main/docs/admin-guide.md"
   copyright: "Big Cities Health Coalition"
   # One-sentence accessibility statement for the footer. When the governance
   # module is on it links to the full statement at /governance/#accessibility.

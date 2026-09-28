@@ -7,11 +7,12 @@ published: "2026-08-26"
 featured: false
 thumbnail: ""
 organization: Cedar Valley County Health Department
-solution_type: Internal tool
+solution_type:
+  - "Generative AI tool"
+  - "Workflow automation"
 use_case_category: Administrative & task automation
 area:
-  - Clinical & community services
-  - Staff & partner coordination
+  - "Access to and linkage with care"
 stage: Pilot
 summary: "Community health workers record a short voice memo after each home visit; the tool transcribes it, drafts the structured visit note in our case-management format, and queues it for the CHW to review and file — turning a 20-minute typing task into a 4-minute review."
 impact: "Visit notes filed same-day rose from 54% to 93% in the eight-week pilot"
@@ -38,6 +39,7 @@ docs_url: "https://example.org/chw-summarizer-writeup"
 resources: []
 screenshots: []
 deck_pdf: "/catalog/home-visit-note-summarizer-for-community-health-workers/deck.pdf"
+sharing: "Templates or documentation only"
 license: "Not open source — description only"
 access_terms: "The flow definitions are specific to our case-management vendor; we share the prompt set and the review checklist with coalition members on request."
 portability: "Partially — with rework"

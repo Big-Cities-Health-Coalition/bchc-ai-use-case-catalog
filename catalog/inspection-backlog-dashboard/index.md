@@ -11,14 +11,14 @@ sample: true
 impact: "Built in three weeks against a four-month estimate; replaced four hand-merged spreadsheets"
 organization: "Baytown Metro Health District"
 review_status: "Reviewed & approved"
-solution_type: "Internal tool"
+solution_type:
+  - "Dashboard or visualization"
 use_case_category: "Coding & brainstorming"
 area:
-  - "IT & operations"
   - "Environmental health"
-  - "Leadership & administration"
+  - "Agency operations and administration"
 stage: "In production"
-ai_role: "AI was used to build it"
+ai_role: "AI helped build it"
 ai_types:
   - "Rules-based (no ML)"
 ai_tools:
@@ -43,6 +43,7 @@ screenshots:
     alt: "Backlog dashboard with open and past-due totals and bar charts of past-due inspections by district and by inspection type."
   - src: /catalog/inspection-backlog-dashboard/screenshots/02.png
     alt: "Filtered list of past-due inspections in one district showing facility, type, assigned inspector, due date and days past due."
+sharing: "Code on request"
 license: "Not open source — available on request"
 access_terms: "The dashboard SQL and the notes on how the coding assistant was used are shared with other departments on request."
 portability: "Yes — platform-agnostic"

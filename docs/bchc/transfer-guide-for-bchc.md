@@ -180,7 +180,7 @@ between steps 4 and 6.
 
 - The **site** is what the public sees. The maintainer will send you its new address.
 - The **repository** is the behind-the-scenes view, at
-  `github.com/<your organization name>/bchc-ai-use-case-catalog`. Bookmark it.
+  `github.com/<your organization name>/use-case-catalog`. Bookmark it.
 
 ### Step 2: Learn the three tabs you will use
 

@@ -1,6 +1,6 @@
-# BCHC AI Use Case Catalog support
+# Public Health Digital Use Case Catalog support
 
-The BCHC AI Use Case Catalog is a BCHC deployment of community-maintained PHCT software, supplied
+This catalog is a BCHC deployment of community-maintained PHCT software, supplied
 under the MIT license and without warranty.
 
 - Search existing issues and documentation before opening a report.

@@ -6,18 +6,18 @@
 # ---------------------------------------------------------------------------
 
 colors:
-  primary: "#1D4E89"        # buttons, links, active states
-  primary_dark: "#12305A"   # hero + footer background, headings on light surfaces
-  secondary: "#0F6357"      # taxonomy identity (chip dots, secondary icons); AA on white
-  accent: "#E07A2F"         # highlights, warm accent badges
-  ink: "#1B2430"            # body text
-  muted: "#5A6573"          # secondary text (AA on white)
-  line: "#D9E0E8"           # dividers and card borders
-  line_strong: "#7C8A9B"    # borders of interactive controls (inputs, pills) — keep >= 3:1 on card
-  surface: "#F5F7FA"        # page background
-  surface_tint: "#EAF0F7"   # tinted bands and panels (fact strip, sidebar, home bands) — AA for ink, muted and primary
+  primary: "#B90D13"        # buttons, links, active states
+  primary_dark: "#171717"   # hero + footer background, headings on light surfaces
+  secondary: "#0571C6"      # taxonomy identity (chip dots, secondary icons); AA on white
+  accent: "#FF8A7A"         # highlights, warm accent badges (lighter BCHC red keeps ink labels AA)
+  ink: "#383838"            # body text
+  muted: "#5C5C5C"          # secondary text (AA on white)
+  line: "#E6E0D6"           # dividers and card borders
+  line_strong: "#8A8A8A"    # borders of interactive controls (inputs, pills) — keep >= 3:1 on card
+  surface: "#FFFCF6"        # page background
+  surface_tint: "#F7F1E6"   # tinted bands and panels (fact strip, sidebar, home bands) — AA for ink, muted and primary
   card: "#FFFFFF"           # card background
-  on_dark: "#F7F9FC"        # text on primary_dark backgrounds
+  on_dark: "#FFFCF6"        # text on primary_dark backgrounds
   warn: "#B45309"           # caution only: sensitive-data indicators, validation errors
 
 fonts:
@@ -25,9 +25,9 @@ fonts:
   # name works if you also set google_fonts_url (a Google Fonts <link> href) below.
   # The shipped pairing is a serif for headings over a sans for everything else;
   # set heading to "Source Sans 3" for an all-sans site.
-  heading: "Source Serif 4"
-  body: "Inter"
-  google_fonts_url: ""
+  heading: "Barlow"
+  body: "Figtree"
+  google_fonts_url: "https://fonts.googleapis.com/css2?family=Barlow:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap"
 
 type:
   # Line length. Set in rem, not ch: the CSS `ch` unit is the width of the digit

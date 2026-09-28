@@ -887,7 +887,7 @@ export const SCHEMA = {
       "weight": 6,
       "icon": "link",
       "placeholder": "Evaluation report | https://drive.google.com/…",
-      "description": "Shared drives, SharePoint, model cards, container images, vendor pages."
+      "description": "Shared drives, SharePoint, data dictionaries, model cards, container images, vendor pages."
     },
     {
       "key": "screenshots",
@@ -1216,7 +1216,7 @@ export const SCHEMA = {
       "group": "cost",
       "weight": 5,
       "placeholder": "Covers every case reported by the labs we onboarded. Smaller labs that still fax results are not included yet, so counts undercount the neighborhoods they serve; we track that gap each quarter.",
-      "description": "Optional but strongly encouraged. Which populations the output reaches, what you checked for uneven performance, and what you would watch."
+      "description": "Optional but strongly encouraged. Which populations the output reaches, who it might miss or serve less well, and what you would watch."
     },
     {
       "key": "no_pii_attestation",

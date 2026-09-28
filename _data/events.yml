@@ -1,7 +1,7 @@
 # Site-wide events shown on /events/ (when modules.events is on) and the home page.
 # Cohort-specific events live in _data/cohorts/<year>.yml.
-- id: ai-community-call-sept
-  name: "AI in Public Health Community Call"
+- id: community-call-sept
+  name: "Data Modernization Community Call"
   date: 2026-09-16
   time: "1:00–2:00 PM ET"
   location: "Zoom"

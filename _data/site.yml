@@ -23,7 +23,7 @@ logo:
 # GitHub repository that hosts this site, as "owner/repo".
 # Used to build the "Submit" form links, "Edit this page" links, and issue URLs.
 github:
-  repository: "crypticpy/bchc-ai-use-case-catalog"
+  repository: "Big-Cities-Health-Coalition/bchc-ai-use-case-catalog"
   branch: "main"
 
 # Demo mode. `true` puts a banner on every page saying the content is the
@@ -111,7 +111,7 @@ footer:
       url: "/about/search/"
       module: catalog
     - label: "Maintainer guide"
-      url: "https://github.com/crypticpy/bchc-ai-use-case-catalog/blob/main/docs/admin-guide.md"
+      url: "https://github.com/Big-Cities-Health-Coalition/bchc-ai-use-case-catalog/blob/main/docs/admin-guide.md"
   copyright: "Big Cities Health Coalition"
   # One-sentence accessibility statement for the footer. When the governance
   # module is on it links to the full statement at /governance/#accessibility.

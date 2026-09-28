@@ -4,11 +4,11 @@ A shared catalog of AI use cases, tools and lessons learned from Big Cities Heal
 
 The site is hosted on GitHub Pages and managed entirely through GitHub: no server, no database, no CMS login. Jekyll builds it on GitHub Actions, and every content change flows through a GitHub issue and a pull request.
 
-**Live site:** <https://crypticpy.github.io/bchc-ai-use-case-catalog/>
+**Live site:** <https://big-cities-health-coalition.github.io/bchc-ai-use-case-catalog/>
 
 ## Add an entry
 
-Fill in the [**Submit** form](https://crypticpy.github.io/bchc-ai-use-case-catalog/submit/) on the site — a stepped form that walks you through a few short sections, with a short form that hides every optional question and a live preview of the card your entry will produce — or open the [Submit a use case issue form](https://github.com/crypticpy/bchc-ai-use-case-catalog/issues/new?template=new-entry.yml) directly. Automation turns the issue into a pull request with the entry drafted and any screenshots downloaded into it; a maintainer reviews and merges, and the entry is live a couple of minutes later.
+Fill in the [**Submit** form](https://big-cities-health-coalition.github.io/bchc-ai-use-case-catalog/submit/) on the site — a stepped form that walks you through a few short sections, with a short form that hides every optional question and a live preview of the card your entry will produce — or open the [Submit a use case issue form](https://github.com/Big-Cities-Health-Coalition/bchc-ai-use-case-catalog/issues/new?template=new-entry.yml) directly. Automation turns the issue into a pull request with the entry drafted and any screenshots downloaded into it; a maintainer reviews and merges, and the entry is live a couple of minutes later.
 
 ## Maintainers
 
@@ -20,11 +20,11 @@ Built on the [Pub Health Catalog Template (PHCT)](https://github.com/crypticpy/p
 
 ### Ownership
 
-This repository is moving from `@crypticpy`'s account to the Big Cities Health Coalition's own GitHub organization, which will own the repository and the published site. `@crypticpy` continues as the interim technical maintainer until BCHC names its own. [`docs/bchc/transfer-runbook.md`](docs/bchc/transfer-runbook.md) is the step-by-step plan for the move, and [`MAINTAINERS.md`](MAINTAINERS.md) lists who holds which role. The live-site address will change with the move; this README is updated when it does.
+The Big Cities Health Coalition owns this repository and the published site, through its GitHub organization [Big-Cities-Health-Coalition](https://github.com/Big-Cities-Health-Coalition). It moved there from `@crypticpy`'s account in September 2026. `@crypticpy` continues as the interim technical maintainer until BCHC names its own. [`docs/bchc/transfer-runbook.md`](docs/bchc/transfer-runbook.md) records how the move was done, and [`MAINTAINERS.md`](MAINTAINERS.md) lists who holds which role.
 
 ## What's next
 
-[`docs/bchc/feature-ledger.md`](docs/bchc/feature-ledger.md) is the public record of where the catalog is going: what is being built now, what has been requested, and the design questions still to settle. Have an idea or feedback? Open a [feature request](https://github.com/crypticpy/bchc-ai-use-case-catalog/issues/new?template=feature.yml) for catalog software capabilities, or email [info@bigcitieshealth.org](mailto:info@bigcitieshealth.org) for BCHC-specific suggestions — maintainers triage both into the ledger.
+[`docs/bchc/feature-ledger.md`](docs/bchc/feature-ledger.md) is the public record of where the catalog is going: what is being built now, what has been requested, and the design questions still to settle. Have an idea or feedback? Open a [feature request](https://github.com/Big-Cities-Health-Coalition/bchc-ai-use-case-catalog/issues/new?template=feature.yml) for catalog software capabilities, or email [info@bigcitieshealth.org](mailto:info@bigcitieshealth.org) for BCHC-specific suggestions — maintainers triage both into the ledger.
 
 ## Features
 

@@ -733,7 +733,7 @@ export const SCHEMA = {
       "group": "build",
       "weight": 5,
       "search": true,
-      "placeholder": "Acme Health AI",
+      "placeholder": "Acme Health Data",
       "description": "Leave it blank if your own team built it."
     },
     {
@@ -1215,7 +1215,7 @@ export const SCHEMA = {
       "type": "textarea",
       "group": "cost",
       "weight": 5,
-      "placeholder": "Reaches everyone who calls the hotline, including the ~18% who use it in Spanish. We compared triage accuracy across language groups monthly and would stop if the gap grew.",
+      "placeholder": "Covers every case reported by the labs we onboarded. Smaller labs that still fax results are not included yet, so counts undercount the neighborhoods they serve; we track that gap each quarter.",
       "description": "Optional but strongly encouraged. Which populations the output reaches, what you checked for uneven performance, and what you would watch."
     },
     {
@@ -1302,7 +1302,7 @@ export const SCHEMA = {
       "weight": 3,
       "search": true,
       "icon": "database",
-      "placeholder": "Immunization registry, 311 call transcripts, ESSENCE",
+      "placeholder": "Electronic lab reports (ELR), immunization registry, ESSENCE",
       "description": "Describe the sources — do not paste sensitive data."
     },
     {

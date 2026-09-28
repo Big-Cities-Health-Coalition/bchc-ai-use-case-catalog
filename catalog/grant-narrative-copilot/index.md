@@ -41,7 +41,7 @@ resources:
   - label: "Vendor product page"
     url: "https://www.example.com/products/workplace-copilot"
 sharing: "Templates or documentation only"
-license: "Not open source — description only"
+license: "Not open source — available on request"
 access_terms: "Built on Microsoft Copilot inside our tenant; the prompt library and the reviewer checklist are available to peer health departments on request."
 portability: "Partially — with rework"
 portability_notes: "The prompts and the program description library are text; the retrieval over past applications relies on SharePoint indexing and would need re-wiring on another platform."

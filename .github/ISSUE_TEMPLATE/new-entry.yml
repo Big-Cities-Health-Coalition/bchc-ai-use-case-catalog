@@ -178,7 +178,7 @@ body:
     attributes:
       label: Vendor or partner
       description: "If a vendor or partner built or hosts it, who? Leave it blank if your own team built it."
-      placeholder: Acme Health AI
+      placeholder: Acme Health Data
     validations:
       required: false
   - type: markdown
@@ -407,7 +407,7 @@ body:
     attributes:
       label: Who it affects
       description: "Who could this help or harm, and how did you check? Optional but strongly encouraged. Which populations the output reaches, what you checked for uneven performance, and what you would watch."
-      placeholder: "Reaches everyone who calls the hotline, including the ~18% who use it in Spanish. We compared triage accuracy across language groups monthly and would stop if the gap grew."
+      placeholder: "Covers every case reported by the labs we onboarded. Smaller labs that still fax results are not included yet, so counts undercount the neighborhoods they serve; we track that gap each quarter."
     validations:
       required: false
   - type: markdown
@@ -446,7 +446,7 @@ body:
     attributes:
       label: Data sources
       description: "Which data sources does it use? Describe the sources — do not paste sensitive data. One per line, or separated by commas."
-      placeholder: "Immunization registry, 311 call transcripts, ESSENCE"
+      placeholder: "Electronic lab reports (ELR), immunization registry, ESSENCE"
     validations:
       required: false
   - type: dropdown

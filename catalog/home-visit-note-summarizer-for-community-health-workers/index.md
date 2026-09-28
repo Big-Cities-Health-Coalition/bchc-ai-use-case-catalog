@@ -40,7 +40,7 @@ resources: []
 screenshots: []
 deck_pdf: "/catalog/home-visit-note-summarizer-for-community-health-workers/deck.pdf"
 sharing: "Templates or documentation only"
-license: "Not open source — description only"
+license: "Not open source — available on request"
 access_terms: "The flow definitions are specific to our case-management vendor; we share the prompt set and the review checklist with coalition members on request."
 portability: "Partially — with rework"
 portability_notes: "Transcription and drafting are standard components in any enterprise AI workspace; the filing step is built against our case-management system's intake API."

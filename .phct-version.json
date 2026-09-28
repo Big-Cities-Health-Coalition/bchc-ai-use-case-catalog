@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "source_repository": "https://github.com/crypticpy/phct",
-  "release": "v1.10.0-rc.2",
-  "version": "1.10.0-rc.2",
-  "commit": "18bb3243602d567fd785cc640171ac83464cf24c",
+  "release": "v1.10.0",
+  "version": "1.10.0",
+  "commit": "a8962ac6deaa55ea31b907a8669d4efe3717d1d8",
   "recorded_at": "2026-09-28"
 }

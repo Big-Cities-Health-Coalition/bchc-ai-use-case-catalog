@@ -8,6 +8,12 @@ major version, and each entry says so when it happens.
 
 ## [Unreleased]
 
+## [1.10.0] — 2026-09-28
+
+Stable release. Records-only promotion of the accepted `v1.10.0-rc.2`
+candidate: no template behaviour changes since rc.2 — the release line's
+features and fixes are recorded in the rc.1 and rc.2 sections below.
+
 ## [1.10.0-rc.2] — 2026-09-28
 
 Second candidate. rc.1's live BCHC update stopped before opening a pull request
@@ -1299,7 +1305,8 @@ fixed in this release, and the remaining P3s are listed in `docs/roadmap.md`.
   in-browser and CLI configurators, GitHub-issue submission flow, events /
   cohorts / resources modules, Lunr search, thumbnails workflow.
 
-[Unreleased]: https://github.com/crypticpy/phct/compare/v1.10.0-rc.2...HEAD
+[Unreleased]: https://github.com/crypticpy/phct/compare/v1.10.0...HEAD
+[1.10.0]: https://github.com/crypticpy/phct/compare/v1.10.0-rc.2...v1.10.0
 [1.10.0-rc.2]: https://github.com/crypticpy/phct/compare/v1.10.0-rc.1...v1.10.0-rc.2
 [1.10.0-rc.1]: https://github.com/crypticpy/phct/compare/v1.9.0...v1.10.0-rc.1
 [1.9.0]: https://github.com/crypticpy/phct/compare/v1.9.0-rc.7...v1.9.0

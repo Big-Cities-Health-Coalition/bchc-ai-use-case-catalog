@@ -136,9 +136,9 @@ export const THEME = {
     "warn": "#B45309"
   },
   "fonts": {
-    "heading": "Barlow",
-    "body": "Figtree",
-    "google_fonts_url": "https://fonts.googleapis.com/css2?family=Barlow:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap"
+    "heading": "PHCT Sans",
+    "body": "Inter",
+    "google_fonts_url": ""
   },
   "type": {
     "measure": "36rem",

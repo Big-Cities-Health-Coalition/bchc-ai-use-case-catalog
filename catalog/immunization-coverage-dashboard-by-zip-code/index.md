@@ -39,7 +39,7 @@ demo_url: ""
 docs_url: ""
 resources: []
 screenshots: []
-deck_pdf: "/catalog/immunization-coverage-dashboard-by-zip-code/deck.pdf"
+deck_pdf: ""
 also_deployed_by: []
 license: "Not open source — available on request"
 access_terms: We will share the R scripts and the Power BI template with any health department that asks.
@@ -57,14 +57,13 @@ no_pii_attestation: true
 data_sensitivity:
   - De-identified data
 data_sources:
-  - State immunization information system weekly extract
-  - aggregated to ZIP code
+  - Weekly extract from the state immunization registry
 audience: Internal staff
 data_governance_notes: ""
 security_review: ""
-contact_name: Test Submitter Two
-contact_title: Epidemiologist (test entry)
-contact_email: "epi@example.org"
+contact_name: Luis Ortega
+contact_title: Immunization Epidemiologist
+contact_email: "luis.ortega@example.org"
 submitter_github: ""
 ---
 
@@ -76,12 +75,10 @@ Coverage estimates arrived once a year, too late to steer outreach.
 
 An R script that aggregates the weekly registry extract to ZIP code and suppresses small cells, and a Power BI report on top of it.
 
-## What it took
+## Time and resources
 
 About six weeks of analyst time.
 
 ## Lessons learned
 
 Agree on small-cell suppression rules with the privacy officer before building the visuals.
-
-_This is a test submission created to check the intake automation._

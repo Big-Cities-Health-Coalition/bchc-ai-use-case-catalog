@@ -20,7 +20,7 @@ export const SITE = {
     "contact_email": "info@bigcitieshealth.org"
   },
   "logo": {
-    "image": "/assets/images/bchc-logo-mark.png",
+    "image": "/assets/images/bchc-logo-mark-144.png",
     "text": "BCHC"
   },
   "social": {
@@ -226,7 +226,7 @@ export const SCHEMA = {
       "required": true,
       "group": "about",
       "weight": 1,
-      "placeholder": "Nightly lab-result pipeline into the surveillance system",
+      "placeholder": "Nightly lab-result pipeline for surveillance",
       "description": "Specific enough that someone scanning a list of names knows what it is."
     },
     {
@@ -1437,8 +1437,8 @@ export const SCHEMA = {
       "required": true,
       "group": "story",
       "weight": 1,
-      "description": "Markdown is supported. Suggested headings: Problem, Approach, What it took (data, staffing, cost), Results, Lessons learned, How to reuse.",
-      "placeholder": "## Problem\n\n## Approach\n\n## What it took\n\n## Results\n\n## Lessons learned\n\n## How to reuse this\n"
+      "description": "Markdown is supported. Suggested headings: Problem, Approach, Time and resources (data, staffing, cost), Results, Lessons learned, How to reuse.",
+      "placeholder": "## Problem\n\n## Approach\n\n## Time and resources\n\n## Results\n\n## Lessons learned\n\n## How to reuse this\n"
     }
   ]
 };

@@ -22,7 +22,7 @@ body:
     attributes:
       label: Title
       description: What is it called? Specific enough that someone scanning a list of names knows what it is.
-      placeholder: Nightly lab-result pipeline into the surveillance system
+      placeholder: Nightly lab-result pipeline for surveillance
     validations:
       required: true
   - type: dropdown
@@ -516,13 +516,13 @@ body:
     id: body
     attributes:
       label: Full write-up
-      description: "What's the story? Markdown is supported. Suggested headings: Problem, Approach, What it took (data, staffing, cost), Results, Lessons learned, How to reuse."
+      description: "What's the story? Markdown is supported. Suggested headings: Problem, Approach, Time and resources (data, staffing, cost), Results, Lessons learned, How to reuse."
       value: |
         ## Problem
 
         ## Approach
 
-        ## What it took
+        ## Time and resources
 
         ## Results
 

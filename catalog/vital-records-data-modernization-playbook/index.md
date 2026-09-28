@@ -35,7 +35,7 @@ demo_url: ""
 docs_url: "https://example.org/vital-records-modernization-playbook"
 resources: []
 screenshots: []
-deck_pdf: "/catalog/vital-records-data-modernization-playbook/deck.pdf"
+deck_pdf: ""
 also_deployed_by: []
 license: Creative Commons (CC BY / CC0)
 access_terms: ""
@@ -55,9 +55,9 @@ data_sources: []
 audience: Partner organizations
 data_governance_notes: ""
 security_review: ""
-contact_name: Test Submitter Three
-contact_title: Data modernization manager (test entry)
-contact_email: "modernization@example.org"
+contact_name: Helen Park
+contact_title: Data Modernization Manager
+contact_email: "helen.park@example.org"
 submitter_github: ""
 ---
 
@@ -69,12 +69,10 @@ Our vital records system is twenty years old and every city we talked to is plan
 
 A playbook and a set of templates: a data inventory, a vendor question list, a test plan and a staffing plan.
 
-## What it took
+## Time and resources
 
 Three months of part-time work by a small team, with input from the Data Modernization Workgroup.
 
 ## Lessons learned
 
 Start the data inventory early; it took longer than anything else.
-
-_This is a test submission created to check the intake automation._

@@ -1,0 +1,55 @@
+<section class="slide slide-title">
+  <div class="title-block">
+    <h1>Wastewater surveillance trend alerts</h1>
+    <p class="subtitle">Early warning from the sampling data we already collect</p>
+  </div>
+  <div class="lede">
+    <p>
+      Watches the weekly wastewater sampling results for the metro's five treatment plants, flags
+      statistically unusual rises for COVID, flu and RSV, and posts a plain-language alert to the epi team's
+      channel before the Monday briefing.
+    </p>
+    <p class="source">Demo entry — Harborview Metro Health District (fictional)</p>
+  </div>
+</section>
+<section class="slide slide-glance">
+  <p class="eyebrow">AT A GLANCE</p>
+  <h2>Wastewater surveillance trend alerts</h2>
+  <dl class="facts">
+    <div class="fact">
+      <dt>What it does</dt>
+      <dd>
+        Turns routine sampling spreadsheets into a short alert only when a trend actually moves — no dashboard
+        babysitting.
+      </dd>
+    </div>
+    <div class="fact">
+      <dt>How it's built</dt>
+      <dd>
+        A scheduled script pulls the lab exports, runs a simple changepoint test, and an LLM drafts the
+        two-sentence alert an epidemiologist approves.
+      </dd>
+    </div>
+    <div class="fact">
+      <dt>What it took</dt>
+      <dd>
+        One analyst, part-time, about six weeks. No new data collection — the samples were already being
+        taken.
+      </dd>
+    </div>
+    <div class="fact">
+      <dt>Data &amp; governance</dt>
+      <dd>
+        Aggregate plant-level counts only — no case-level or personal data anywhere in the pipeline. The
+        public state dashboard is used to corroborate trends, not fed by the tool.
+      </dd>
+    </div>
+    <div class="fact">
+      <dt>Reuse it</dt>
+      <dd>
+        Any jurisdiction with routine wastewater sampling can adapt the write-up; the statistical test and
+        prompt are in the entry.
+      </dd>
+    </div>
+  </dl>
+</section>

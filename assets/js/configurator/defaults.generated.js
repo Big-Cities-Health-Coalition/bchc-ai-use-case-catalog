@@ -24,7 +24,7 @@ export const SITE = {
     "text": "BCHC"
   },
   "github": {
-    "repository": "crypticpy/bchc-ai-use-case-catalog",
+    "repository": "Big-Cities-Health-Coalition/bchc-ai-use-case-catalog",
     "branch": "main"
   },
   "demo": true,
@@ -104,7 +104,7 @@ export const SITE = {
       },
       {
         "label": "Maintainer guide",
-        "url": "https://github.com/crypticpy/bchc-ai-use-case-catalog/blob/main/docs/admin-guide.md"
+        "url": "https://github.com/Big-Cities-Health-Coalition/bchc-ai-use-case-catalog/blob/main/docs/admin-guide.md"
       }
     ],
     "copyright": "Big Cities Health Coalition",

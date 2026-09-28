@@ -9,7 +9,7 @@ request that gets lost.
 
 **To propose something:** for a capability of the catalog software — search, forms,
 pages, automation — open a
-[feature request](https://github.com/crypticpy/bchc-ai-use-case-catalog/issues/new?template=feature.yml);
+[feature request](https://github.com/Big-Cities-Health-Coalition/bchc-ai-use-case-catalog/issues/new?template=feature.yml);
 that form asks you to confirm the idea is reusable template behavior, because that is
 where the software is built. For BCHC-specific ideas — coalition policy, content,
 taxonomy, how the catalog is governed — email

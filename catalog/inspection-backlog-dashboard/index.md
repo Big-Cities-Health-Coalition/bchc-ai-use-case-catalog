@@ -1,14 +1,14 @@
 ---
 layout: entry
 render_with_liquid: false
-title: "Inspection backlog dashboard built with an AI coding assistant"
+title: "Environmental health inspection backlog dashboard"
 slug: inspection-backlog-dashboard
-summary: "A nightly operations dashboard for environmental health backlogs, built in three weeks by one developer working with an AI coding assistant."
+summary: "A nightly dashboard that shows environmental health supervisors where inspections are open and past due, by district and inspection type, in place of four spreadsheets merged by hand every Monday."
 published: 2026-07-21
 verified: 2026-08-01
 featured: false
 sample: true
-impact: "Built in three weeks against a four-month estimate; replaced four hand-merged spreadsheets"
+impact: "Replaced four hand-merged spreadsheets; past-due work in the worst district fell by about a fifth in one quarter"
 organization: "Baytown Metro Health District"
 review_status: "Reviewed & approved"
 solution_type:
@@ -22,11 +22,12 @@ ai_role: "AI helped build it"
 ai_types:
   - "Rules-based (no ML)"
 ai_tools:
-  - "Claude Code"
-  - "GitHub Copilot"
+  - "PostgreSQL"
+  - "SQL"
   - "Python"
   - "Dash"
-  - "PostgreSQL"
+  - "Claude Code"
+  - "GitHub Copilot"
 platform:
   - "On-premises"
 expertise: "Developer"
@@ -34,7 +35,7 @@ readiness:
   - "Needs customization"
 docs_url: "https://docs.example.gov/baytown/backlog-dashboard-notes"
 resources:
-  - label: "AI-assisted build notes and review checklist (PDF)"
+  - label: "Build notes and code review checklist (PDF)"
     url: "https://docs.example.gov/baytown/ai-assisted-build-notes.pdf"
   - label: "Data dictionary (spreadsheet)"
     url: "https://docs.example.org/spreadsheets/d/8c4z2r5b/edit"
@@ -45,9 +46,9 @@ screenshots:
     alt: "Filtered list of past-due inspections in one district showing facility, type, assigned inspector, due date and days past due."
 sharing: "Code on request"
 license: "Not open source — available on request"
-access_terms: "The dashboard SQL and the notes on how the coding assistant was used are shared with other departments on request."
+access_terms: "The SQL views, the data dictionary and the build notes are shared with other departments on request."
 portability: "Yes — platform-agnostic"
-portability_notes: "Plain SQL views and a Power BI file; the views port to any warehouse and the visuals rebuild in any BI tool."
+portability_notes: "Plain SQL views and a small Dash app; the views port to any warehouse and the charts rebuild in any BI tool."
 cost_band: "Not disclosed"
 run_cost: "Not disclosed"
 procurement:
@@ -75,28 +76,26 @@ Every Monday, a supervisor exported four reports from the inspections system, me
 
 ## What we built
 
-An ordinary internal dashboard: a nightly job that reads the inspections database, a set of SQL views, and a Dash application on a server we already run. It shows open and past-due counts, breakdowns by district and inspection type, and a filterable list supervisors use to reassign work.
-
-There is no model in the running system. The dashboard does arithmetic and draws bars. What is worth sharing is how it got built.
+An ordinary internal dashboard: a nightly job that reads the inspections database, a set of SQL views, and a Dash application on a server we already run. It shows open and past-due counts, breakdowns by district and inspection type, and a filterable list supervisors use to reassign work in the weekly meeting.
 
 ## How it works
 
-One developer built it in three weeks using an AI coding assistant for most of the code: the SQL views, the chart components, the layout, and the test fixtures. The developer wrote the data dictionary and the definition of "past due" by hand, in a meeting with the supervisors, before any code existed. That definition turned out to be the hard part of the project — three teams had three different ideas of when an inspection is late.
+The hard part was not the code. Three teams had three different ideas of when an inspection is late, so before anything was built we sat down with the supervisors and wrote a data dictionary and a single definition of "past due", including the statutory grace period for each inspection type. The SQL views implement that definition and nothing else, and every number on the dashboard traces back to one of them.
 
-Every generated change went through the same review as any other code: a pull request, a human read of the diff, and a test run against a copy of production data. The build notes linked above describe what we let the assistant do unsupervised (component scaffolding, tests, refactors) and what we did not (schema changes, anything touching the write path, access rules).
+The dashboard reports by district and inspection type, never by individual inspector. Home-based establishments are left out of the nightly extract.
+
+## How it was built
+
+One developer built it in three weeks. An AI coding assistant wrote much of the routine code (chart components, layout, test fixtures) and every change went through the same review as any other code: a pull request, a human read of the diff, and a test run against a copy of production data. The data dictionary, the past-due definition, schema changes and access rules were written by hand.
 
 ## Results
 
-Three weeks against a four-month estimate, with the caveat that the estimate was made for a team that would have designed a data warehouse first. The dashboard replaced four spreadsheets and the Monday morning merge.
-
-Backlog is now reviewed weekly instead of monthly, and past-due work in the worst district dropped by about a fifth over the first quarter as supervisors reassigned it earlier.
+The dashboard replaced four spreadsheets and the Monday morning merge. Backlog is now reviewed weekly instead of monthly, and past-due work in the worst district dropped by about a fifth over the first quarter as supervisors reassigned it earlier.
 
 ## Lessons learned
 
-The assistant was fastest at exactly the code we would have found tedious and slowest to be trusted with anything requiring institutional knowledge. It confidently produced a "days past due" calculation that ignored the statutory grace period, which a reviewer caught because the definition had been written down first.
-
-Write the definitions before you write the prompts.
+Write the definitions before you write any code. At one point a generated "days past due" calculation ignored the grace period, and a reviewer caught it only because the definition was already on paper.
 
 ## How to reuse
 
-The code is specific to our schema and is not published, but the build notes are the reusable part: what to review, what to hand over, and the argument we used to get an AI-assisted build approved by our IT governance group.
+The code is specific to our schema and is not published. The reusable parts are the data dictionary, the past-due definition and the SQL views, which port to any warehouse. The build notes cover how we reviewed generated code, for teams that want to try the same approach.

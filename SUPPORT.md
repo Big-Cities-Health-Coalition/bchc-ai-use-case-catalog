@@ -1,4 +1,4 @@
-# Public Health Digital Use Case Catalog support
+# Catalog support
 
 This catalog is a BCHC deployment of community-maintained PHCT software, supplied
 under the MIT license and without warranty.

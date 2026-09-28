@@ -245,7 +245,7 @@ body:
     id: resources
     attributes:
       label: Other resources
-      description: "Anything else worth linking? Shared drives, SharePoint, model cards, container images, vendor pages. One per line as `Label | URL`."
+      description: "Anything else worth linking? Shared drives, SharePoint, data dictionaries, model cards, container images, vendor pages. One per line as `Label | URL`."
       placeholder: "Evaluation report | https://drive.google.com/…"
     validations:
       required: false
@@ -406,7 +406,7 @@ body:
     id: equity_note
     attributes:
       label: Who it affects
-      description: "Who could this help or harm, and how did you check? Optional but strongly encouraged. Which populations the output reaches, what you checked for uneven performance, and what you would watch."
+      description: "Who could this help or harm, and how did you check? Optional but strongly encouraged. Which populations the output reaches, who it might miss or serve less well, and what you would watch."
       placeholder: "Covers every case reported by the labs we onboarded. Smaller labs that still fax results are not included yet, so counts undercount the neighborhoods they serve; we track that gap each quarter."
     validations:
       required: false

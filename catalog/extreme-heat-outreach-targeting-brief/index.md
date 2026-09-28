@@ -4,13 +4,13 @@ render_with_liquid: false
 title: Extreme-heat outreach targeting brief
 slug: extreme-heat-outreach-targeting-brief
 published: "2026-08-26"
-updated: 2026-09-28
 featured: false
 thumbnail: ""
 organization: Sunrise Plains Regional Health Coalition
 solution_type:
+  - "Analysis project or script"
   - "Standards, governance or playbook"
-use_case_category: Communications, media & writing
+use_case_category: ""
 area:
   - "Emergency preparedness and response"
   - "Environmental health"
@@ -19,13 +19,12 @@ stage: Idea / exploring
 summary: "A worked plan for using the county's existing heat-vulnerability index plus forecast data to decide, two days ahead of a heat event, which neighborhoods get door-knocking, which get robocalls, and which cooling centers to extend — written up for other jurisdictions to adapt before we build anything."
 impact: ""
 review_status: Reviewed & approved
-ai_role: "AI helped build it"
-ai_types:
-  - Generative text (LLM)
-  - Prediction & forecasting
+ai_role: "No AI"
+ai_types: []
 ai_tools:
-  - Gemini
+  - Excel
   - NWS point forecast API
+  - CDC/ATSDR Social Vulnerability Index
 platform: []
 vendor: ""
 expertise: Anyone on staff
@@ -66,4 +65,4 @@ contact_email: "alena.ford@example.org"
 
 After the July 2025 heat event, our after-action review found outreach went where it always goes — the neighborhoods with the most 311 calls — not where the risk was. This brief is the plan we wish we'd had: a scoring recipe that combines the vulnerability index with the block-level forecast, thresholds for each outreach tier, and a decision timeline that starts 48 hours out.
 
-We used an LLM to draft and pressure-test the playbook against three past events, but the operational version needs no AI at all — it's a spreadsheet and a checklist on purpose, so a duty officer can run it at 6am. We're sharing at the idea stage because we'd rather three coalition members poke holes in it now than after we've built tooling around it.
+The analysis joins block-group vulnerability scores to the 48-hour forecast and ranks the result, with a threshold for each outreach tier. We set the thresholds by backtesting the recipe against three past heat events and checking where it would have sent teams. The operational version is a spreadsheet and a checklist on purpose, so a duty officer can run it at 6am with nothing new to install. We're sharing at the idea stage because we'd rather three coalition members poke holes in it now than after we've built tooling around it.

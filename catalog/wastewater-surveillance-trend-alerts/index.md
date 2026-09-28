@@ -4,14 +4,13 @@ render_with_liquid: false
 title: Wastewater surveillance trend alerts
 slug: wastewater-surveillance-trend-alerts
 published: "2026-08-26"
-updated: 2026-09-28
 featured: false
 thumbnail: ""
 organization: Harborview Metro Health District
 solution_type:
-  - "AI/ML model"
   - "Data pipeline or integration"
-use_case_category: Operations & logistics
+  - "Analysis project or script"
+use_case_category: Communications, media & writing
 area:
   - "Epidemiology and surveillance"
   - "Communicable disease"
@@ -21,11 +20,13 @@ impact: Epi team saw the winter flu rise nine days before case reports confirmed
 review_status: Reviewed & approved
 ai_role: AI is part of the solution
 ai_types:
-  - Prediction & forecasting
-  - Classification & NLP
+  - Generative text (LLM)
 ai_tools:
   - Python
-  - Prophet
+  - pandas
+  - statsmodels
+  - Azure Functions
+  - Microsoft Teams
   - Claude (API)
 platform:
   - Microsoft Azure
@@ -43,9 +44,9 @@ screenshots: []
 deck_pdf: "/catalog/wastewater-surveillance-trend-alerts/deck.pdf"
 sharing: "Code on request"
 license: "Not open source — available on request"
-access_terms: "The ingest, trend model and alert code are shared with other health departments on request; email the contact below."
+access_terms: "The ingest, trend test and alert code are shared with other health departments on request; email the contact below."
 portability: "Partially — with rework"
-portability_notes: "The trend model and alert text generation are platform-agnostic Python; the ingest step assumes our LIMS export format and would need a new adapter for a different lab system."
+portability_notes: "The trend test and alert step are platform-agnostic Python; the ingest step assumes our LIMS export format and would need a new adapter for a different lab system."
 reused_from: []
 cost_band: No new spend
 run_cost: "Under $10k/yr"
@@ -69,6 +70,8 @@ contact_title: Surveillance Data Manager
 contact_email: "priya.raman@example.org"
 ---
 
-We started posting wastewater trends by hand in 2024 and kept missing rises that were obvious in hindsight. The alerting version fits a seasonal baseline per plant and per target, flags a sustained two-sample rise above the baseline's expected band, and drafts a three-sentence note an epidemiologist approves before it posts. The human approval step matters: about one flag in five is a sampling artifact, and the reviewer catches those in under a minute.
+We started posting wastewater trends by hand in 2024 and kept missing rises that were obvious in hindsight. The pipeline is a scheduled Python job. It pulls the weekly lab export for each plant, normalizes the results for flow, fits a seasonal baseline per plant and per target from two seasons of history, and runs a simple changepoint test that flags a sustained two-sample rise above the baseline's expected band. The thresholds are written down and were set by the epi team, so anyone can check why a flag fired.
 
-Setup for another jurisdiction means pointing the ingest at your lab export, setting plant service-area names, and two seasons of history for the baseline. The alert prompt comes with the code and is deliberately boring — it summarizes numbers the model computed, it never speculates about causes.
+The last step is small. A language model turns the flagged numbers into a two-sentence note, and an epidemiologist approves it before it posts. That review matters: about one flag in five is a sampling artifact, and the reviewer catches those in under a minute.
+
+Setup for another jurisdiction means pointing the ingest at your lab export, setting plant service-area names, and loading two seasons of history for the baseline. Most of the work is the ingest adapter. The alert prompt comes with the code and is deliberately boring: it restates numbers the pipeline computed and never speculates about causes. If a model is hard to get approved where you are, a fixed text template does the same job.

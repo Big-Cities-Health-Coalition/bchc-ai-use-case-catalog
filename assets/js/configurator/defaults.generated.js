@@ -136,9 +136,9 @@ export const THEME = {
     "warn": "#B45309"
   },
   "fonts": {
-    "heading": "Barlow",
-    "body": "Figtree",
-    "google_fonts_url": "https://fonts.googleapis.com/css2?family=Barlow:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap"
+    "heading": "PHCT Sans",
+    "body": "Inter",
+    "google_fonts_url": ""
   },
   "type": {
     "measure": "36rem",
@@ -887,7 +887,7 @@ export const SCHEMA = {
       "weight": 6,
       "icon": "link",
       "placeholder": "Evaluation report | https://drive.google.com/…",
-      "description": "Shared drives, SharePoint, model cards, container images, vendor pages."
+      "description": "Shared drives, SharePoint, data dictionaries, model cards, container images, vendor pages."
     },
     {
       "key": "screenshots",
@@ -1216,7 +1216,7 @@ export const SCHEMA = {
       "group": "cost",
       "weight": 5,
       "placeholder": "Covers every case reported by the labs we onboarded. Smaller labs that still fax results are not included yet, so counts undercount the neighborhoods they serve; we track that gap each quarter.",
-      "description": "Optional but strongly encouraged. Which populations the output reaches, what you checked for uneven performance, and what you would watch."
+      "description": "Optional but strongly encouraged. Which populations the output reaches, who it might miss or serve less well, and what you would watch."
     },
     {
       "key": "no_pii_attestation",

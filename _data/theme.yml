@@ -25,9 +25,9 @@ fonts:
   # name works if you also set google_fonts_url (a Google Fonts <link> href) below.
   # The shipped pairing is a serif for headings over a sans for everything else;
   # set heading to "Source Sans 3" for an all-sans site.
-  heading: "Barlow"
-  body: "Figtree"
-  google_fonts_url: "https://fonts.googleapis.com/css2?family=Barlow:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap"
+  heading: "PHCT Sans"
+  body: "Inter"
+  google_fonts_url: ""
 
 type:
   # Line length. Set in rem, not ch: the CSS `ch` unit is the width of the digit

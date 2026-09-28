@@ -1,9 +1,9 @@
 ---
 layout: entry
 render_with_liquid: false
-title: "New hire onboarding checklist assistant"
+title: "New hire onboarding checklist app with a handbook assistant"
 slug: onboarding-checklist-assistant
-summary: "Builds a personalized checklist for each new hire, opens the access requests it can, and answers policy questions from the staff handbook."
+summary: "A low-code app that builds each new hire's first-two-weeks checklist from their role, start date and work location and opens the access requests it can, with a small assistant that answers policy questions from the staff handbook."
 published: 2026-01-27
 updated: 2026-05-11
 verified: 2026-06-05
@@ -13,7 +13,7 @@ impact: "Cut first-week help desk tickets from 11 to 3 per new hire"
 organization: "Two Rivers Regional Health District"
 review_status: "Reviewed & approved"
 solution_type:
-  - "Generative AI tool"
+  - "Application or software"
   - "Workflow automation"
 use_case_category: "Administrative & task automation"
 area:
@@ -25,9 +25,10 @@ ai_types:
   - "Document Q&A (RAG)"
   - "Agents & automation"
 ai_tools:
-  - "Azure OpenAI GPT-4o"
+  - "Power Apps"
   - "Power Automate"
   - "SharePoint"
+  - "Azure OpenAI GPT-4o"
 platform:
   - "Low-code platform"
   - "Microsoft Azure"
@@ -82,7 +83,7 @@ Onboarding a new employee involved six people sending overlapping emails. HR sen
 
 ## What we built
 
-A checklist app on our low-code platform, plus a chat assistant that answers questions from published internal policy pages.
+A checklist app on our low-code platform, plus a smaller chat assistant that answers questions from published internal policy pages.
 
 When HR marks a position filled, the app builds a checklist from a task library keyed to role, start date and work location. A field inspector gets vehicle and tablet tasks; an analyst does not. The app opens the access requests it is allowed to open, routes each to the right approver, and shows the new hire and the supervisor the same list.
 

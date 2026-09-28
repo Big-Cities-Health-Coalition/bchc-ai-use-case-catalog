@@ -3,7 +3,7 @@ layout: entry
 render_with_liquid: false
 title: "Overdose spike situational brief generator"
 slug: overdose-spike-brief
-summary: "Assembles naloxone runs, emergency department visits and medical examiner reports into a one-page situational brief within an hour of a spike alert."
+summary: "An analysis script, run from a small app, that pulls naloxone runs, emergency department visits and medical examiner reports, compares them with an eight-week baseline, and produces a one-page situational brief within an hour of a spike alert."
 published: 2025-07-22
 featured: true
 sample: true
@@ -11,7 +11,6 @@ impact: "Cut brief turnaround from three days to under one hour"
 organization: "Harbor City Health Department"
 review_status: "Reviewed & approved"
 solution_type:
-  - "Generative AI tool"
   - "Analysis project or script"
 use_case_category: "Communications, media & writing"
 area:
@@ -22,9 +21,11 @@ ai_role: "Both"
 ai_types:
   - "Generative text (LLM)"
 ai_tools:
-  - "OpenAI API"
-  - "Streamlit"
   - "Python"
+  - "pandas"
+  - "SQL"
+  - "Streamlit"
+  - "OpenAI API"
   - "GitHub Copilot"
 platform:
   - "On-premises"
@@ -49,7 +50,7 @@ screenshots:
 sharing: "Open-source code"
 license: "Apache 2.0"
 portability: "Yes — platform-agnostic"
-portability_notes: "A local Python tool: it reads a CSV, calls a locally hosted model, and writes a document. Nothing vendor-specific."
+portability_notes: "A local Python tool: it reads each feed, computes the comparison, sends only the aggregate table to a model API for the narrative, and writes a document. The model client is one function and can be swapped."
 cost_band: "No new spend"
 run_cost: "Under $10k/yr"
 procurement:
@@ -83,24 +84,26 @@ When the substance use division declares a spike, leadership wants a brief the s
 
 ## What we built
 
-A small Streamlit app that an analyst runs on a workstation inside our network. The analyst picks an alert window and the neighbourhoods to include. The app pulls each feed, computes deltas against an eight-week baseline, renders the charts, and drafts the narrative paragraphs. The analyst edits the draft and exports a one-page PDF.
+A Python analysis script, wrapped in a small Streamlit app that an analyst runs on a workstation inside our network. The analyst picks an alert window and the neighbourhoods to include. The script pulls each feed, lines the records up on a common time window, computes deltas against an eight-week baseline, flags neighbourhoods above threshold, and renders the charts. A language model then drafts the narrative paragraphs from the finished numbers. The analyst edits the draft and exports a one-page PDF.
 
 ## How it works
 
-Every feed is queried at record level inside our environment. The model only ever receives the aggregate table that ends up in the brief — counts by day, by neighbourhood, and the baseline comparison. No record-level data, no names, no addresses leave the network boundary.
+There is one loader per feed, and each one queries record-level data inside our environment and returns daily counts by neighbourhood. Counts under five are suppressed before anything is charted. The baseline comparison and the threshold rules are plain code that the epidemiology team reviewed line by line, so every number in the brief can be traced back to a query.
 
-The law enforcement naloxone feed comes from a system covered by criminal justice data rules, so it arrives through a standing data-sharing agreement and is aggregated before it reaches the app at all. That agreement was the longest part of the project by a wide margin.
+The model only ever receives the aggregate table that ends up in the brief: counts by day, by neighbourhood, and the baseline comparison. No record-level data, no names and no addresses leave the network boundary.
+
+The law enforcement naloxone feed comes from a system covered by criminal justice data rules, so it arrives through a standing data-sharing agreement and is aggregated before it reaches the script at all. That agreement was the longest part of the project by a wide margin.
 
 We also used an AI coding assistant while building the app, mostly for the chart code and the PDF export. That is why this entry is tagged as both AI in the product and AI used to build it.
 
 ## Results
 
-The first brief produced under the new process was ready 52 minutes after the alert. Across the pilot, median turnaround was under an hour against a previous median of three days. Analyst editing is still substantial — roughly a quarter of the drafted narrative gets rewritten — but starting from a draft with the numbers already correct is what saves the time.
+The first brief produced under the new process was ready 52 minutes after the alert. Across the pilot, median turnaround was under an hour against a previous median of three days. Most of the saving comes from the scripted analysis: nobody rebuilds the time window or the charts by hand any more. The drafted narrative helps with the last stretch, though analysts still rewrite roughly a quarter of it.
 
 ## Lessons learned
 
-Keeping the model on the aggregate side of the boundary made every governance conversation shorter. Reviewers stopped asking about the model and started asking about the data agreement, which was the right question.
+Get the numbers right in code first. Keeping the model on the aggregate side of the boundary, drafting text about figures it did not compute, made every governance conversation shorter. Reviewers stopped asking about the model and started asking about the data agreement, which was the right question.
 
 ## How to reuse
 
-The repository ships with a synthetic sample dataset so you can run the whole flow end to end before you connect anything real. Swap the three loader functions for your own sources and adjust the baseline window. Expect the data agreement, not the code, to set your timeline.
+The repository ships with a synthetic sample dataset so you can run the whole flow end to end before you connect anything real. Swap the three loader functions for your own sources and adjust the baseline window. The narrative step is optional; the script produces the tiles and charts without it. Expect the data agreement, not the code, to set your timeline.

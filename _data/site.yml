@@ -17,7 +17,7 @@ organization:
 # Logo shown in the header/footer. Provide an image path (SVG/PNG under assets/images)
 # or leave `image` blank to show a text mark built from `text`.
 logo:
-  image: "/assets/images/bchc-logo-mark.png"
+  image: "/assets/images/bchc-logo-mark-144.png"
   text: "BCHC"
 
 # Link-preview card for chat apps and social sites (1200x630).

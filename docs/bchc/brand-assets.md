@@ -25,6 +25,13 @@ Both files are black line art with a red rule. BCHC has not supplied an SVG or a
 reversed (white) version for dark backgrounds. If one is needed, ask BCHC communications
 for it rather than recoloring the supplied files.
 
+The site serves proportionally downscaled copies so a visitor does not download a large
+file for a small logo: `assets/images/bchc-logo-mark-144.png` (144 px, three times the
+48 px footer size) in the header and footer, and `assets/images/bchc-logo-400.png`
+(400 px, twice the 200 px display size) on the About page. `bchc-logo-mark.png` and
+`bchc-logo.png` beside them are the full-size masters to resize from; the copies are
+resized only, never cropped or recolored.
+
 ## Rules
 
 - Use the logos only as BCHC specified above, and don't stretch, recolor or crop them.

@@ -163,7 +163,7 @@ fields:
     required: true
     group: about
     weight: 1
-    placeholder: "Nightly lab-result pipeline into the surveillance system"
+    placeholder: "Nightly lab-result pipeline for surveillance"
     description: "Specific enough that someone scanning a list of names knows what it is."
 
   - key: organization
@@ -951,13 +951,13 @@ fields:
     required: true
     group: story
     weight: 1
-    description: "Markdown is supported. Suggested headings: Problem, Approach, What it took (data, staffing, cost), Results, Lessons learned, How to reuse."
+    description: "Markdown is supported. Suggested headings: Problem, Approach, Time and resources (data, staffing, cost), Results, Lessons learned, How to reuse."
     placeholder: |
       ## Problem
 
       ## Approach
 
-      ## What it took
+      ## Time and resources
 
       ## Results
 

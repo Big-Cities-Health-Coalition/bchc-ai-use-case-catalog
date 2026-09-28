@@ -8,7 +8,7 @@ permalink: /about/
 {% assign cfg = site.data.site %}
 {% assign schema = site.data.schema %}
 
-<img src="{{ '/assets/images/bchc-logo.png' | relative_url }}" alt="{{ cfg.organization.name }} logo" width="200" height="201" class="mb-6 sm:float-right sm:ml-8">
+<img src="{{ '/assets/images/bchc-logo-400.png' | relative_url }}" alt="{{ cfg.organization.name }} logo" width="200" height="201" class="mb-6 sm:float-right sm:ml-8">
 
 This site is maintained by **{{ cfg.organization.name }}**. It is a shared, public catalog of {{ schema.entry.plural | downcase }} contributed by members and reviewed by maintainers before publication.
 

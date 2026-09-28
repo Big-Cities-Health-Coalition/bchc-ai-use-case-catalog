@@ -40,7 +40,7 @@ demo_url: ""
 docs_url: "https://github.com/example-org/elr-onboarding-pipeline#readme"
 resources: []
 screenshots: []
-deck_pdf: "/catalog/elr-onboarding-pipeline-for-new-reporting-labs/deck.pdf"
+deck_pdf: ""
 also_deployed_by: []
 license: MIT
 access_terms: MIT licensed. The mapping tables are specific to our surveillance system and will need to be redone for yours.
@@ -63,9 +63,9 @@ data_sources:
 audience: Internal staff
 data_governance_notes: ""
 security_review: ""
-contact_name: Test Submitter One
-contact_title: Informatics lead (test entry)
-contact_email: "informatics@example.org"
+contact_name: Nadia Brooks
+contact_title: Informatics Lead
+contact_email: "nadia.brooks@example.org"
 submitter_github: ""
 ---
 
@@ -77,12 +77,10 @@ Every new lab took weeks of back-and-forth before its messages loaded cleanly, a
 
 A validation and mapping pipeline that runs on each test batch, returns a plain-language error report to the lab, and loads clean messages into staging.
 
-## What it took
+## Time and resources
 
 One developer for four months, plus an epidemiologist to review the mapping tables.
 
 ## Lessons learned
 
 Send the lab the error report directly. Most problems were fixed on their side within a day once they could see them.
-
-_This is a test submission created to check the intake automation._

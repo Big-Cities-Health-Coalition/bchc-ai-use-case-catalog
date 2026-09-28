@@ -61,7 +61,7 @@ data_sensitivity:
   - Public data only
   - De-identified data
 data_sources:
-  - Weekly wastewater sample results from the five metro treatment plants
+  - Weekly sample results from the five metro treatment plants
   - State respiratory dashboard (public) for corroboration
 audience: Internal staff
 data_governance_notes: "Plant-level aggregate counts only — no case-level or personal data anywhere in the pipeline. Alerts are internal decision support for the epi team; the public state dashboard is used to corroborate trends, not fed by this tool."

@@ -2,7 +2,7 @@
   "/catalog/311-multilingual-intake/screenshots/01.png": {
     "w": 1280,
     "h": 800,
-    "src_bytes": 35329,
+    "src_bytes": 48561,
     "base": "/catalog/311-multilingual-intake/screenshots/01",
     "variants": {
       "avif": [
@@ -19,7 +19,7 @@
   "/catalog/coalition-meeting-notes/screenshots/01.png": {
     "w": 1280,
     "h": 800,
-    "src_bytes": 41610,
+    "src_bytes": 53302,
     "base": "/catalog/coalition-meeting-notes/screenshots/01",
     "variants": {
       "avif": [
@@ -36,7 +36,7 @@
   "/catalog/contract-clause-review/screenshots/01.png": {
     "w": 1280,
     "h": 800,
-    "src_bytes": 39529,
+    "src_bytes": 51636,
     "base": "/catalog/contract-clause-review/screenshots/01",
     "variants": {
       "avif": [
@@ -53,7 +53,7 @@
   "/catalog/epi-signal-triage/screenshots/01.png": {
     "w": 1280,
     "h": 800,
-    "src_bytes": 30300,
+    "src_bytes": 42791,
     "base": "/catalog/epi-signal-triage/screenshots/01",
     "variants": {
       "avif": [
@@ -63,14 +63,15 @@
       ],
       "webp": [
         400,
-        800
+        800,
+        1280
       ]
     }
   },
   "/catalog/epi-signal-triage/screenshots/02.png": {
     "w": 1280,
     "h": 800,
-    "src_bytes": 25603,
+    "src_bytes": 35244,
     "base": "/catalog/epi-signal-triage/screenshots/02",
     "variants": {
       "avif": [
@@ -119,7 +120,7 @@
   "/catalog/inspection-backlog-dashboard/screenshots/01.png": {
     "w": 1280,
     "h": 800,
-    "src_bytes": 20090,
+    "src_bytes": 29963,
     "base": "/catalog/inspection-backlog-dashboard/screenshots/01",
     "variants": {
       "avif": [
@@ -129,14 +130,15 @@
       ],
       "webp": [
         400,
-        800
+        800,
+        1280
       ]
     }
   },
   "/catalog/inspection-backlog-dashboard/screenshots/02.png": {
     "w": 1280,
     "h": 800,
-    "src_bytes": 30239,
+    "src_bytes": 42957,
     "base": "/catalog/inspection-backlog-dashboard/screenshots/02",
     "variants": {
       "avif": [
@@ -146,14 +148,15 @@
       ],
       "webp": [
         400,
-        800
+        800,
+        1280
       ]
     }
   },
   "/catalog/onboarding-checklist-assistant/screenshots/01.png": {
     "w": 1280,
     "h": 800,
-    "src_bytes": 34877,
+    "src_bytes": 48310,
     "base": "/catalog/onboarding-checklist-assistant/screenshots/01",
     "variants": {
       "avif": [
@@ -163,14 +166,15 @@
       ],
       "webp": [
         400,
-        800
+        800,
+        1280
       ]
     }
   },
   "/catalog/onboarding-checklist-assistant/screenshots/02.png": {
     "w": 1280,
     "h": 800,
-    "src_bytes": 34876,
+    "src_bytes": 48343,
     "base": "/catalog/onboarding-checklist-assistant/screenshots/02",
     "variants": {
       "avif": [
@@ -180,14 +184,15 @@
       ],
       "webp": [
         400,
-        800
+        800,
+        1280
       ]
     }
   },
   "/catalog/overdose-spike-brief/screenshots/01.png": {
     "w": 1280,
     "h": 800,
-    "src_bytes": 26528,
+    "src_bytes": 40164,
     "base": "/catalog/overdose-spike-brief/screenshots/01",
     "variants": {
       "avif": [
@@ -197,14 +202,15 @@
       ],
       "webp": [
         400,
-        800
+        800,
+        1280
       ]
     }
   },
   "/catalog/overdose-spike-brief/screenshots/02.png": {
     "w": 1280,
     "h": 800,
-    "src_bytes": 22364,
+    "src_bytes": 31284,
     "base": "/catalog/overdose-spike-brief/screenshots/02",
     "variants": {
       "avif": [
@@ -214,19 +220,21 @@
       ],
       "webp": [
         400,
-        800
+        800,
+        1280
       ]
     }
   },
   "/catalog/plain-language-notices/screenshots/01.png": {
     "w": 1280,
     "h": 800,
-    "src_bytes": 33753,
+    "src_bytes": 49788,
     "base": "/catalog/plain-language-notices/screenshots/01",
     "variants": {
       "avif": [
         400,
-        800
+        800,
+        1280
       ],
       "webp": [
         400,
@@ -237,7 +245,7 @@
   "/catalog/restaurant-inspection-summaries/screenshots/01.png": {
     "w": 1280,
     "h": 800,
-    "src_bytes": 32772,
+    "src_bytes": 46241,
     "base": "/catalog/restaurant-inspection-summaries/screenshots/01",
     "variants": {
       "avif": [

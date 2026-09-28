@@ -65,7 +65,7 @@ review:
     - name: "Reuse readiness"
       body: "Enough documentation, links and contact detail that another jurisdiction could realistically evaluate or adopt it."
     - name: "Category fit"
-      body: "Correctly placed in one of the coalition's use-case categories."
+      body: "Tagged with the right type of solution and public health area and, for AI work, the right one of the coalition's four AI use categories."
 
 # --- Roles ----------------------------------------------------------------
 roles_intro: "Four roles keep the catalog running. None of them is a full-time job."
@@ -100,7 +100,7 @@ policies:
   - id: data-governance
     title: "Data governance baseline"
     body: |
-      An entry describes, in plain language, what data the resource touches, where that data comes from and who sees the output. Where a data-sharing agreement, de-identification step or approval covers the data, the *Data governance notes* say which. An entry that touches identifiable data, supports clinical decisions or faces the public receives closer review, and may be routed to a partner reviewer.
+      An entry describes, in plain language, what data the resource touches, where that data comes from and who sees the output. Where a data-sharing agreement, de-identification step or approval covers the data, the *Data-governance caveats* say which. An entry that touches identifiable data, supports clinical decisions or faces the public receives closer review, and may be routed to a partner reviewer.
   - id: accessibility
     title: "Accessibility and quality"
     body: |

@@ -1,0 +1,166 @@
+/*
+ * Shared styles for the sample-entry slide decks (decks/<slug>/deck.html).
+ * Like ../base.css this uses the theme's CSS variables only, with no colour
+ * values of its own, so a theme change carries through on the next render.
+ *
+ * One slide is one 1280x720 CSS-pixel page (13.333 x 7.5 in, the 16:9 size
+ * the original LibreOffice decks used). Solid fills and borders only: a
+ * blurred box-shadow is rasterised into the PDF and multiplies its size.
+ */
+
+@page {
+  size: 1280px 720px;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+body {
+  font-family: var(--font-body), system-ui, sans-serif;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.slide {
+  position: relative;
+  width: 1280px;
+  height: 720px;
+  overflow: hidden;
+  break-after: page;
+}
+
+.slide:last-child {
+  break-after: auto;
+}
+
+h1,
+h2,
+.fact dt {
+  font-family: var(--font-heading), system-ui, sans-serif;
+}
+
+/* Title slide: a dark field with the brand red as the bottom bar. */
+
+.slide-title {
+  background: var(--primary-dark);
+  color: var(--on-dark);
+}
+
+.slide-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 58px;
+  background: var(--primary);
+}
+
+.slide-title .title-block {
+  position: absolute;
+  top: 146px;
+  left: 96px;
+  right: 110px;
+}
+
+.slide-title .title-block::before {
+  content: '';
+  display: block;
+  width: 88px;
+  height: 8px;
+  margin-bottom: 26px;
+  background: var(--primary);
+}
+
+.slide-title h1 {
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+}
+
+.slide-title .subtitle {
+  margin-top: 18px;
+  font-size: 29px;
+  line-height: 1.25;
+  color: var(--accent);
+}
+
+.slide-title .lede {
+  position: absolute;
+  top: 432px;
+  left: 96px;
+  right: 110px;
+  font-size: 19px;
+  line-height: 1.4;
+}
+
+.slide-title .source {
+  margin-top: 12px;
+  font-size: 15px;
+  color: var(--accent);
+}
+
+/* At-a-glance slide: a cream field of five fact cards. */
+
+.slide-glance {
+  background: var(--surface);
+  padding: 58px 90px 0 96px;
+}
+
+.slide-glance .eyebrow {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--primary);
+}
+
+.slide-glance h2 {
+  margin-top: 6px;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--primary-dark);
+}
+
+.facts {
+  display: grid;
+  grid-auto-rows: 94px;
+  gap: 10px;
+  margin: 36px 0 0 -10px;
+}
+
+/* Centred, so one-line and two-line cards keep an even margin. */
+.fact {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 28px 2px 32px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-left: 8px solid var(--primary);
+}
+
+.fact dt {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--primary-dark);
+}
+
+.fact dd {
+  margin-top: 3px;
+  font-size: 15.5px;
+  line-height: 1.4;
+  color: var(--muted);
+}

@@ -1,0 +1,52 @@
+<section class="slide slide-title">
+  <div class="title-block">
+    <h1>Home-visit note summarizer</h1>
+    <p class="subtitle">A 20-minute typing task becomes a 4-minute review</p>
+  </div>
+  <div class="lede">
+    <p>
+      Community health workers record a short voice memo after each home visit; the tool transcribes it,
+      drafts the structured visit note in the case-management format, and queues it for the CHW to review and
+      file.
+    </p>
+    <p class="source">Demo entry — Cedar Valley County Health Department (fictional)</p>
+  </div>
+</section>
+<section class="slide slide-glance">
+  <p class="eyebrow">AT A GLANCE</p>
+  <h2>Home-visit note summarizer</h2>
+  <dl class="facts">
+    <div class="fact">
+      <dt>What it does</dt>
+      <dd>
+        Gives community health workers their afternoons back — the note is drafted before they reach the next
+        driveway.
+      </dd>
+    </div>
+    <div class="fact">
+      <dt>How it's built</dt>
+      <dd>
+        On-device transcription, then an LLM maps the transcript onto the standard visit-note fields. The CHW
+        edits and files; nothing files itself.
+      </dd>
+    </div>
+    <div class="fact">
+      <dt>What it took</dt>
+      <dd>Pilot stage: two CHW teams, under $25k, one developer alongside the CHW supervisor.</dd>
+    </div>
+    <div class="fact">
+      <dt>Data &amp; governance</dt>
+      <dd>
+        Voice memos are deleted after transcription; drafts live inside the existing case-management system's
+        access controls.
+      </dd>
+    </div>
+    <div class="fact">
+      <dt>Reuse it</dt>
+      <dd>
+        The prompt templates and the deletion schedule are documented in the entry for other departments to
+        adapt.
+      </dd>
+    </div>
+  </dl>
+</section>

@@ -87,8 +87,8 @@
   },
   "/catalog/extreme-heat-outreach-targeting-brief/thumb.jpg": {
     "w": 800,
-    "h": 451,
-    "src_bytes": 41654,
+    "h": 450,
+    "src_bytes": 42109,
     "base": "/catalog/extreme-heat-outreach-targeting-brief/thumb",
     "variants": {
       "avif": [
@@ -103,8 +103,8 @@
   },
   "/catalog/home-visit-note-summarizer-for-community-health-workers/thumb.jpg": {
     "w": 800,
-    "h": 451,
-    "src_bytes": 33915,
+    "h": 450,
+    "src_bytes": 33316,
     "base": "/catalog/home-visit-note-summarizer-for-community-health-workers/thumb",
     "variants": {
       "avif": [
@@ -261,8 +261,8 @@
   },
   "/catalog/wastewater-surveillance-trend-alerts/thumb.jpg": {
     "w": 800,
-    "h": 451,
-    "src_bytes": 37932,
+    "h": 450,
+    "src_bytes": 36970,
     "base": "/catalog/wastewater-surveillance-trend-alerts/thumb",
     "variants": {
       "avif": [

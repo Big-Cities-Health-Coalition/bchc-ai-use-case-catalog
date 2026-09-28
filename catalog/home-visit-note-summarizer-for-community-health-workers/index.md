@@ -4,6 +4,7 @@ render_with_liquid: false
 title: Home-visit note summarizer for community health workers
 slug: home-visit-note-summarizer-for-community-health-workers
 published: "2026-08-26"
+updated: 2026-09-28
 featured: false
 thumbnail: ""
 organization: Cedar Valley County Health Department

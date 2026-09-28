@@ -1,0 +1,62 @@
+<header class="appbar">
+  <span class="appbar-title">Brief generator</span>
+  <span class="appbar-meta">Signed in as analyst</span>
+</header>
+<main class="page">
+  <h1>Build a situational brief</h1>
+  <p class="lede">
+    Pick a window and the areas to include. The app pulls each feed, builds the charts, then drafts the
+    narrative for you to edit.
+  </p>
+  <div class="row" style="grid-template-columns: 420px 1fr">
+    <section class="card">
+      <h2>1. Alert window</h2>
+      <div class="field-label">Start date</div>
+      <div class="input" style="width: 200px">2026-03-03</div>
+      <div class="field-label">End date</div>
+      <div class="input" style="width: 200px">2026-03-09</div>
+      <div class="field-label">Comparison baseline</div>
+      <div class="input" style="width: 260px">Previous 8 weeks</div>
+    </section>
+    <div class="stack">
+      <section class="card">
+        <h2>2. Neighbourhoods</h2>
+        <ul class="checks">
+          <li>
+            <span class="box on"></span
+            ><span>North <span class="aside">— 41 naloxone runs in window</span></span>
+          </li>
+          <li>
+            <span class="box on"></span
+            ><span>Harborview <span class="aside">— 34 naloxone runs in window</span></span>
+          </li>
+          <li>
+            <span class="box on"></span
+            ><span>Eastside <span class="aside">— 21 naloxone runs in window</span></span>
+          </li>
+          <li>
+            <span class="box on"></span
+            ><span>Millbrook <span class="aside">— 18 naloxone runs in window</span></span>
+          </li>
+          <li>
+            <span class="box"></span
+            ><span>Fairgrounds <span class="aside">— 12 naloxone runs in window</span></span>
+          </li>
+          <li>
+            <span class="box"></span
+            ><span>Southbank <span class="aside">— 10 naloxone runs in window</span></span>
+          </li>
+        </ul>
+      </section>
+      <section class="card">
+        <h2>3. Sources</h2>
+        <p class="fineprint" style="font-size: 13px; margin-bottom: 16px">
+          EMS naloxone administrations · emergency department chief complaints · medical examiner preliminary
+          reports · law-enforcement naloxone reports (data agreement required)
+        </p>
+        <span class="btn">Generate draft brief</span>
+        <span class="fineprint" style="font-size: 13px; margin-left: 12px">Typically 5–7 minutes</span>
+      </section>
+    </div>
+  </div>
+</main>

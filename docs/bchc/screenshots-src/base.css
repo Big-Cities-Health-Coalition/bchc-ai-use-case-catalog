@@ -1,0 +1,486 @@
+/*
+ * Shared styles for the sample-entry mockups. Every colour and font comes from a
+ * CSS variable that render.mjs fills from _data/theme.yml at render time, so
+ * nothing here names a brand value. Tints are mixed from those tokens.
+ */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 1280px;
+  height: 800px;
+  overflow: hidden;
+}
+
+body {
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+.appbar-title {
+  font-family: var(--font-heading), var(--font-body), sans-serif;
+  color: var(--primary-dark);
+}
+
+/* ---- App bar ------------------------------------------------------------ */
+
+.appbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+  padding: 0 28px;
+  background: var(--primary-dark);
+}
+
+.appbar-title {
+  color: var(--on-dark);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.appbar-meta {
+  color: color-mix(in srgb, var(--on-dark) 82%, transparent);
+  font-size: 13px;
+}
+
+/* ---- Page frame --------------------------------------------------------- */
+
+.page {
+  padding: 24px 28px;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-top: 4px;
+}
+
+.lede {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 8px 0 20px;
+}
+
+.stack > * + * {
+  margin-top: 16px;
+}
+
+/* Equal columns by default; a mockup with a fixed-width column sets
+   grid-template-columns inline. */
+.row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+/* ---- Cards -------------------------------------------------------------- */
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.card h2 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.25;
+  margin-bottom: 14px;
+}
+
+.label {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.fineprint {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.rule {
+  border-top: 1px solid var(--line);
+  margin-top: 14px;
+  padding-top: 10px;
+}
+
+/* ---- KPI tiles ---------------------------------------------------------- */
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.kpi {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 18px 16px 20px;
+}
+
+.kpi-value {
+  font-family: var(--font-heading), var(--font-body), sans-serif;
+  color: var(--ink);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 8px 0 6px;
+}
+
+.kpi-note {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* ---- Tables ------------------------------------------------------------- */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-align: left;
+  text-transform: uppercase;
+  padding: 8px 10px;
+  border-bottom: 1px solid color-mix(in srgb, var(--line-strong) 55%, var(--line));
+  vertical-align: bottom;
+}
+
+td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+table.compact td {
+  font-size: 13px;
+  padding: 9px 10px;
+}
+
+/* ---- Pills -------------------------------------------------------------- */
+
+.pill {
+  display: inline-block;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--ink);
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1.2;
+  padding: 3px 9px;
+  white-space: nowrap;
+}
+
+.pill + .pill {
+  margin-left: 4px;
+}
+
+/* Caution: warn stays reserved for this. */
+.pill.warn {
+  background: color-mix(in srgb, var(--warn) 9%, var(--card));
+  border-color: color-mix(in srgb, var(--warn) 45%, var(--card));
+  color: var(--warn);
+}
+
+/* Positive / categorical: the secondary (taxonomy) colour. */
+.pill.ok {
+  background: color-mix(in srgb, var(--secondary) 9%, var(--card));
+  border-color: color-mix(in srgb, var(--secondary) 40%, var(--card));
+  color: color-mix(in srgb, var(--secondary) 78%, var(--primary-dark));
+}
+
+/* Informational / selected: the warm tint. */
+.pill.tint {
+  background: var(--surface-tint);
+  border-color: color-mix(in srgb, var(--line-strong) 60%, var(--line));
+  color: var(--ink);
+}
+
+/* Filter chips are small controls rather than status labels. */
+.chip {
+  display: inline-block;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--ink);
+  font-size: 12px;
+  padding: 3px 10px;
+}
+
+.chip.on {
+  background: var(--surface-tint);
+}
+
+/* ---- Notes and banners -------------------------------------------------- */
+
+.note {
+  background: var(--surface-tint);
+  border-left: 3px solid var(--primary);
+  color: var(--muted);
+  font-size: 13px;
+  padding: 10px 16px;
+}
+
+.banner-warn {
+  background: color-mix(in srgb, var(--warn) 7%, var(--card));
+  border: 1px solid color-mix(in srgb, var(--warn) 35%, var(--card));
+  border-radius: 6px;
+  color: var(--warn);
+  font-size: 13px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+}
+
+/* ---- Buttons and inputs ------------------------------------------------- */
+
+.btn {
+  display: inline-block;
+  border: 1px solid var(--primary);
+  border-radius: 999px;
+  background: var(--primary);
+  color: var(--card);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 16px;
+}
+
+.btn.outline {
+  background: var(--card);
+  border-color: var(--line-strong);
+  color: var(--primary-dark);
+  font-weight: 500;
+}
+
+.field-label {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 12px 0 5px;
+}
+
+.field-label:first-of-type {
+  margin-top: 0;
+}
+
+.input {
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  background: var(--card);
+  font-size: 13px;
+  padding: 10px 11px;
+}
+
+/* ---- Checklists --------------------------------------------------------- */
+
+.checks {
+  list-style: none;
+}
+
+.checks li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.checks li:first-child {
+  padding-top: 0;
+}
+
+.checks .aside {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.box {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 3px;
+  background: var(--card);
+  position: relative;
+}
+
+.box.on {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.box.on::after {
+  content: '';
+  position: absolute;
+  left: 4.5px;
+  top: 1px;
+  width: 4px;
+  height: 8px;
+  border: solid var(--card);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.checks + h3,
+h3 {
+  font-family: var(--font-heading), var(--font-body), sans-serif;
+  color: var(--primary-dark);
+  font-size: 17px;
+  font-weight: 600;
+  margin: 20px 0 14px;
+}
+
+/* ---- Horizontal bar charts ---------------------------------------------- */
+
+.bars {
+  display: grid;
+  grid-template-columns: var(--bar-label, 120px) 1fr 40px;
+  align-items: center;
+  column-gap: 10px;
+  row-gap: 11px;
+  font-size: 13px;
+}
+
+.bars .name {
+  color: var(--muted);
+  text-align: right;
+}
+
+.bars .track {
+  height: 16px;
+  border-radius: 3px;
+  background: var(--surface-tint);
+  overflow: hidden;
+}
+
+.bars .fill {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+  background: var(--primary);
+}
+
+.bars .fill.quiet {
+  background: color-mix(in srgb, var(--line-strong) 70%, var(--card));
+}
+
+.bars .num {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Chat --------------------------------------------------------------- */
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.msg-user {
+  align-self: flex-end;
+  width: 520px;
+  background: var(--primary-dark);
+  color: var(--on-dark);
+  border-radius: 10px 10px 2px 10px;
+  font-size: 13.5px;
+  padding: 11px 14px;
+}
+
+.msg-bot {
+  align-self: flex-start;
+  width: 520px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px 10px 10px 2px;
+  font-size: 13.5px;
+  line-height: 1.45;
+  padding: 12px 14px 10px;
+}
+
+.msg-bot p + p {
+  margin-top: 10px;
+}
+
+.msg-bot .fineprint {
+  border-top: 1px solid var(--line);
+  margin-top: 10px;
+  padding-top: 8px;
+  font-size: 11.5px;
+}
+
+/* ---- Transcript --------------------------------------------------------- */
+
+.transcript p {
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.transcript p + p {
+  margin-top: 14px;
+}
+
+.transcript .who {
+  display: block;
+  color: var(--muted);
+  font-size: 12.5px;
+  margin-bottom: 3px;
+}
+
+/* ---- Filter bar --------------------------------------------------------- */
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  margin-bottom: 16px;
+}
+
+/* ---- Side-by-side prose ------------------------------------------------- */
+
+.prose p {
+  font-size: 13px;
+  line-height: 1.4;
+  margin-top: 12px;
+}
+
+.prose .label + p {
+  margin-top: 16px;
+}
+
+.prose strong {
+  color: var(--primary-dark);
+  font-weight: 700;
+}

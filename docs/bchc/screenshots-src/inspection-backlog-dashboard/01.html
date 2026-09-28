@@ -1,0 +1,69 @@
+<header class="appbar">
+  <span class="appbar-title">Inspection backlog dashboard</span>
+  <span class="appbar-meta">Updated nightly · data through 14 July</span>
+</header>
+<main class="page">
+  <h1>Where the backlog is</h1>
+  <p class="lede">
+    One screen for the weekly operations meeting, replacing four spreadsheets that were merged by hand.
+  </p>
+  <div class="kpis">
+    <div class="kpi">
+      <div class="label">Open inspections</div>
+      <div class="kpi-value">1,284</div>
+      <div class="kpi-note">-9% since April</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Past due</div>
+      <div class="kpi-value">317</div>
+      <div class="kpi-note">24% of open work</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Median days open</div>
+      <div class="kpi-value">21</div>
+      <div class="kpi-note">target is 30</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Inspectors assigned</div>
+      <div class="kpi-value">26</div>
+      <div class="kpi-note">across 6 districts</div>
+    </div>
+  </div>
+  <div class="row" style="grid-template-columns: 788px 1fr; margin-bottom: 16px">
+    <section class="card">
+      <h2>Past-due inspections by district</h2>
+      <div class="bars">
+        <span class="name">District 3</span
+        ><span class="track"><span class="fill" style="width: 100%"></span></span><span class="num">88</span>
+        <span class="name">District 1</span
+        ><span class="track"><span class="fill" style="width: 77%"></span></span><span class="num">68</span>
+        <span class="name">District 6</span
+        ><span class="track"><span class="fill" style="width: 61%"></span></span><span class="num">54</span>
+        <span class="name">District 2</span
+        ><span class="track"><span class="fill" style="width: 47%"></span></span><span class="num">41</span>
+        <span class="name">District 5</span
+        ><span class="track"><span class="fill" style="width: 40%"></span></span><span class="num">35</span>
+        <span class="name">District 4</span
+        ><span class="track"><span class="fill" style="width: 35%"></span></span><span class="num">31</span>
+      </div>
+    </section>
+    <section class="card">
+      <h2>By inspection type</h2>
+      <div class="bars">
+        <span class="name">Food service</span
+        ><span class="track"><span class="fill" style="width: 100%"></span></span><span class="num">142</span>
+        <span class="name">Pools</span><span class="track"><span class="fill" style="width: 55%"></span></span
+        ><span class="num">78</span> <span class="name">Housing</span
+        ><span class="track"><span class="fill" style="width: 39%"></span></span><span class="num">55</span>
+        <span class="name">Child care</span
+        ><span class="track"><span class="fill" style="width: 20%"></span></span><span class="num">28</span>
+        <span class="name">Tattoo &amp; body art</span
+        ><span class="track"><span class="fill" style="width: 10%"></span></span><span class="num">14</span>
+      </div>
+    </section>
+  </div>
+  <p class="note">
+    Built in three weeks with an AI coding assistant. The dashboard itself is ordinary SQL and charts — there
+    is no model in the running system.
+  </p>
+</main>

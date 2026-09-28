@@ -1,0 +1,105 @@
+<header class="appbar">
+  <span class="appbar-title">Signal triage queue</span>
+  <span class="appbar-meta">Tuesday, 16 June · 62 alerts reviewed</span>
+</header>
+<main class="page">
+  <div class="kpis">
+    <div class="kpi">
+      <div class="label">Alerts today</div>
+      <div class="kpi-value">62</div>
+      <div class="kpi-note">from the syndromic feed</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Flagged for review</div>
+      <div class="kpi-value">7</div>
+      <div class="kpi-note">ranked below</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Analyst time</div>
+      <div class="kpi-value">28 min</div>
+      <div class="kpi-note">logged so far</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Closed by analyst</div>
+      <div class="kpi-value">55</div>
+      <div class="kpi-note">no follow-up needed</div>
+    </div>
+  </div>
+  <section class="card" style="margin-bottom: 16px">
+    <h2>Ranked for analyst review</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 67px">Rank</th>
+          <th style="width: 171px">Syndrome</th>
+          <th style="width: 93px">Area</th>
+          <th>What changed</th>
+          <th style="width: 172px">Signal strength</th>
+          <th style="width: 92px">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Gastrointestinal</td>
+          <td>District 4</td>
+          <td>Visits up 2.4x over the 14-day baseline, concentrated in ages 5–14.</td>
+          <td><span class="pill warn">Strong</span></td>
+          <td>Open</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Heat-related illness</td>
+          <td>District 7</td>
+          <td>Third consecutive day above threshold; matches the heat advisory window.</td>
+          <td><span class="pill warn">Strong</span></td>
+          <td>Open</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Respiratory</td>
+          <td>Citywide</td>
+          <td>Small rise consistent with the seasonal curve, no age skew.</td>
+          <td><span class="pill">Moderate</span></td>
+          <td>Open</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Rash</td>
+          <td>District 2</td>
+          <td>Four visits from one ZIP code in two days; low counts overall.</td>
+          <td><span class="pill">Moderate</span></td>
+          <td>Assigned</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Neurological</td>
+          <td>District 9</td>
+          <td>Above threshold on one facility only; possible coding change.</td>
+          <td><span class="pill ok">Weak</span></td>
+          <td>Closed</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>Injury</td>
+          <td>District 1</td>
+          <td>Weekend spike matching last four weekends.</td>
+          <td><span class="pill ok">Weak</span></td>
+          <td>Closed</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>Fever</td>
+          <td>District 5</td>
+          <td>Counts within normal range once the holiday effect is removed.</td>
+          <td><span class="pill ok">Weak</span></td>
+          <td>Closed</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <p class="note">
+    Signal strength is a sorting hint from the drafting step. Every alert is opened, read and closed by an
+    analyst.
+  </p>
+</main>

@@ -1,19 +1,4 @@
 {
-  "entries": {
-    "wastewater-surveillance-trend-alerts": {
-      "applicable": true,
-      "archived": "unavailable",
-      "errors": [],
-      "exists": false,
-      "fetched": "2026-09-03",
-      "license": "unavailable",
-      "owner_type": "unavailable",
-      "pushed_at": "unavailable",
-      "repo": "example/wastewater-trend-alerts",
-      "scorecard": null,
-      "security_policy": "unavailable",
-      "url": "https://github.com/example/wastewater-trend-alerts"
-    }
-  },
-  "generated_at": "2026-09-03"
+  "entries": {},
+  "generated_at": "2026-09-28"
 }

@@ -41,6 +41,38 @@ The script resolves `fonts.heading` and `fonts.body` the way the site does:
 Either way it checks that both configured families actually loaded, and stops with an error if not,
 so it never writes a screenshot in a fallback font.
 
+## Slide decks
+
+Three sample entries also have a two-slide `deck.pdf`. Its first page is the entry's card image on
+the browse page. The deck sources are in `decks/`:
+
+- `decks/<slug>/deck.html` is one deck, with one `<section class="slide">` per page. It becomes
+  `catalog/<slug>/deck.pdf`.
+- `decks/deck.css` holds the slide styles, again using CSS variables only.
+- `render-decks.mjs` reads the theme the same way as `render.mjs` (both use `theme.mjs`) and takes
+  the same `--theme` and slug arguments. It prints each deck with Puppeteer at 1280×720 CSS pixels a
+  page (960×540 pt, the 16:9 size of the original decks), and stops if any text overflows a slide
+  or card.
+
+```sh
+node docs/bchc/screenshots-src/render-decks.mjs --theme /tmp/theme.yml   # all decks
+```
+
+In a PDF, Chrome embeds a variable font as Type 3 outlines, repeated for every font size, and that
+makes a deck about five times bigger. So the script embeds a static instance of each bundled family
+at the two weights `deck.css` uses (400 and 700), cut with fonttools. The first run needs `python3`
+and network access, because it installs fonttools into a venv under `$FONT_WORK_DIR` (by default a
+folder in the system temp directory), as `scripts/build_fonts.sh` does. With the bundled fonts a
+deck comes out at about 22 KB. A variable font loaded from `google_fonts_url` is not instanced, so
+it still renders, but the PDF is larger.
+
+The script does not write `thumb.jpg`. The "Generate entry media" workflow
+(`.github/workflows/thumbnails.yml`) renders it, and its AVIF/WebP variants, from the deck's first
+page.
+
+Neither script is a root dependency. Install Puppeteer at the version pinned in
+`quality/package.json` with `npm install --no-save puppeteer@<version>`.
+
 ## Editing a mockup
 
 Change the text in the matching `NN.html` and re-render. Use the classes in `base.css` (`kpi`,

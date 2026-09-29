@@ -1,4 +1,4 @@
-# Public Health Digital Use Case Catalog
+# Public Health AI & Tech Exchange
 
 A shared catalog of digital tools, data projects and AI work from Big Cities Health Coalition member health departments: data pipelines, analysis code, dashboards, applications, data platforms, workflow automation, governance playbooks and AI tools. Member departments publish what they have built, the data it touches, what staffing and money it took, and what they would do differently, so another city can decide in a couple of minutes whether it is worth reusing. Sharing code is optional; every entry says plainly what another department can take away, from open-source code to a description of the work.
 

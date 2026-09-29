@@ -10,7 +10,7 @@
 
 /** Parsed _data/site.yml. */
 export const SITE = {
-  "name": "Public Health Digital Use Case Catalog",
+  "name": "Public Health AI & Tech Exchange",
   "tagline": "Digital tools, data and AI work from big-city health departments",
   "description": "A shared catalog of digital tools, data projects and AI work from Big Cities Health Coalition member health departments, so each city can reuse what another has already built.",
   "organization": {
@@ -1487,11 +1487,11 @@ export const NAVIGATION = [
 ];
 
 /** Verbatim _config.yml; the wizard patches title/description/url/baseurl into it. */
-export const JEKYLL_CONFIG = "# Jekyll configuration.\n# Most site-specific settings live in _data/site.yml (branding, modules, labels),\n# _data/theme.yml (colors, fonts) and _data/schema.yml (the entry content model).\n# Keep this file to build mechanics. `title`/`description` here are fallbacks for\n# SEO tags; the setup wizard keeps them in sync with _data/site.yml.\n\ntitle: \"Public Health Digital Use Case Catalog\"\ndescription: \"A shared catalog of digital tools, data projects and AI work from Big Cities Health Coalition member health departments, so each city can reuse what another has already built.\"\nurl: \"\"\nbaseurl: \"\"\ntheme: null\ntimezone: \"America/Chicago\"\nmarkdown: kramdown\npermalink: pretty\nfuture: false\n\nexclude:\n  - node_modules\n  - vendor\n  - README.md\n  - ARCHITECTURE.md\n  - CONTRIBUTING.md\n  - CODE_OF_CONDUCT.md\n  - CHANGELOG.md\n  - SECURITY.md\n  - CLAUDE.md\n  - AGENTS.md\n  - LICENSE\n  - package-lock.json\n  - package.json\n  - tailwind.config.js\n  - postcss.config.js\n  - eslint.config.js\n  - quality\n  - assets/css/tailwind.css\n  - scripts\n  - test\n  - docs\n  - Gemfile\n  - Gemfile.lock\n  - .ruby-version\n\n# If you change entry.path in _data/schema.yml, change the first scope's path\n# here to match — this is what gives every entry the `entry` layout.\ndefaults:\n  - scope:\n      path: \"catalog\"\n    values:\n      layout: entry\n  - scope:\n      path: \"cohorts\"\n    values:\n      layout: cohort\n\nplugins:\n  - jekyll-seo-tag\n  - jekyll-sitemap\n  - jekyll-include-cache\n\nsass:\n  style: compressed\n";
+export const JEKYLL_CONFIG = "# Jekyll configuration.\n# Most site-specific settings live in _data/site.yml (branding, modules, labels),\n# _data/theme.yml (colors, fonts) and _data/schema.yml (the entry content model).\n# Keep this file to build mechanics. `title`/`description` here are fallbacks for\n# SEO tags; the setup wizard keeps them in sync with _data/site.yml.\n\ntitle: \"Public Health AI & Tech Exchange\"\ndescription: \"A shared catalog of digital tools, data projects and AI work from Big Cities Health Coalition member health departments, so each city can reuse what another has already built.\"\nurl: \"\"\nbaseurl: \"\"\ntheme: null\ntimezone: \"America/Chicago\"\nmarkdown: kramdown\npermalink: pretty\nfuture: false\n\nexclude:\n  - node_modules\n  - vendor\n  - README.md\n  - ARCHITECTURE.md\n  - CONTRIBUTING.md\n  - CODE_OF_CONDUCT.md\n  - CHANGELOG.md\n  - SECURITY.md\n  - CLAUDE.md\n  - AGENTS.md\n  - LICENSE\n  - package-lock.json\n  - package.json\n  - tailwind.config.js\n  - postcss.config.js\n  - eslint.config.js\n  - quality\n  - assets/css/tailwind.css\n  - scripts\n  - test\n  - docs\n  - Gemfile\n  - Gemfile.lock\n  - .ruby-version\n\n# If you change entry.path in _data/schema.yml, change the first scope's path\n# here to match — this is what gives every entry the `entry` layout.\ndefaults:\n  - scope:\n      path: \"catalog\"\n    values:\n      layout: entry\n  - scope:\n      path: \"cohorts\"\n    values:\n      layout: cohort\n\nplugins:\n  - jekyll-seo-tag\n  - jekyll-sitemap\n  - jekyll-include-cache\n\nsass:\n  style: compressed\n";
 
 /** The build-mechanics values _config.yml ships with. */
 export const JEKYLL_DEFAULTS = {
-  "title": "Public Health Digital Use Case Catalog",
+  "title": "Public Health AI & Tech Exchange",
   "description": "A shared catalog of digital tools, data projects and AI work from Big Cities Health Coalition member health departments, so each city can reuse what another has already built.",
   "url": "",
   "baseurl": "",

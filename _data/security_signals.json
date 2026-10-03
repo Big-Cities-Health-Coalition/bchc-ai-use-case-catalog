@@ -1,4 +1,19 @@
 {
-  "entries": {},
-  "generated_at": "2026-09-28"
+  "entries": {
+    "elr-onboarding-pipeline-for-new-reporting-labs": {
+      "applicable": true,
+      "archived": "unavailable",
+      "errors": [],
+      "exists": false,
+      "fetched": "2026-10-03",
+      "license": "unavailable",
+      "owner_type": "unavailable",
+      "pushed_at": "unavailable",
+      "repo": "example-org/elr-onboarding-pipeline",
+      "scorecard": null,
+      "security_policy": "unavailable",
+      "url": "https://github.com/example-org/elr-onboarding-pipeline"
+    }
+  },
+  "generated_at": "2026-10-03"
 }
